@@ -3,3 +3,8 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/info/
+.DS_Store
+.idea/
+SimplifyScrum/.DS_Store
+SimplifyScrum/appsettings.Development.json
