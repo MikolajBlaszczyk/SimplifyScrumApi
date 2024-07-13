@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplifyScrum", "SimplifyScrum\SimplifyScrum.csproj", "{7F24DA47-20BB-42C7-8A9D-966EED3E761F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{86BCBBFB-112A-4D4E-9129-184C7076E96A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F24DA47-20BB-42C7-8A9D-966EED3E761F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F24DA47-20BB-42C7-8A9D-966EED3E761F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F24DA47-20BB-42C7-8A9D-966EED3E761F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F24DA47-20BB-42C7-8A9D-966EED3E761F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86BCBBFB-112A-4D4E-9129-184C7076E96A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86BCBBFB-112A-4D4E-9129-184C7076E96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86BCBBFB-112A-4D4E-9129-184C7076E96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86BCBBFB-112A-4D4E-9129-184C7076E96A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
