@@ -12,8 +12,7 @@ public class Teammate : IdentityUser
     [Required]
     [StringLength(50, MinimumLength = 3)]
     public string Nickname { get; set; }
-    [Required]
-    public ScrumRole ScrumRole { get; set; }
+    public ScrumRole? ScrumRole { get; set; }
     [ForeignKey(nameof(Team))]
     public int TeamId { get; set; }
     
