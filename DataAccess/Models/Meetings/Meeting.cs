@@ -27,4 +27,6 @@ public class Meeting
     public Teammate MeetingLeader { get; set; }
     public ICollection<TeammateMeetings> TeammateMeetings { get; set; }
     public ICollection<MeetingAttachments> MeetingAttachments { get; set; }
+    
+    
 }

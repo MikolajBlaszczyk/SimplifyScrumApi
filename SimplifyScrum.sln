@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserModule.Tests", "UserMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulingModule", "SchedulingModule\SchedulingModule.csproj", "{920CBF16-CC62-45BC-8CC9-459C79C67BE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulingModule.Tests", "SchedulingModule.Tests\SchedulingModule.Tests.csproj", "{9A82E013-F475-4DCD-BD2C-650431C1510C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{920CBF16-CC62-45BC-8CC9-459C79C67BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{920CBF16-CC62-45BC-8CC9-459C79C67BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{920CBF16-CC62-45BC-8CC9-459C79C67BE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
