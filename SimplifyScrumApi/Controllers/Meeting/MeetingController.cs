@@ -16,12 +16,6 @@ public class MeetingController : ControllerBase
         return Ok();
     }
 
-    [HttpGet]
-    [Route("{year}/{month}")]
-    public IActionResult GetMeetings([FromQuery] string year, [FromQuery] string month)
-    {
-        return Ok();
-    }
         
     
 }
