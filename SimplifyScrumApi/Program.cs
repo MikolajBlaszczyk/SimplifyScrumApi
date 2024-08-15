@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var simplifyDatabaseCS = builder.Configuration.GetConnectionString("SimplifyDatabase");
+var simplifyDatabaseCs = builder.Configuration.GetConnectionString("SimplifyDatabase");
 builder.Services.AddDbContext<SimplifyAppDbContext>(options =>
 {
-    options.UseSqlServer(simplifyDatabaseCS);
+    options.UseSqlServer(simplifyDatabaseCs);
 });
 builder.Services.AddDefaultIdentity<Teammate>(options =>
 {

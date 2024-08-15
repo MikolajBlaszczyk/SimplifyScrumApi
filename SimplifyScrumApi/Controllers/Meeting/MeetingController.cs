@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using SchedulingModule.Records;
 
 namespace SimplifyScrum.Controllers.Meeting;
 
@@ -16,6 +16,25 @@ public class MeetingController : ControllerBase
         return Ok();
     }
 
-        
+    [HttpPost]
+    [Route("add")]
+    public IActionResult AddMeeting([FromBody] MeetingRecord record)
+    {
+        return Ok();
+    }
+
+    [HttpPut]
+    [Route("update")]
+    public IActionResult UpdateMeeting([FromBody] MeetingRecord record)
+    {
+        return Ok();
+    }
+
+    [HttpDelete]
+    [Route("delete")]
+    public IActionResult DeleteMeeting([FromBody] MeetingRecord record)
+    {
+        return Ok();
+    }
     
 }
