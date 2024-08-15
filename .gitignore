@@ -8,3 +8,4 @@ riderModule.iml
 .idea/
 SimplifyScrum/.DS_Store
 SimplifyScrum/appsettings.Development.json
+compose.yml
