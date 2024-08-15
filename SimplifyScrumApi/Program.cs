@@ -3,6 +3,12 @@ using DataAccess.Model;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SimplifyScrum.ApiUtils;
+using UserModule;
+using UserModule.Abstraction;
+using UserModule.Security;
+using UserModule.Security.Models.Converters;
+using UserModule.Security.Validation;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +48,30 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 
+#if  DEBUG
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
+
+#endif
+
+builder.Services.AddScoped<IManageSecurity, UserSecurityManager>();
+builder.Services.AddScoped<LoginProcessor, LoginProcessor>();
+builder.Services.AddScoped<UserValidator, UserValidator>();
+builder.Services.AddScoped<AspIdentityDirector, AspIdentityDirector>();
+builder.Services.AddScoped<LogoutProcessor, LogoutProcessor>();
+builder.Services.AddScoped<UserAccountProcessor, UserAccountProcessor>();
+builder.Services.AddScoped<UserModelConverter, UserModelConverter>();
+builder.Services.AddScoped<ModuleResultInterpreter, ModuleResultInterpreter>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,6 +84,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors();
 }
 
 app.UseHttpsRedirection();

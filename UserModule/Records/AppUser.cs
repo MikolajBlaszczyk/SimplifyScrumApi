@@ -5,13 +5,7 @@ namespace UserModule.Records;
 
 public record AppUser(
     string Username,
-    SecureString Password,
+    string Password,
     string Email,
     string Nickname = "",
-    ScrumRole? Role = null) : IDisposable
-{
-    public void Dispose()
-    {
-        Password.Dispose();
-    }
-}
+    ScrumRole? Role = null);

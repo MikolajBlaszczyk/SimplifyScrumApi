@@ -14,7 +14,7 @@ public class Teammate : IdentityUser
     public string Nickname { get; set; }
     public ScrumRole? ScrumRole { get; set; }
     [ForeignKey(nameof(Team))]
-    public int TeamId { get; set; }
+    public int? TeamId { get; set; }
     
     public Team Team { get; set; }
     public ICollection<TeammateMeetings> TeammateMeetings { get; set; }

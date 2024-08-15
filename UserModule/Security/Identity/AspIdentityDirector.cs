@@ -21,7 +21,6 @@ public class AspIdentityDirector
     public async Task Login(AppUser user)
     {
         var result = await signInManager.PasswordSignInAsync(user.Username, user.Password.ToString(), true, false);
-        user.Dispose();
     }
 
     public async Task Login(Teammate teammate)

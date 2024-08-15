@@ -69,7 +69,7 @@ public class UserValidator
       return ValidationResultFactory.CreateSuccessResult();
    }
 
-   private bool PasswordIsNotEmpty(SecureString password, out string errorMessage)
+   private bool PasswordIsNotEmpty(string password, out string errorMessage)
    {
       if (password.Length == 0)
       {
