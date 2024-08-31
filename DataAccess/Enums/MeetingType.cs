@@ -2,9 +2,9 @@ namespace DataAccess.Enums;
 
 public enum MeetingType
 {
-    Daily,
-    Refinement,
-    Retrospective,
-    Planning,
-    Custom
+    Daily = 1,
+    Refinement = 2,
+    Retrospective = 3,
+    Planning = 4,
+    Custom = 5
 }
