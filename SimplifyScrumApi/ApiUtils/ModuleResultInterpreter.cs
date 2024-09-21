@@ -8,15 +8,23 @@ namespace SimplifyScrum.ApiUtils;
 
 public class ModuleResultInterpreter 
 {
-    public ObjectResult InterpretSecurityResult(SecurityResult securityResult)
+    public ObjectResult InterpretSecurityResult(SecurityResult result)
     {
-        
-        return securityResult switch
+        return result switch
         {
-            {IsSuccess: true } => new OkObjectResult("Success"),
-            {IsFailure: true, Exception: InternalIdentityException }  =>  new BadRequestObjectResult(securityResult.Exception.Message),
-            {IsFailure: true, Exception: InternalValidationException } => new BadRequestObjectResult(securityResult.Exception.Message), 
-            _ => new ObjectResult(securityResult.Exception!.Message) {StatusCode = 500}
+            {IsSuccess: true } => new OkObjectResult(result.UserGUID),
+            {IsFailure: true, Exception: InternalIdentityException }  =>  new BadRequestObjectResult(result.Exception.Message),
+            {IsFailure: true, Exception: InternalValidationException } => new BadRequestObjectResult(result.Exception.Message), 
+            _ => new ObjectResult(result.Exception!.Message) {StatusCode = 500}
+        };
+    }
+
+    public ObjectResult InterpretInformationResult(InformationResult result)
+    {
+        return result switch
+        {
+            { IsSuccess: true } => new OkObjectResult(result.User),
+            _ => new ObjectResult(result.Exception!.Message) { StatusCode = 500 }
         };
     }
 }

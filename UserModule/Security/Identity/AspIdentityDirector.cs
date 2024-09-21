@@ -18,14 +18,13 @@ public class AspIdentityDirector
         this.userManager = userManager;
     }
 
-    public async Task Login(AppUser user)
+    public async Task<string> Login(AppUser user)
     {
         var result = await signInManager.PasswordSignInAsync(user.Username, user.Password.ToString(), true, false);
-    }
 
-    public async Task Login(Teammate teammate)
-    {
-       
+        var loggedUserName = signInManager.Context.User.Identity!.Name;
+        var loggedUser = await userManager.FindByNameAsync(loggedUserName!);
+        return loggedUser!.Id;
     }
 
     public async Task Logout()
@@ -33,7 +32,7 @@ public class AspIdentityDirector
         await signInManager.SignOutAsync();
     }
 
-    public async Task CreateUser(Teammate teammate)
+    public async Task<string> CreateUser(Teammate teammate)
     {
         var result = await userManager.CreateAsync(teammate);
         if (result.Succeeded)
@@ -41,6 +40,9 @@ public class AspIdentityDirector
         else
             throw new InternalIdentityException(result.Errors);
 
+        var loggedUserName = signInManager.Context.User.Identity!.Name!;
+        var loggedUser = await userManager.FindByNameAsync(loggedUserName);
+        return loggedUser!.Id;
     }
 
     public async Task DeleteUser(Teammate teammate)

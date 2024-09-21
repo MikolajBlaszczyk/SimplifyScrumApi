@@ -15,4 +15,15 @@ public class UserModelConverter
             ScrumRole = user.Role
         };
     }
+
+    public AppUser ConvertToAppUser(Teammate teammate)
+    {
+        return new AppUser(
+            teammate.UserName,
+            "",
+            teammate.Email,
+            teammate.Nickname,
+            teammate.ScrumRole
+            );
+    }
 }

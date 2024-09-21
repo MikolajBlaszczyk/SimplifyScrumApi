@@ -30,6 +30,8 @@ public class UserAccountProcessor
 
     public async Task<SecurityResult> SignInUser(AppUser user)
     {
+        string signedInUserGuid;
+        
         try
         {
             var validation = validator.ValidateBeforeSignIn(user);
@@ -38,14 +40,14 @@ public class UserAccountProcessor
 
             var teammate = converter.ConvertToTeammate(user);
 
-            await identityDirector.CreateUser(teammate);
+            signedInUserGuid = await identityDirector.CreateUser(teammate);
         }
         catch (Exception e)
         {
             return SecurityResultsFactory.CreateFailureResult(e);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult();
+        return SecurityResultsFactory.CreateSuccessResult(signedInUserGuid);
     }
 
     public async Task<SecurityResult> DeleteCurrentUser()

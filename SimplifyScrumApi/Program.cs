@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SimplifyScrum.ApiUtils;
 using UserModule;
 using UserModule.Abstraction;
+using UserModule.Informations;
 using UserModule.Security;
 using UserModule.Security.Models.Converters;
 using UserModule.Security.Validation;
@@ -71,7 +72,7 @@ builder.Services.AddScoped<LogoutProcessor, LogoutProcessor>();
 builder.Services.AddScoped<UserAccountProcessor, UserAccountProcessor>();
 builder.Services.AddScoped<UserModelConverter, UserModelConverter>();
 builder.Services.AddScoped<ModuleResultInterpreter, ModuleResultInterpreter>();
-
+builder.Services.AddScoped<IManageInformation, InformationManager>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

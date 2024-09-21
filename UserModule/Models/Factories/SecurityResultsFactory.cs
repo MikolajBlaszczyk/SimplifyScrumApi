@@ -6,6 +6,11 @@ public static class SecurityResultsFactory
     {
         return new SecurityResult();
     }
+    
+    public static SecurityResult CreateSuccessResult(string userGuid)
+    {
+        return new SecurityResult(userGuid);
+    }
 
     public static SecurityResult CreateFailureResult(Exception ex)
     {

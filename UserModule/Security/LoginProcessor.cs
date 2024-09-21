@@ -21,19 +21,21 @@ public class LoginProcessor
    
     public async Task<SecurityResult> LoginUser(AppUser user)
     {
+        string loggedUserGuid;
+        
         try
         {
             var validation = validator.ValidateBeforeLogin(user);
             if (validation.IsFailure)
                 throw new InternalValidationException(validation.Message);
             
-            await identityDirector.Login(user);
+            loggedUserGuid = await identityDirector.Login(user);
         }
         catch (Exception ex)
         {
             return SecurityResultsFactory.CreateFailureResult(ex);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult();
+        return SecurityResultsFactory.CreateSuccessResult(loggedUserGuid);
     }
 }

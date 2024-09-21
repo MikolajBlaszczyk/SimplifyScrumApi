@@ -1,15 +1,16 @@
 namespace UserModule.Security.Models;
 
-public class SecurityResult
+public class BaseResult
 {
-    public SecurityResult()
+
+    public BaseResult()
     {
         IsSuccess = true;
         IsFailure = false;
         Exception = null;
     }
 
-    public SecurityResult(Exception ex)
+    public BaseResult(Exception ex)
     {
         IsSuccess = false;
         IsFailure = true;
