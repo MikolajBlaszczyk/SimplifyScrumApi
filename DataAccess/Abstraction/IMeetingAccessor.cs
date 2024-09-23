@@ -4,7 +4,7 @@ namespace DataAccess.Abstraction;
 
 public interface IMeetingAccessor
 {
-    List<Meeting> GetByMonthAndYearForUserName(int month, int year, string user);
+    List<Meeting> GetByMonthAndYearForUserGuid(int month, int year, string userGuid);
     Meeting? GetMeetingById(string identifier);
     Meeting? UpsertMeeting(Meeting meeting);
     Meeting? DeleteMeeting(Meeting meeting);

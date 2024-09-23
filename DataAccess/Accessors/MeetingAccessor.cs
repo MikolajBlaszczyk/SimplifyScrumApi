@@ -7,9 +7,11 @@ namespace DataAccess.Accessors;
 
 public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
 {
-    public List<Meeting> GetByMonthAndYearForUserName(int month, int year, string userName)
+    public List<Meeting> GetByMonthAndYearForUserGuid(int month, int year, string userGuid)
     {
-        var user = dbContext.Users.FirstOrDefault(u => u.Nickname == userName);
+        var user = dbContext
+            .Users
+            .FirstOrDefault(u => u.Id == userGuid);
 
         if (user == null)
             throw new AccessorException();

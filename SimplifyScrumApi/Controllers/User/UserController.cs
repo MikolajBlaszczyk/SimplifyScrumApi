@@ -14,7 +14,7 @@ public class UserController(IManageUserInformation infoManager) : ControllerBase
     [Route("info")]
     public async Task<IActionResult> GetUsersInfo()
     {
-        var guid = HttpContext.User.Claims.First(claim => claim.Type == SimpleClaims.UserGuidClaim).Value;
+        var guid = HttpContext.User.GetUserGuid();
         var result  = await infoManager.GetInfoByUserGuid(guid);
 
         if (result.IsSuccess)

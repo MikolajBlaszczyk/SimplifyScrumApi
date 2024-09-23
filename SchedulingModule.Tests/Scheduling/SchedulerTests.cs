@@ -136,7 +136,7 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnSuccessResult(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserGuid(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
@@ -153,7 +153,7 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperMonth(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserGuid(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
@@ -169,7 +169,7 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperNumberOfDaysWithMeetings(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, "")).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserGuid(month, year, "")).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
@@ -210,7 +210,7 @@ public class SchedulerTests
         int expectedNumberOfDays)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(new List<Meeting>());
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserGuid(month, year, It.IsAny<string>())).Returns(new List<Meeting>());
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
