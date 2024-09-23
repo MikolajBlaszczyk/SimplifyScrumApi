@@ -1,3 +1,4 @@
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 
 namespace DataAccess.Abstraction;
@@ -8,4 +9,5 @@ public interface IMeetingAccessor
     Meeting? GetMeetingById(string identifier);
     Meeting? UpsertMeeting(Meeting meeting);
     Meeting? DeleteMeeting(Meeting meeting);
+    TeammateMeetings? AddLinkBetweenMeetingAndTeammate(TeammateMeetings link);
 }

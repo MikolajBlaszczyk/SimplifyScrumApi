@@ -2,7 +2,9 @@ using DataAccess.Abstraction;
 using DataAccess.Accessors;
 using DataAccess.Enums;
 using DataAccess.Model.Meetings;
+using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 using SchedulingModule.Enums;
 using SchedulingModule.Models;
@@ -31,18 +33,18 @@ public class SchedulerTests
         };
         
         var januaryDayOne = DateTime.Parse("01.01.2024");
-        var januaryDayOneMeetings = new List<MeetingRecord>
+        var januaryDayOneMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", januaryDayOne)
         };
         var januaryDayFive = DateTime.Parse("05.01.2024");
-        var januaryDayFiveMeetings = new List<MeetingRecord>
+        var januaryDayFiveMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", januaryDayFive),
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test2", januaryDayFive)
         };
         var januaryDayTen = DateTime.Parse("10.01.2024");
-        var januaryDayTenMeetings = new List<MeetingRecord>
+        var januaryDayTenMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", januaryDayTen),
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test2", januaryDayTen),
@@ -50,14 +52,14 @@ public class SchedulerTests
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test4", januaryDayTen),
         };
             
-        var januaryDays = new List<DayRecord>
+        var januaryDays = new List<SimpleDayModel>
         {
             DayFactory.CreateDayRecord(januaryDayOne, januaryDayOneMeetings),
             DayFactory.CreateDayRecord(januaryDayFive, januaryDayFiveMeetings),
             DayFactory.CreateDayRecord(januaryDayTen, januaryDayTenMeetings)
         };
-        var januaryScheduleRecord = new ScheduleRecord(Month.January, januaryDays);
-        var januaryScheduleResult = ScheduleResultFactory.CreateSuccessResultWithSchedule(januaryScheduleRecord);
+        var januaryScheduleRecord = new SimpleScheduleModel(Month.January, januaryDays);
+        var januaryScheduleResult = ScheduleResultFactory.Success(januaryScheduleRecord);
         
         return new ScheduleTestResult(januaryMeetings, januaryScheduleResult);
     }
@@ -79,24 +81,24 @@ public class SchedulerTests
         };
         
         var decemberDayThree = DateTime.Parse("03.12.2024");
-        var decemberDayThreeMeetings = new List<MeetingRecord>
+        var decemberDayThreeMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", decemberDayThree),
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test2", decemberDayThree)
         };
         var decemberDayFive = DateTime.Parse("05.12.2024");
-        var decemberDayFiveMeetings = new List<MeetingRecord>
+        var decemberDayFiveMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", decemberDayFive),
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test2", decemberDayFive)
         };
         var decemberDayTen = DateTime.Parse("10.12.2024");
-        var decemberDayTenMeetings = new List<MeetingRecord>
+        var decemberDayTenMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", decemberDayTen)
         };
         var decemberDayFifteen = DateTime.Parse("15.12.2024");
-        var decemberDayFifteenMeetings = new List<MeetingRecord>
+        var decemberDayFifteenMeetings = new List<SimpleMeetingModel>
         {
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test1", decemberDayFifteen),
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test2", decemberDayFifteen),
@@ -105,7 +107,7 @@ public class SchedulerTests
             MeetingsFactory.CreateMeetingRecordWithNameAndStart("Test5", decemberDayFifteen),
         };
             
-        var decemberDays = new List<DayRecord>
+        var decemberDays = new List<SimpleDayModel>
         {
             DayFactory.CreateDayRecord(decemberDayThree, decemberDayThreeMeetings),
             DayFactory.CreateDayRecord(decemberDayFive, decemberDayFiveMeetings),
@@ -113,8 +115,8 @@ public class SchedulerTests
             DayFactory.CreateDayRecord(decemberDayFifteen, decemberDayFifteenMeetings)
         };
         
-        var decemberScheduleRecord = new ScheduleRecord(Month.December, decemberDays);
-        var decemberScheduleResult = ScheduleResultFactory.CreateSuccessResultWithSchedule(decemberScheduleRecord);
+        var decemberScheduleRecord = new SimpleScheduleModel(Month.December, decemberDays);
+        var decemberScheduleResult = ScheduleResultFactory.Success(decemberScheduleRecord);
         
         return new ScheduleTestResult(decemberMeetings, decemberScheduleResult);
     }
@@ -221,43 +223,43 @@ public class SchedulerTests
         Assert.That(actual.ScheduleRecord.days.Count, Is.EqualTo(expectedNumberOfDays));
     }
 
-    public static IEnumerable<TestCaseData> SchedulerInsertTestData
+    public static IEnumerable<TestCaseData> MeetingManagerInsertTestData
     {
         get
         {
             var firstGuid = Guid.NewGuid().ToString();
             yield return new TestCaseData(
-                    new MeetingRecord(firstGuid, "TestMeeting", "", "",DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom, new()),
+                    new SimpleMeetingModel(firstGuid, "TestMeeting", "", "",DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom, new()),
                     MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting", "", "", DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom)
                 );
         }
     }
 
     [Test]
-    [TestCaseSource(nameof(SchedulerInsertTestData))]
-    public async Task SchedulerInsertMeeting_ShouldSuccessfullyAddNewMeeting(MeetingRecord record, Meeting meeting)
+    [TestCaseSource(nameof(MeetingManagerInsertTestData))]
+    public async Task MeetingManagerInsertMeeting_ShouldSuccessfullyAddNewMeeting(SimpleMeetingModel model, Meeting meeting)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
         accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns((Meeting?)null);
         accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).Returns(meeting);
-        var converter = new ModelConverter();
-        var grouper = new MeetingGrouper(converter);
-        var arranger = new CalendarArranger();
-        Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
-
-        var actual = await scheduler.UpsertMeeting(record);
+        var userStoreMock = new Mock<IUserStore<Teammate>>();
+        userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
+        var linker = new TeammateLinker(accessorMock.Object, userStoreMock.Object);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
+        
+        var actual = await manager.UpsertMeeting(model);
         
         Assert.IsTrue(actual.IsSuccess);
     }
 
-    public static IEnumerable<TestCaseData> SchedulerUpdateTestData
+    public static IEnumerable<TestCaseData> MeetingManagerUpdateTestData
     {
         get
         {
             var firstGuid = Guid.NewGuid().ToString();
             var now =DateTime.Now;
             yield return new TestCaseData(
-                new MeetingRecord(firstGuid, "TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily, new()),
+                new SimpleMeetingModel(firstGuid, "TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily, new()),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting1", "123", "b", DateTime.MinValue, TimeSpan.Zero, MeetingType.Custom),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily)
                 );
@@ -265,48 +267,49 @@ public class SchedulerTests
     }
     
     [Test]
-    [TestCaseSource(nameof(SchedulerUpdateTestData))]
-    public async Task SchedulerUpdateMeeting_ShouldSuccessfullyUpdateMeeting(MeetingRecord record, Meeting meeting, Meeting updatedMeeting)
+    [TestCaseSource(nameof(MeetingManagerUpdateTestData))]
+    public async Task MeetingManagerUpdateMeeting_ShouldSuccessfullyUpdateMeeting(SimpleMeetingModel model, Meeting meeting, Meeting updatedMeeting)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
         accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns(meeting);
         accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).Returns(updatedMeeting);
-        var grouper = new MeetingGrouper(new ModelConverter());
-        var arranger = new CalendarArranger();
-        Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
+        var userStoreMock = new Mock<IUserStore<Teammate>>();
+        userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
+        var linker = new TeammateLinker(accessorMock.Object, userStoreMock.Object);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
 
-        var actual = await scheduler.UpsertMeeting(record);
+        var actual = await manager.UpsertMeeting(model);
         
         Assert.IsTrue(actual.IsSuccess);
     }
 
 
-    public static IEnumerable<TestCaseData> SchedulerDeleteTestData
+    public static IEnumerable<TestCaseData> MeetingManagerDeleteTestData
     {
         get
         {
             var firstGuid = Guid.NewGuid().ToString();
             var now = DateTime.Now;
             yield return new TestCaseData(
-                new MeetingRecord(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new()),
+                new SimpleMeetingModel(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new()),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning)
                 );
         }
     }
 
     [Test]
-    [TestCaseSource(nameof(SchedulerDeleteTestData))]
-    public async Task SchedulerDeleteMeeting_ShouldSuccessfullyDeleteMeeting(MeetingRecord record, Meeting expected)
+    [TestCaseSource(nameof(MeetingManagerDeleteTestData))]
+    public async Task MeetingManagerDeleteMeeting_ShouldSuccessfullyDeleteMeeting(SimpleMeetingModel model, Meeting expected)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
         accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns(expected);
         accessorMock.Setup(a => a.DeleteMeeting(It.IsAny<Meeting>())).Returns(expected);
-        var converter = new ModelConverter();
-        var grouper = new MeetingGrouper(converter);
-        var arranger = new CalendarArranger();
-        Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
+        var userStoreMock = new Mock<IUserStore<Teammate>>();
+        userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
+        var linker = new TeammateLinker(accessorMock.Object, userStoreMock.Object);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
 
-        var actual = await scheduler.DeleteMeeting(record);
+        var actual = await manager.DeleteMeeting(model);
         
         Assert.IsTrue(actual.IsSuccess);
     }

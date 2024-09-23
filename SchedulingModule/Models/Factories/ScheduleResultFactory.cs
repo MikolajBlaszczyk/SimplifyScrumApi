@@ -4,7 +4,7 @@ namespace SchedulingModule.Models.Factories;
 
 public abstract class ScheduleResultFactory
 {
-    public static ScheduleResult CreateSuccessResult()
+    public static ScheduleResult Success()
     {
         return new ScheduleResult
         {
@@ -16,18 +16,18 @@ public abstract class ScheduleResultFactory
     }
 
     
-    public static ScheduleResult CreateSuccessResultWithSchedule(ScheduleRecord scheduleRecord)
+    public static ScheduleResult Success(SimpleScheduleModel simpleScheduleModel)
     {
         return new ScheduleResult
         {
             IsSuccess = true,
-            ScheduleRecord = scheduleRecord,
+            ScheduleRecord = simpleScheduleModel,
             IsFailure = false,
             Exception = null
         };
     }
 
-    public static ScheduleResult CreateFailResult(Exception ex)
+    public static ScheduleResult Failure(Exception ex)
     {
         return new ScheduleResult()
         {

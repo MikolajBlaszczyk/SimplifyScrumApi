@@ -1,5 +1,8 @@
 using DataAccess.Abstraction;
+using DataAccess.Model.ConnectionTables;
+using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using Microsoft.AspNetCore.Identity;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Enums;
 using SchedulingModule.Models;
@@ -10,63 +13,22 @@ using SchedulingModule.Utils.Extensions;
 
 namespace SchedulingModule;
 
-public class Scheduler(IMeetingAccessor accessor, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
+public class Scheduler(IMeetingAccessor meetingAccessor, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
 {
     
     public async Task<ScheduleResult> GetScheduleByMonthForCurrentUser(DateTime date, string userGuid)
     {
-        var meetings = accessor.GetByMonthAndYearForUserGuid(date.Month, date.Year, userGuid);
+        var meetings = meetingAccessor.GetByMonthAndYearForUserGuid(date.Month, date.Year, userGuid);
         var groupedMeetings = grouper.GroupMeetingsByDayOfMonth(meetings);
         
         var month = (Month)date.Month;
         var days = arranger.PrepareDaysWithMeetings(date, groupedMeetings);
-        var schedule = new ScheduleRecord(month, days);
+        var schedule = new SimpleScheduleModel(month, days);
 
-        var result = ScheduleResultFactory.CreateSuccessResultWithSchedule(schedule);
+        var result = ScheduleResultFactory.Success(schedule);
         return result;
     }
 
-    public async Task<ScheduleResult> UpsertMeeting(MeetingRecord meetingToUpsert)
-    {
-        var meeting = accessor.GetMeetingById(meetingToUpsert.Identifier);
-        
-        if(meeting is not null)
-        {
-            meeting.Update(meetingToUpsert);
-        }
-        else
-        {
-            meeting = MeetingFactory.CreateMeetingWithGuid(
-                meetingToUpsert.Identifier,
-                meetingToUpsert.Name,
-                meetingToUpsert.Description,
-                meetingToUpsert.LeaderIdentifier,
-                meetingToUpsert.Start,
-                meetingToUpsert.Duration,
-                meetingToUpsert.Type );
-        }
-
-        var result = accessor.UpsertMeeting(meeting);
-
-        if (result is null)
-            return ScheduleResultFactory.CreateFailResult(new Exception("Could not upsert the meeting"));
-
-        return ScheduleResultFactory.CreateSuccessResult();
-    }
-
-    public async Task<ScheduleResult> DeleteMeeting(MeetingRecord meetingToDelete)
-    {
-        var meeting = accessor.GetMeetingById(meetingToDelete.Identifier);
-
-        if (meeting is null)
-            return ScheduleResultFactory.CreateFailResult(new Exception("Meeting does not exists"));
-        
-        var deletedMeeting = accessor.DeleteMeeting(meeting);
-        
-        if (deletedMeeting is null)
-            return ScheduleResultFactory.CreateFailResult(new Exception("Meeting does not exists"));
-
-        return ScheduleResultFactory.CreateSuccessResult();
-    }
+   
         
 }

@@ -4,7 +4,7 @@ namespace SchedulingModule.Utils;
 
 public class MeetingValidator
 {
-    public bool Validate(MeetingRecord record)
+    public bool Validate(SimpleMeetingModel model)
     {
         return true;
     }

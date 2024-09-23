@@ -6,26 +6,26 @@ namespace SchedulingModule;
 public class CalendarArranger
 {
     
-    private static readonly ImmutableList<MeetingRecord> EmptyList = ImmutableList<MeetingRecord>.Empty;
+    private static readonly ImmutableList<SimpleMeetingModel> EmptyList = ImmutableList<SimpleMeetingModel>.Empty;
     
-    public List<DayRecord> PrepareDaysWithMeetings(DateTime date, IList<IGrouping<int, MeetingRecord>> groupedMeetings)
+    public List<SimpleDayModel> PrepareDaysWithMeetings(DateTime date, IList<IGrouping<int, SimpleMeetingModel>> groupedMeetings)
     {
-        List<DayRecord> days = new();
+        List<SimpleDayModel> days = new();
         var numberOfDays = DateTime.DaysInMonth(date.Year, date.Month);
         
         for (int day = 1; day <= numberOfDays; day++)
         {
             var currenDayMeetings = GetCurrenDayMeetings(groupedMeetings, day);
             var dayFullDate = new DateTime(date.Year, date.Month, day);
-            DayRecord currentDay = new(dayFullDate, currenDayMeetings);
+            SimpleDayModel currentSimpleDay = new(dayFullDate, currenDayMeetings);
             
-            days.Add(currentDay);
+            days.Add(currentSimpleDay);
         }
 
         return days;
     }
     
-    private List<MeetingRecord> GetCurrenDayMeetings(IList<IGrouping<int, MeetingRecord>> groupedMeetings, int i)
+    private List<SimpleMeetingModel> GetCurrenDayMeetings(IList<IGrouping<int, SimpleMeetingModel>> groupedMeetings, int i)
     {
         return groupedMeetings.FirstOrDefault(mr => mr.Key == i)?.ToList() ?? EmptyList.ToList();
     }

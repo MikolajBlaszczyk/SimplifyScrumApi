@@ -37,6 +37,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<MeetingGrouper, MeetingGrouper>();
         services.AddScoped<CalendarArranger, CalendarArranger>();
         services.AddScoped<ModelConverter, ModelConverter>();
+        services.AddScoped<IManageMeetings, MeetingManager>();
+        services.AddScoped<TeammateLinker, TeammateLinker>();
 
         #endregion
 

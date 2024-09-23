@@ -20,7 +20,7 @@ public class ModelConverterTests
             yield return new TestCaseData(
                 MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test", "Some description", "", firstDateTime,
                     TimeSpan.FromHours(1), MeetingType.Custom),
-                new MeetingRecord(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
+                new SimpleMeetingModel(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
                     MeetingType.Custom, null)
             );
 
@@ -29,7 +29,7 @@ public class ModelConverterTests
             yield return new TestCaseData(
                 MeetingFactory.CreateMeetingWithGuid(secondGuid, "Test1", "Some description", "", secondDateTime ,
                     TimeSpan.FromHours(4), MeetingType.Daily),
-                new MeetingRecord(secondGuid, "Test1", "Some description", "", secondDateTime,
+                new SimpleMeetingModel(secondGuid, "Test1", "Some description", "", secondDateTime,
                     TimeSpan.FromHours(4),
                     MeetingType.Daily, null)
             );
@@ -38,7 +38,7 @@ public class ModelConverterTests
 
     [Test]
     [TestCaseSource(nameof(ModelConverterTestData))]
-    public void ModelConverterConvertIntoRecord_ShouldConvertIntoNotNullRecord(Meeting meetingToConvert, MeetingRecord expected)
+    public void ModelConverterConvertIntoRecord_ShouldConvertIntoNotNullRecord(Meeting meetingToConvert, SimpleMeetingModel expected)
     {
         var converter = new ModelConverter();
 
@@ -49,7 +49,7 @@ public class ModelConverterTests
     
     [Test]
     [TestCaseSource(nameof(ModelConverterTestData))]
-    public void ModelConverterConvertIntoRecord_ShouldProduceRecordThatIsTheSameAsDbModel(Meeting meetingToConvert, MeetingRecord expected)
+    public void ModelConverterConvertIntoRecord_ShouldProduceRecordThatIsTheSameAsDbModel(Meeting meetingToConvert, SimpleMeetingModel expected)
     {
         var converter = new ModelConverter();
 

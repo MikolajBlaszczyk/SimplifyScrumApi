@@ -4,8 +4,8 @@ namespace SchedulingModule.Tests.Utils;
 
 public abstract class DayFactory
 {
-    public static DayRecord CreateDayRecord(DateTime date, List<MeetingRecord> meetings)
+    public static SimpleDayModel CreateDayRecord(DateTime date, List<SimpleMeetingModel> meetings)
     {
-        return new DayRecord(date, meetings);
+        return new SimpleDayModel(date, meetings);
     }
 }

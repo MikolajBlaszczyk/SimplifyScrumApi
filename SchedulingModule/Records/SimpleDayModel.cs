@@ -3,4 +3,4 @@ using SchedulingModule.Enums;
 
 namespace SchedulingModule.Records;
 
-public record DayRecord(DateTime date, List<MeetingRecord> meetings);
+public record SimpleDayModel(DateTime date, List<SimpleMeetingModel> meetings);

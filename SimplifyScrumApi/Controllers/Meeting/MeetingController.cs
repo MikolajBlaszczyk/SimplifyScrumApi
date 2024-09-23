@@ -28,21 +28,21 @@ public class MeetingController(Scheduler scheduler) : ControllerBase
 
     [HttpPost]
     [Route("add")]
-    public IActionResult AddMeeting([FromBody] MeetingRecord record)
+    public IActionResult AddMeeting([FromBody] SimpleMeetingModel model)
     {
         return Ok();
     }
 
     [HttpPut]
     [Route("update")]
-    public IActionResult UpdateMeeting([FromBody] MeetingRecord record)
+    public IActionResult UpdateMeeting([FromBody] SimpleMeetingModel model)
     {
         return Ok();
     }
 
     [HttpDelete]
     [Route("delete")]
-    public IActionResult DeleteMeeting([FromBody] MeetingRecord record)
+    public IActionResult DeleteMeeting([FromBody] SimpleMeetingModel model)
     {
         return Ok();
     }

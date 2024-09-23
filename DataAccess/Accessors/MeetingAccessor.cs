@@ -1,5 +1,6 @@
 using DataAccess.Abstraction;
 using DataAccess.Context;
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Utils;
 
@@ -54,6 +55,19 @@ public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
         {
             dbContext.Remove(meeting);
             return meeting;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public TeammateMeetings AddLinkBetweenMeetingAndTeammate(TeammateMeetings link)
+    {
+        try
+        {
+            dbContext.TeammateMeetings.Add(link);
+            return link;
         }
         catch
         {
