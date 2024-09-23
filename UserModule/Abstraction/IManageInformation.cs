@@ -6,4 +6,6 @@ namespace UserModule.Abstraction;
 public interface IManageInformation
 {
     Task<InformationResult> GetInfoByName(string name);
+
+    Task<InformationResult> GetAllUsers();
 }

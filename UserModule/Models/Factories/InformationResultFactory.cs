@@ -6,6 +6,11 @@ namespace UserModule.Models.Factories;
 
 public class InformationResultFactory
 {
+    public static InformationResult Success(List<AppUser> users)
+    {
+        return new InformationResult(users);
+    }
+    
     public static InformationResult Success(AppUser user)
     {
         return new InformationResult(user);

@@ -25,4 +25,17 @@ public class InformationManager(UserManager<Teammate> userManager, UserModelConv
             return InformationResultFactory.Failure(ex);
         }
     }
+
+    public async Task<InformationResult> GetAllUsers()
+    {
+        try
+        {
+           var allUsers =  userManager.Users.AsEnumerable().Select(converter.ConvertToAppUser).ToList();
+           return InformationResultFactory.Success(allUsers);
+        }
+        catch (Exception e)
+        {
+            return InformationResultFactory.Failure(e);
+        }
+    }
 }

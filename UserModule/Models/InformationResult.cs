@@ -9,10 +9,16 @@ public class InformationResult : BaseResult
         User = user;
     }
 
+    public InformationResult(List<AppUser> users)
+    {
+        
+    } 
+    
     public InformationResult(Exception ex): base(ex)
     {
         User = null;
     }
     
     public AppUser? User { get; set; }
+    public List<AppUser> Users { get; set; }
 }

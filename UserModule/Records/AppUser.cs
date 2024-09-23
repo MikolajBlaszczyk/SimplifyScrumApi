@@ -8,4 +8,5 @@ public record AppUser(
     string Password,
     string Email,
     string Nickname = "",
-    ScrumRole? Role = null);
+    ScrumRole? Role = null,
+    string Id = "");

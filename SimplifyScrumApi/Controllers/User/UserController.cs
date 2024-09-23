@@ -23,4 +23,18 @@ public class UserController(IManageInformation infoManager) : ControllerBase
         
         return StatusCode(500, result.Exception!.Message);
     }
+
+    [HttpGet]
+    [Route("users")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var result = await infoManager.GetAllUsers();
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.Users);
+        }
+
+        return StatusCode(500, result.Exception!.Message);
+    }
 }
