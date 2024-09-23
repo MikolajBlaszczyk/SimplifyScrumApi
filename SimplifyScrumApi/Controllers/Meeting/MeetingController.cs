@@ -16,7 +16,7 @@ public class MeetingController(Scheduler scheduler) : ControllerBase
     {
         var name = HttpContext.User.Identity.Name;
         var currentDate = DateTime.Now;
-        var result = await scheduler.GetScheduleByMonth(currentDate, name);
+        var result = await scheduler.GetScheduleByMonthForCurrentUser(currentDate, name);
 
         if (result.IsSuccess)
         {

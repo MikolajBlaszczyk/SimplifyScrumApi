@@ -36,10 +36,10 @@ public class LoginProcessor
         }
         catch (Exception ex)
         {
-            return SecurityResultsFactory.CreateFailureResult(ex);
+            return SecurityResultsFactory.Failure(ex);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult();
+        return SecurityResultsFactory.Success();
     }
 
 }

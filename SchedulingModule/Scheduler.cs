@@ -13,7 +13,7 @@ namespace SchedulingModule;
 public class Scheduler(IMeetingAccessor accessor, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
 {
     
-    public async Task<ScheduleResult> GetScheduleByMonth(DateTime date, string name)
+    public async Task<ScheduleResult> GetScheduleByMonthForCurrentUser(DateTime date, string name)
     {
         var meetings = accessor.GetByMonthAndYearForUserName(date.Month, date.Year, name);
         var groupedMeetings = grouper.GroupMeetingsByDayOfMonth(meetings);

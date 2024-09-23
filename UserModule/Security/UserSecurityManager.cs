@@ -44,4 +44,9 @@ public class UserSecurityManager : IManageSecurity
     {
         return tokenProvider.GetToken(claims);
     }
+
+    public async Task<string> GetLoggedUsersGuid()
+    {
+        return await userAccountProcessor.GetCurrentUserId();
+    }
 }

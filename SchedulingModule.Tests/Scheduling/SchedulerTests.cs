@@ -142,7 +142,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
+        var actual = await scheduler.GetScheduleByMonthForCurrentUser(DateTime.Parse($"01.{month}.{year}"), "");
         
         Assert.IsTrue(actual.IsSuccess);
     }
@@ -159,7 +159,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
+        var actual = await scheduler.GetScheduleByMonthForCurrentUser(DateTime.Parse($"01.{month}.{year}"), "");
         
         Assert.That(actual.ScheduleRecord.month,Is.EqualTo(result.Expected.ScheduleRecord.month));
     }
@@ -175,7 +175,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
+        var actual = await scheduler.GetScheduleByMonthForCurrentUser(DateTime.Parse($"01.{month}.{year}"), "");
 
         var actualDaysWithMeetings = actual.ScheduleRecord.days.Count(d => d.meetings.Count > 0);
         var expectedDaysWithMeetings = result.Expected.ScheduleRecord.days.Count;
@@ -216,7 +216,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
+        var actual = await scheduler.GetScheduleByMonthForCurrentUser(DateTime.Parse($"01.{month}.{year}"), "");
 
         Assert.That(actual.ScheduleRecord.days.Count, Is.EqualTo(expectedNumberOfDays));
     }

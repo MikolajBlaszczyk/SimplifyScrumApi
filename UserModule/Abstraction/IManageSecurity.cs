@@ -12,4 +12,5 @@ public interface IManageSecurity
     Task<SecurityResult> SignIn(SimpleUserModel userModel);
     Task<SecurityResult> Delete();
     JwtSecurityToken GetToken(List<Claim> claims);
+    Task<string> GetLoggedUsersGuid();
 }

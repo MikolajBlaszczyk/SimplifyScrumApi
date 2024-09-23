@@ -36,10 +36,10 @@ public class UserAccountProcessor
         }
         catch (Exception e)
         {
-            return SecurityResultsFactory.CreateFailureResult(e);
+            return SecurityResultsFactory.Failure(e);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult();
+        return SecurityResultsFactory.Success();
     }
 
     public async Task<SecurityResult> DeleteCurrentUser()
@@ -51,9 +51,12 @@ public class UserAccountProcessor
         }
         catch (Exception ex)
         {
-            return SecurityResultsFactory.CreateFailureResult(ex);
+            return SecurityResultsFactory.Failure(ex);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult();
+        return SecurityResultsFactory.Success();
     }
+
+    public async Task<string> GetCurrentUserId() => await identityDirector.GetLoggedUserGUID();
+   
 }

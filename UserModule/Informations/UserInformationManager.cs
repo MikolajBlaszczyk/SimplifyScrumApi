@@ -8,14 +8,13 @@ using UserModule.Security.Models.Converters;
 
 namespace UserModule.Informations;
 
-public class InformationManager(UserManager<Teammate> userManager, UserModelConverter converter): IManageInformation
+public class UserInformationManager(UserManager<Teammate> userManager, UserModelConverter converter): IManageUserInformation
 {
-    public async Task<InformationResult> GetInfoByName(string name)
+    public async Task<InformationResult> GetInfoByUserGuid(string guid)
     {
-        
         try
         {
-            var teammate = await userManager.FindByNameAsync(name);
+            var teammate = await userManager.FindByIdAsync(guid);
             var appUser = converter.ConvertToAppUser(teammate);
 
             return InformationResultFactory.Success(appUser);

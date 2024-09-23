@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<LogoutProcessor, LogoutProcessor>();
         services.AddScoped<UserAccountProcessor, UserAccountProcessor>();
         services.AddScoped<UserModelConverter, UserModelConverter>();
-        services.AddScoped<IManageInformation, InformationManager>();
+        services.AddScoped<IManageUserInformation, UserInformationManager>();
         services.AddScoped<TokenProvider, TokenProvider>();
 
         #endregion

@@ -2,14 +2,14 @@ namespace UserModule.Security.Models;
 
 public class SecurityResult : BaseResult
 {
-    public SecurityResult() : base()
+    public SecurityResult()
     {
         UserGUID = null;
     }
-    
-    public SecurityResult(string userGuid) : base()
+
+    public SecurityResult(string userGUID)
     {
-        UserGUID = userGuid;
+        UserGUID = userGUID;
     }
     
     public SecurityResult(Exception ex) : base(ex)
