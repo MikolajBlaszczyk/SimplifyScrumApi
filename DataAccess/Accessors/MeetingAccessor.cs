@@ -1,15 +1,25 @@
 using DataAccess.Abstraction;
 using DataAccess.Context;
 using DataAccess.Model.Meetings;
+using DataAccess.Utils;
 
 namespace DataAccess.Accessors;
 
 public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
 {
-    public List<Meeting> GetByMonthAndYear(int month, int year) => dbContext
-        .Meetings
-        .Where(m => m.Start.Month == month && m.Start.Year == year)
-        .ToList();
+    public List<Meeting> GetByMonthAndYearForUserName(int month, int year, string userName)
+    {
+        var user = dbContext.Users.FirstOrDefault(u => u.Nickname == userName);
+
+        if (user == null)
+            throw new AccessorException();
+       
+        return dbContext
+            .TeammateMeetings
+            .Where(tm => tm.TeammateGuid == user.Id)
+            .SelectMany(tm => dbContext.Meetings.Where(m => m.Guid == tm.TeammateGuid && m.Start.Month == month && m.Start.Year == year))
+            .ToList();
+    }
 
     public Meeting? GetMeetingById(string identifier) => dbContext
         .Meetings

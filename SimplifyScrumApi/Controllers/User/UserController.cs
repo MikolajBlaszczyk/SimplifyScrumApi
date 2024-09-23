@@ -1,19 +1,26 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SimplifyScrum.ApiUtils;
 using UserModule.Abstraction;
 
 namespace SimplifyScrum.Controllers.User;
 
 [ApiController]
-[Route("api/v1/scrum/user")]
-public class UserController(IManageInformation infoManager, ModuleResultInterpreter resultInterpreter)
+[Route("api/v1/scrum/user/")]
+[Authorize]
+public class UserController(IManageInformation infoManager) : ControllerBase
 {
     [HttpGet]
-    [Route("/info")]
-    public async Task<IActionResult> GetUsersInfo([FromQuery] string guid)
+    [Route("info")]
+    public async Task<IActionResult> GetUsersInfo()
     {
-        var infoResult  = await infoManager.GetInfoByGUID(guid);
+        var name = HttpContext.User.Identity.Name;
+        var result  = await infoManager.GetInfoByName(name);
 
-        return resultInterpreter.InterpretInformationResult(infoResult);
+        if (result.IsSuccess)
+        {
+            return Ok(result.User);
+        }
+        
+        return StatusCode(500, result.Exception!.Message);
     }
 }

@@ -1,15 +1,11 @@
+using System.Text;
 using DataAccess.Context;
-using DataAccess.Model;
 using DataAccess.Model.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SimplifyScrum.ApiUtils;
-using UserModule;
-using UserModule.Abstraction;
-using UserModule.Informations;
-using UserModule.Security;
-using UserModule.Security.Models.Converters;
-using UserModule.Security.Validation;
+using Microsoft.IdentityModel.Tokens;
+using SimplifyScrum.DI;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +18,9 @@ builder.Services.AddDbContext<SimplifyAppDbContext>(options =>
 builder.Services.AddDefaultIdentity<Teammate>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
-}).AddEntityFrameworkStores<SimplifyAppDbContext>();
+}).AddEntityFrameworkStores<SimplifyAppDbContext>()
+.AddDefaultTokenProviders();
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Lockout.MaxFailedAccessAttempts = 5;
@@ -48,7 +46,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
-
 #if  DEBUG
 
 builder.Services.AddCors(options =>
@@ -56,28 +53,41 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.AllowAnyOrigin();
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
+            policy.AllowAnyOrigin();
         });
 });
 
-#endif
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+    };
+});
 
-builder.Services.AddScoped<IManageSecurity, UserSecurityManager>();
-builder.Services.AddScoped<LoginProcessor, LoginProcessor>();
-builder.Services.AddScoped<UserValidator, UserValidator>();
-builder.Services.AddScoped<AspIdentityDirector, AspIdentityDirector>();
-builder.Services.AddScoped<LogoutProcessor, LogoutProcessor>();
-builder.Services.AddScoped<UserAccountProcessor, UserAccountProcessor>();
-builder.Services.AddScoped<UserModelConverter, UserModelConverter>();
-builder.Services.AddScoped<ModuleResultInterpreter, ModuleResultInterpreter>();
-builder.Services.AddScoped<IManageInformation, InformationManager>();
+    
+#endif
+builder.Services.ConfigureDependencyInjection();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -88,7 +98,12 @@ if (app.Environment.IsDevelopment())
     app.UseCors();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
+
 
 app.MapControllers();
 app.Run();
+
+public partial class Program { }

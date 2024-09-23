@@ -1,5 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=GUID/@EntryIndexedValue">GUID</s:String>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/mikolajblaszczyk/Library/Caches/JetBrains/Rider2024.1/resharper-host/temp/Rider/vAny/CoverageData/_SimplifyScrum.883439781/Snapshot/snapshot.utdcvr</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=745fc90b_002Df2cd_002D443e_002Daaf9_002D7522f256bbd9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="FactoryTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;TestAncestor&gt;
@@ -9,6 +10,13 @@
       &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.SchedulerTests&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.ModelConverterTests&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.DateTimeConverterTests.DateTimeConverterConvertToMonthFromNumber_ShouldConvertToProperMonthEnum&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.Tests.LoginController_Login_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_Login_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithExistingAccount_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithNonExistingAccount_ShoulReturnInternalServerError&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithNonExistingAccount_ShouldReturnInternalServerError&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.UserControllerTests.GetInfoFromExistingUser_ShouldCorrectlyGetUserInfo&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
   &lt;/Or&gt;

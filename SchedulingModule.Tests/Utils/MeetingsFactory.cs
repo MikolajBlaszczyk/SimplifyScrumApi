@@ -19,6 +19,6 @@ public abstract class MeetingsFactory
 
     public static MeetingRecord CreateMeetingRecordWithNameAndStart(string name, DateTime start)
     {
-        return new MeetingRecord("", name, "", "", start, TimeSpan.Zero, MeetingType.Custom);
+        return new MeetingRecord("", name, "", "", start, TimeSpan.Zero, MeetingType.Custom, new());
     }
 }

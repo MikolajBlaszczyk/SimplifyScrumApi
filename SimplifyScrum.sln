@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulingModule", "Schedul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulingModule.Tests", "SchedulingModule.Tests\SchedulingModule.Tests.csproj", "{9A82E013-F475-4DCD-BD2C-650431C1510C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplifyScrumApiTests", "SimplifyScrumApiTests\SimplifyScrumApiTests.csproj", "{9C292596-CF3E-4604-B771-8BB2F70B57AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A82E013-F475-4DCD-BD2C-650431C1510C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C292596-CF3E-4604-B771-8BB2F70B57AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C292596-CF3E-4604-B771-8BB2F70B57AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C292596-CF3E-4604-B771-8BB2F70B57AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C292596-CF3E-4604-B771-8BB2F70B57AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

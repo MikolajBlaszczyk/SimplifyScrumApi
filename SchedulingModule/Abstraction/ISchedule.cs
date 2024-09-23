@@ -5,7 +5,7 @@ namespace SchedulingModule.Abstraction;
 
 public interface ISchedule
 {
-    Task<ScheduleResult> GetScheduleByMonth(DateTime date);
+    Task<ScheduleResult> GetScheduleByMonth(DateTime date, string name);
 
     Task<ScheduleResult> UpsertMeeting(MeetingRecord meetingToUpsert);
     

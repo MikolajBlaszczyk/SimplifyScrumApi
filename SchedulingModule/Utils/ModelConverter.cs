@@ -7,6 +7,11 @@ public class ModelConverter
 {
     public MeetingRecord ConvertIntoRecord(Meeting meeting)
     {
+        var usersGuids = meeting
+            .TeammateMeetings?
+            .Select(tm => tm.TeammateGuid)
+            .ToList();
+        
         return new MeetingRecord(
             meeting.Guid, 
             meeting.Name,
@@ -14,6 +19,7 @@ public class ModelConverter
             meeting.MeetingLeaderGuid,
             meeting.Start, 
             meeting.Duration,
-            meeting.Type);
+            meeting.Type,
+            usersGuids);
     }
 }

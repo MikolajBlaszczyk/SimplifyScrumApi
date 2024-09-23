@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using UserModule.Abstraction;
 using UserModule.Records;
 using UserModule.Security.Models;
@@ -9,12 +11,14 @@ public class UserSecurityManager : IManageSecurity
     private readonly LoginProcessor loginProcessor;
     private readonly LogoutProcessor logoutProcessor;
     private readonly UserAccountProcessor userAccountProcessor;
+    private readonly TokenProvider tokenProvider;
 
-    public UserSecurityManager(LoginProcessor loginProcessor, LogoutProcessor logoutProcessor, UserAccountProcessor userAccountProcessor)
+    public UserSecurityManager(LoginProcessor loginProcessor, LogoutProcessor logoutProcessor, UserAccountProcessor userAccountProcessor, TokenProvider tokenProvider)
     {
         this.loginProcessor = loginProcessor;
         this.logoutProcessor = logoutProcessor;
         this.userAccountProcessor = userAccountProcessor;
+        this.tokenProvider = tokenProvider;
     }
     
     public async Task<SecurityResult> Login(AppUser user)
@@ -35,5 +39,9 @@ public class UserSecurityManager : IManageSecurity
     public async Task<SecurityResult> Delete()
     {
         return await userAccountProcessor.DeleteCurrentUser();
+    }
+    public JwtSecurityToken GetToken(List<Claim> claims)
+    {
+        return tokenProvider.GetToken(claims);
     }
 }

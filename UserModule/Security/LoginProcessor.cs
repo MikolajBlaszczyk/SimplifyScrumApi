@@ -1,4 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
 using DataAccess.Model.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using UserModule.Exceptions;
 using UserModule.Records;
@@ -21,21 +23,23 @@ public class LoginProcessor
    
     public async Task<SecurityResult> LoginUser(AppUser user)
     {
-        string loggedUserGuid;
-        
         try
         {
             var validation = validator.ValidateBeforeLogin(user);
             if (validation.IsFailure)
                 throw new InternalValidationException(validation.Message);
             
-            loggedUserGuid = await identityDirector.Login(user);
+            var loginSucceeded = await identityDirector.Login(user);
+            
+            if (loginSucceeded == false)
+                throw new Exception("Login failed");
         }
         catch (Exception ex)
         {
             return SecurityResultsFactory.CreateFailureResult(ex);
         }
 
-        return SecurityResultsFactory.CreateSuccessResult(loggedUserGuid);
+        return SecurityResultsFactory.CreateSuccessResult();
     }
+
 }

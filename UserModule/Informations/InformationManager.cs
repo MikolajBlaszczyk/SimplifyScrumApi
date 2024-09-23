@@ -10,12 +10,12 @@ namespace UserModule.Informations;
 
 public class InformationManager(UserManager<Teammate> userManager, UserModelConverter converter): IManageInformation
 {
-    public async Task<InformationResult> GetInfoByGUID(string guid)
+    public async Task<InformationResult> GetInfoByName(string name)
     {
         
         try
         {
-            var teammate = await userManager.FindByIdAsync(guid);
+            var teammate = await userManager.FindByNameAsync(name);
             var appUser = converter.ConvertToAppUser(teammate);
 
             return InformationResultFactory.Success(appUser);

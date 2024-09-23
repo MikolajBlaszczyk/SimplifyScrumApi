@@ -5,5 +5,5 @@ namespace UserModule.Abstraction;
 
 public interface IManageInformation
 {
-    Task<InformationResult> GetInfoByGUID(string guid);
+    Task<InformationResult> GetInfoByName(string name);
 }

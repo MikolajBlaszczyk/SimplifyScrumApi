@@ -1,4 +1,5 @@
 using DataAccess.Enums;
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 
 namespace DataAccess.Models.Factories;
@@ -18,7 +19,12 @@ public class MeetingFactory
             Start = start,
             Duration = duration,
             MeetingLeaderGuid = leaderGuid,
-            Type = type
+            Type = type,
+            TeammateMeetings = new List<TeammateMeetings>(){ new TeammateMeetings
+            {
+                MeetingGuid = guid,
+                TeammateGuid = Guid.NewGuid().ToString()
+            }}
         };
     }
     public static Meeting CreateMeeting(string name, string description, string leaderGuid, DateTime start, TimeSpan duration,  MeetingType type)

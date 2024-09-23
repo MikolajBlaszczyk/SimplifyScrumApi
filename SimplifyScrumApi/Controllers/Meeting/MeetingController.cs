@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchedulingModule;
 using SchedulingModule.Records;
 
 namespace SimplifyScrum.Controllers.Meeting;
@@ -7,13 +8,22 @@ namespace SimplifyScrum.Controllers.Meeting;
 [ApiController]
 [Authorize]
 [Route("api/v1/scrum/meetings/")]
-public class MeetingController : ControllerBase
+public class MeetingController(Scheduler scheduler) : ControllerBase
 {
     [HttpGet]
     [Route("current")]
-    public IActionResult GetCurrentMonthMeetings()
+    public async Task<IActionResult> GetMeetingsInThisMonthForCurrentUser()
     {
-        return Ok();
+        var name = HttpContext.User.Identity.Name;
+        var currentDate = DateTime.Now;
+        var result = await scheduler.GetScheduleByMonth(currentDate, name);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.ScheduleRecord!);
+        }
+        
+        return StatusCode(500, result.Exception!.Message);
     }
 
     [HttpPost]

@@ -136,13 +136,13 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnSuccessResult(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYear(month, year)).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"));
+        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         
         Assert.IsTrue(actual.IsSuccess);
     }
@@ -153,13 +153,13 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperMonth(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYear(month, year)).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"));
+        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         
         Assert.That(actual.ScheduleRecord.month,Is.EqualTo(result.Expected.ScheduleRecord.month));
     }
@@ -169,13 +169,13 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperNumberOfDaysWithMeetings(int month, int year, ScheduleTestResult result)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYear(month, year)).Returns(result.RawMeetings);
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, "")).Returns(result.RawMeetings);
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"));
+        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
 
         var actualDaysWithMeetings = actual.ScheduleRecord.days.Count(d => d.meetings.Count > 0);
         var expectedDaysWithMeetings = result.Expected.ScheduleRecord.days.Count;
@@ -210,13 +210,13 @@ public class SchedulerTests
         int expectedNumberOfDays)
     {
         var accessorMock = new Mock<IMeetingAccessor>();
-        accessorMock.Setup(a => a.GetByMonthAndYear(month, year)).Returns(new List<Meeting>());
+        accessorMock.Setup(a => a.GetByMonthAndYearForUserName(month, year, It.IsAny<string>())).Returns(new List<Meeting>());
         var converter = new ModelConverter();
         var grouper = new MeetingGrouper(converter);
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"));
+        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
 
         Assert.That(actual.ScheduleRecord.days.Count, Is.EqualTo(expectedNumberOfDays));
     }
@@ -227,7 +227,7 @@ public class SchedulerTests
         {
             var firstGuid = Guid.NewGuid().ToString();
             yield return new TestCaseData(
-                    new MeetingRecord(firstGuid, "TestMeeting", "", "",DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom ),
+                    new MeetingRecord(firstGuid, "TestMeeting", "", "",DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom, new()),
                     MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting", "", "", DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom)
                 );
         }
@@ -257,7 +257,7 @@ public class SchedulerTests
             var firstGuid = Guid.NewGuid().ToString();
             var now =DateTime.Now;
             yield return new TestCaseData(
-                new MeetingRecord(firstGuid, "TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily),
+                new MeetingRecord(firstGuid, "TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily, new()),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting1", "123", "b", DateTime.MinValue, TimeSpan.Zero, MeetingType.Custom),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily)
                 );
@@ -288,7 +288,7 @@ public class SchedulerTests
             var firstGuid = Guid.NewGuid().ToString();
             var now = DateTime.Now;
             yield return new TestCaseData(
-                new MeetingRecord(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning),
+                new MeetingRecord(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new()),
                 MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning)
                 );
         }
