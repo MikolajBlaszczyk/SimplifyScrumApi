@@ -21,7 +21,7 @@ public class ModelConverterTests
                 MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test", "Some description", "", firstDateTime,
                     TimeSpan.FromHours(1), MeetingType.Custom),
                 new MeetingRecord(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
-                    MeetingType.Custom, new List<string>())
+                    MeetingType.Custom, null)
             );
 
             var secondDateTime = DateTime.Parse("12.09.2002");
@@ -31,7 +31,7 @@ public class ModelConverterTests
                     TimeSpan.FromHours(4), MeetingType.Daily),
                 new MeetingRecord(secondGuid, "Test1", "Some description", "", secondDateTime,
                     TimeSpan.FromHours(4),
-                    MeetingType.Daily, new List<string>())
+                    MeetingType.Daily, null)
             );
         }
     }
@@ -52,7 +52,6 @@ public class ModelConverterTests
     public void ModelConverterConvertIntoRecord_ShouldProduceRecordThatIsTheSameAsDbModel(Meeting meetingToConvert, MeetingRecord expected)
     {
         var converter = new ModelConverter();
-        meetingToConvert.TeammateMeetings.Add(new TeammateMeetings( ){MeetingGuid = "", TeammateGuid = ""});
 
         var actual = converter.ConvertIntoRecord(meetingToConvert);
         

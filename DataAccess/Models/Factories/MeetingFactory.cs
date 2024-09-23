@@ -19,12 +19,7 @@ public class MeetingFactory
             Start = start,
             Duration = duration,
             MeetingLeaderGuid = leaderGuid,
-            Type = type,
-            TeammateMeetings = new List<TeammateMeetings>(){ new TeammateMeetings
-            {
-                MeetingGuid = guid,
-                TeammateGuid = Guid.NewGuid().ToString()
-            }}
+            Type = type
         };
     }
     public static Meeting CreateMeeting(string name, string description, string leaderGuid, DateTime start, TimeSpan duration,  MeetingType type)

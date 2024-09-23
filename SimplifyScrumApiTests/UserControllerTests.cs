@@ -13,7 +13,7 @@ namespace SimplifyScrumApi.Tests;
 public class UserControllerTests
 {
     private WebSimpleApiFactory factory;
-    private AppUser createdUser;
+    private AppUser createdUser =new AppUser("admin5", "Password123!", "example@abc.com", "admin5", ScrumRole.ProjectOwner);
     
     [SetUp]
     public async Task Setup()
@@ -23,9 +23,6 @@ public class UserControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             var processor = scope.ServiceProvider.GetService<UserAccountProcessor>();
-
-            createdUser = new AppUser("admin", "Password123!", "example@abc.com", "admin", ScrumRole.ProjectOwner);
-
             await processor.SignInUser(createdUser);
         }
     }

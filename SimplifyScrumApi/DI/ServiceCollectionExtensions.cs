@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMeetingAccessor, MeetingAccessor>();
         services.AddScoped<MeetingGrouper, MeetingGrouper>();
         services.AddScoped<CalendarArranger, CalendarArranger>();
+        services.AddScoped<ModelConverter, ModelConverter>();
 
         #endregion
 
