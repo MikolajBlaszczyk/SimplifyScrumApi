@@ -50,6 +50,10 @@ public class MeetingManager(IMeetingAccessor meetingAccessor, TeammateLinker lin
 
         if (meeting is null)
             return ScheduleResultFactory.Failure(new Exception("Meeting does not exists"));
+
+        var usersUnlinked = linker.UnlinkAllUsers(meeting);
+        if (usersUnlinked == false)
+            return ScheduleResultFactory.Failure(new Exception("Could not all unlink users"));
         
         var deletedMeeting = meetingAccessor.DeleteMeeting(meeting);
         

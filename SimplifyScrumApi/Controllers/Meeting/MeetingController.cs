@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchedulingModule;
+using SchedulingModule.Abstraction;
 using SchedulingModule.Records;
 using SimplifyScrum.Utils;
 
@@ -9,7 +10,7 @@ namespace SimplifyScrum.Controllers.Meeting;
 [ApiController]
 [Authorize]
 [Route("api/v1/scrum/meetings/")]
-public class MeetingController(Scheduler scheduler) : ControllerBase
+public class MeetingController(Scheduler scheduler, IManageMeetings meetingsManager) : ControllerBase
 {
     [HttpGet]
     [Route("current")]
@@ -26,25 +27,32 @@ public class MeetingController(Scheduler scheduler) : ControllerBase
         return StatusCode(500, result.Exception!.Message);
     }
 
-    [HttpPost]
-    [Route("add")]
-    public IActionResult AddMeeting([FromBody] SimpleMeetingModel model)
-    {
-        return Ok();
-    }
+    [HttpPost("add")]
+    [HttpPut("update")]
+    public async Task<IActionResult> AddMeeting([FromBody] SimpleMeetingModel model)
+    { 
+        var result = await meetingsManager.UpsertMeeting(model);
 
-    [HttpPut]
-    [Route("update")]
-    public IActionResult UpdateMeeting([FromBody] SimpleMeetingModel model)
-    {
-        return Ok();
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+
+        return StatusCode(500, result.Exception!.Message);
     }
 
     [HttpDelete]
     [Route("delete")]
-    public IActionResult DeleteMeeting([FromBody] SimpleMeetingModel model)
+    public async Task<IActionResult> DeleteMeeting([FromBody] SimpleMeetingModel model)
     {
-        return Ok();
+        var result = await meetingsManager.DeleteMeeting(model);
+
+        if (result.IsSuccess)
+        {
+            return Ok(model.Identifier);
+        }
+
+        return StatusCode(500, result.Exception!.Message);
     }
     
 }

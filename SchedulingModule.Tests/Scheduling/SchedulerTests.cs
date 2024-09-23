@@ -1,6 +1,7 @@
 using DataAccess.Abstraction;
 using DataAccess.Accessors;
 using DataAccess.Enums;
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
@@ -292,7 +293,7 @@ public class SchedulerTests
             var now = DateTime.Now;
             yield return new TestCaseData(
                 new SimpleMeetingModel(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new()),
-                MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning)
+                MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new List<TeammateMeetings>())
                 );
         }
     }
