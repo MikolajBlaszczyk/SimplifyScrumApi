@@ -23,16 +23,16 @@ public class UserAccountProcessor
         this.identityDirector = identityDirector;
     }
 
-    public async Task<SecurityResult> SignInUser(AppUser user)
+    public async Task<SecurityResult> SignInUser(SimpleUserModel userModel)
     {
         try
         {
-            var validation = validator.ValidateBeforeSignIn(user);
+            var validation = validator.ValidateBeforeSignIn(userModel);
             if (validation.IsFailure)
                 throw new Exception(validation.Message);
 
-            var teammate = converter.ConvertToTeammate(user);
-            await identityDirector.CreateUser(teammate, user.Password);
+            var teammate = converter.ConvertToTeammate(userModel);
+            await identityDirector.CreateUser(teammate, userModel.Password);
         }
         catch (Exception e)
         {

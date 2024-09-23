@@ -21,9 +21,9 @@ public class AspIdentityDirector
         this.accessor = accessor;
     }
 
-    public async Task<bool> Login(AppUser user)
+    public async Task<bool> Login(SimpleUserModel userModel)
     { 
-        var result = await signInManager.PasswordSignInAsync(user.Username, user.Password.ToString(), true, false);
+        var result = await signInManager.PasswordSignInAsync(userModel.Username, userModel.Password, true, false);
 
         return result.Succeeded;
     }

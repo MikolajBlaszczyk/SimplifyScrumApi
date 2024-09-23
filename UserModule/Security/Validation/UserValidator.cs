@@ -10,19 +10,19 @@ public class UserValidator
 {
    private static readonly Regex ValidNickname = new Regex(@"^([a-zA-Z0-9-_!\s]){3,50}$");
    private static readonly Regex ValidUsername = new Regex(@"^([a-zA-Z0-9-._*]){3,256}$");
-   public ValidationResult ValidateBeforeSignIn(AppUser user)
+   public ValidationResult ValidateBeforeSignIn(SimpleUserModel userModel)
    {
-      if (NicknameIsValid(user.Nickname, out string nicknameErrorMessage) == false)
+      if (NicknameIsValid(userModel.Nickname, out string nicknameErrorMessage) == false)
       {
          return ValidationResultFactory.CreateFailedResult(nicknameErrorMessage);
       }
 
-      if (UsernameIsValid(user.Username, out string usernameErrorMessage) == false)
+      if (UsernameIsValid(userModel.Username, out string usernameErrorMessage) == false)
       {
          return ValidationResultFactory.CreateFailedResult(usernameErrorMessage);
       }
 
-      if (PasswordIsNotEmpty(user.Password, out string passwordErrorMessage) == false)
+      if (PasswordIsNotEmpty(userModel.Password, out string passwordErrorMessage) == false)
       {
          return ValidationResultFactory.CreateFailedResult(passwordErrorMessage);
       }
@@ -54,14 +54,14 @@ public class UserValidator
       return true;
    }
    
-   public ValidationResult ValidateBeforeLogin(AppUser user)
+   public ValidationResult ValidateBeforeLogin(SimpleUserModel userModel)
    {
-      if (UsernameIsNotEmpty(user.Username, out string errorUsernameMessage) == false)
+      if (UsernameIsNotEmpty(userModel.Username, out string errorUsernameMessage) == false)
       {
          return ValidationResultFactory.CreateFailedResult(errorUsernameMessage);
       }
 
-      if (PasswordIsNotEmpty(user.Password, out string errorPasswordMessage) == false)
+      if (PasswordIsNotEmpty(userModel.Password, out string errorPasswordMessage) == false)
       {
          return ValidationResultFactory.CreateFailedResult(errorPasswordMessage);
       }

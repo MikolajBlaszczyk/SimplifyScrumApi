@@ -5,20 +5,20 @@ namespace UserModule.Security.Models.Converters;
 
 public class UserModelConverter
 {
-    public Teammate ConvertToTeammate(AppUser user)
+    public Teammate ConvertToTeammate(SimpleUserModel userModel)
     {
         return new Teammate
         {
-            Nickname = user.Nickname,
-            UserName = user.Username,
-            Email = user.Email,
-            ScrumRole = user.Role
+            Nickname = userModel.Nickname,
+            UserName = userModel.Username,
+            Email = userModel.Email,
+            ScrumRole = userModel.Role
         };
     }
 
-    public AppUser ConvertToAppUser(Teammate teammate)
+    public SimpleUserModel ConvertToAppUser(Teammate teammate)
     {
-        return new AppUser(
+        return new SimpleUserModel(
             teammate.UserName,
             "",
             teammate.Email,

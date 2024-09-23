@@ -18,7 +18,7 @@ public class UserController(IManageInformation infoManager) : ControllerBase
 
         if (result.IsSuccess)
         {
-            return Ok(result.User);
+            return Ok(result.UserModel);
         }
         
         return StatusCode(500, result.Exception!.Message);

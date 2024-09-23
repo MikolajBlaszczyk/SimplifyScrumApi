@@ -21,9 +21,9 @@ public class UserSecurityManager : IManageSecurity
         this.tokenProvider = tokenProvider;
     }
     
-    public async Task<SecurityResult> Login(AppUser user)
+    public async Task<SecurityResult> Login(SimpleUserModel userModel)
     {
-        return await loginProcessor.LoginUser(user);
+        return await loginProcessor.LoginUser(userModel);
     }
 
     public async Task<SecurityResult> Logout()
@@ -31,9 +31,9 @@ public class UserSecurityManager : IManageSecurity
         return await logoutProcessor.LogoutCurrentUser();
     }
 
-    public async Task<SecurityResult> SignIn(AppUser user)
+    public async Task<SecurityResult> SignIn(SimpleUserModel userModel)
     {
-        return await userAccountProcessor.SignInUser(user);
+        return await userAccountProcessor.SignInUser(userModel);
     }
 
     public async Task<SecurityResult> Delete()

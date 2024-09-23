@@ -13,7 +13,7 @@ namespace SimplifyScrumApi.Tests;
 public class UserControllerTests
 {
     private WebSimpleApiFactory factory;
-    private AppUser createdUser =new AppUser("admin5", "Password123!", "example@abc.com", "admin5", ScrumRole.ProjectOwner);
+    private SimpleUserModel _createdUserModel =new SimpleUserModel("admin5", "Password123!", "example@abc.com", "admin5", ScrumRole.ProjectOwner);
     
     [SetUp]
     public async Task Setup()
@@ -23,7 +23,7 @@ public class UserControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             var processor = scope.ServiceProvider.GetService<UserAccountProcessor>();
-            await processor.SignInUser(createdUser);
+            await processor.SignInUser(_createdUserModel);
         }
     }
 
@@ -31,19 +31,19 @@ public class UserControllerTests
     public async Task GetInfoFromExistingUser_ShouldCorrectlyGetUserInfo()
     {
         var client = factory.CreateClient();
-        var loginResponse = await client.PostAsJsonAsync("api/v1/scrum/login", createdUser);
+        var loginResponse = await client.PostAsJsonAsync("api/v1/scrum/login", _createdUserModel);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await loginResponse.Content.ReadAsStringAsync());
 
 
         var response = await client.GetAsync("api/v1/scrum/user/info");
-        var returnedUser = JsonConvert.DeserializeObject<AppUser>(await response.Content.ReadAsStringAsync()); 
+        var returnedUser = JsonConvert.DeserializeObject<SimpleUserModel>(await response.Content.ReadAsStringAsync()); 
         
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        Assert.That(returnedUser.Username, Is.EqualTo(createdUser.Username));
+        Assert.That(returnedUser.Username, Is.EqualTo(_createdUserModel.Username));
         Assert.IsEmpty(returnedUser.Password);
-        Assert.That(returnedUser.Email, Is.EqualTo(createdUser.Email));
-        Assert.That(returnedUser.Nickname, Is.EqualTo(createdUser.Nickname));
-        Assert.That(returnedUser.Role, Is.EqualTo(createdUser.Role));
+        Assert.That(returnedUser.Email, Is.EqualTo(_createdUserModel.Email));
+        Assert.That(returnedUser.Nickname, Is.EqualTo(_createdUserModel.Nickname));
+        Assert.That(returnedUser.Role, Is.EqualTo(_createdUserModel.Role));
     }
         
     [TearDown]

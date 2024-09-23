@@ -21,15 +21,15 @@ public class LoginProcessor
         this.identityDirector = identityDirector;
     }
    
-    public async Task<SecurityResult> LoginUser(AppUser user)
+    public async Task<SecurityResult> LoginUser(SimpleUserModel userModel)
     {
         try
         {
-            var validation = validator.ValidateBeforeLogin(user);
+            var validation = validator.ValidateBeforeLogin(userModel);
             if (validation.IsFailure)
                 throw new InternalValidationException(validation.Message);
             
-            var loginSucceeded = await identityDirector.Login(user);
+            var loginSucceeded = await identityDirector.Login(userModel);
             
             if (loginSucceeded == false)
                 throw new Exception("Login failed");

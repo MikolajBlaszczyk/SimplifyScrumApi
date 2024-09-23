@@ -22,11 +22,11 @@ public class UserConverterTests
     
     [Test]
     [TestCaseSource(nameof(AppUserModels))]
-    public void ConvertToTeammate_ShouldConvertAppUserIntoTeammatesModels(AppUser user)
+    public void ConvertToTeammate_ShouldConvertAppUserIntoTeammatesModels(SimpleUserModel userModel)
     {
         UserModelConverter converter = new UserModelConverter();
 
-        var teammate = converter.ConvertToTeammate(user);
+        var teammate = converter.ConvertToTeammate(userModel);
         
         Assert.That(teammate, Is.TypeOf(typeof(Teammate)));
     }

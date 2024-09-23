@@ -16,13 +16,13 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> Login([FromBody] AppUser user)
+    public async Task<IActionResult> Login([FromBody] SimpleUserModel userModel)
     {
-        var result = await securityManager.Login(user);
+        var result = await securityManager.Login(userModel);
 
         if (result.IsSuccess)
         {
-            var claims = CreateClaims(user);
+            var claims = CreateClaims(userModel);
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
@@ -46,13 +46,13 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [HttpPost]
     [Route("signin")]
     [AllowAnonymous]
-    public async Task<IActionResult> SignIn([FromBody] AppUser user)
+    public async Task<IActionResult> SignIn([FromBody] SimpleUserModel userModel)
     {
-        var result = await securityManager.SignIn(user);
+        var result = await securityManager.SignIn(userModel);
 
         if (result.IsSuccess)
         {
-            var claims = CreateClaims(user);
+            var claims = CreateClaims(userModel);
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
@@ -74,11 +74,11 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
         return StatusCode(500, result.Exception!.Message);
     }
 
-    private List<Claim> CreateClaims(AppUser user)
+    private List<Claim> CreateClaims(SimpleUserModel userModel)
     {
         var claims = new List<Claim>
         {
-            new (ClaimTypes.Name, user.Username),
+            new (ClaimTypes.Name, userModel.Username),
         };
         
         return claims;

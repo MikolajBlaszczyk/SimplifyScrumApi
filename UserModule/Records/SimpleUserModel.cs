@@ -3,7 +3,7 @@ using DataAccess.Enums;
 
 namespace UserModule.Records;
 
-public record AppUser(
+public record SimpleUserModel(
     string Username,
     string Password,
     string Email,

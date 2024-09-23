@@ -21,11 +21,11 @@ public class UserValidatorTests
     
     [Test]
     [TestCaseSource(nameof(InvalidUserDueToUserName))]
-    public void ValidateUserBeforeLogin_ShouldFailValidationDueToEmptyUsername(AppUser user)
+    public void ValidateUserBeforeLogin_ShouldFailValidationDueToEmptyUsername(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeLogin(user);
+        var actual = validator.ValidateBeforeLogin(userModel);
         
         Assert.IsTrue(actual.IsFailure, "Should invalidate user due to empty username ");
     }
@@ -42,11 +42,11 @@ public class UserValidatorTests
     
     [Test]
     [TestCaseSource(nameof(InvalidUserDueToUserPassword))]
-    public void ValidateUserBeforeLogin_ShouldFailValidationDueToEmptyPassword(AppUser user)
+    public void ValidateUserBeforeLogin_ShouldFailValidationDueToEmptyPassword(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeLogin(user);
+        var actual = validator.ValidateBeforeLogin(userModel);
         
         Assert.IsTrue(actual.IsFailure, "Should invalidate user due to emptypassword ");
     }
@@ -63,11 +63,11 @@ public class UserValidatorTests
     
     [Test]
     [TestCaseSource(nameof(ValidUsers))]
-    public void ValidateUserBeforeLogin_ShouldSuccessfullyValidateUser(AppUser user)
+    public void ValidateUserBeforeLogin_ShouldSuccessfullyValidateUser(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeLogin(user);
+        var actual = validator.ValidateBeforeLogin(userModel);
         
         Assert.IsTrue(actual.IsSuccess, "User should be successfully validated.");
     }
@@ -94,11 +94,11 @@ public class UserValidatorTests
     
     [Test]
     [TestCaseSource(nameof(InvalidNewUsersDueToUsername))]
-    public void ValidateUserBeforeSignIn_ShouldFailValidationDueToIncorrectUsernameRequirements(AppUser user)
+    public void ValidateUserBeforeSignIn_ShouldFailValidationDueToIncorrectUsernameRequirements(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeSignIn(user);
+        var actual = validator.ValidateBeforeSignIn(userModel);
         
         Assert.IsTrue(actual.IsFailure, "Username does not meet all the requirements. ");
     }
@@ -116,11 +116,11 @@ public class UserValidatorTests
 
     [Test]
     [TestCaseSource(nameof(InvalidUsersDueToNickname))]
-    public void ValidateUserBeforeSignIn_ShouldFailValidationDueToIncorrectNicknameRequirements(AppUser user)
+    public void ValidateUserBeforeSignIn_ShouldFailValidationDueToIncorrectNicknameRequirements(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeSignIn(user);
+        var actual = validator.ValidateBeforeSignIn(userModel);
         
         Assert.IsTrue(actual.IsFailure);
     }
@@ -135,11 +135,11 @@ public class UserValidatorTests
     
     [Test]
     [TestCaseSource(nameof(ValidNewUsers))]
-    public void ValidateUserBeforeSignIn_ShouldSuccessfullyValidateUser(AppUser user)
+    public void ValidateUserBeforeSignIn_ShouldSuccessfullyValidateUser(SimpleUserModel userModel)
     {
         UserValidator validator = new UserValidator();
 
-        var actual = validator.ValidateBeforeSignIn(user);
+        var actual = validator.ValidateBeforeSignIn(userModel);
         
         Assert.IsTrue(actual.IsSuccess, $"User should be successfully validated. {actual.Message}");
     }
