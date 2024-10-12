@@ -10,19 +10,23 @@ namespace DataAccess.Model.Meetings;
 public class Meeting
 {
     [Key]
-    public string Guid { get; set; }
+    [StringLength(36, MinimumLength = 36)]
+    public string GUID { get; set; }
     [Required]
     [StringLength(1000, MinimumLength = 2)]
     public string Name { get; set; }
-    public string Description { get; set; }
-    [ForeignKey(nameof(MeetingLeader))]
-    public string MeetingLeaderGuid { get; set; }
+    [StringLength(10000)]
+    public string? Description { get; set; }
     [Required]
     public DateTime Start { get; set; }
     [Required]
     public TimeSpan Duration { get; set; }
     [Required]
     public MeetingType Type { get; set; }
+    [ForeignKey(nameof(MeetingLeader))]
+    [StringLength(36, MinimumLength = 36)]
+    public string MeetingLeaderGUID { get; set; }
+    
 
     public Teammate MeetingLeader { get; set; }
     public ICollection<TeammateMeetings> TeammateMeetings { get; set; }

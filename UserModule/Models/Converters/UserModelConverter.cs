@@ -23,7 +23,8 @@ public class UserModelConverter
             "",
             teammate.Email,
             teammate.Nickname,
-            teammate.ScrumRole
+            teammate.ScrumRole,
+            teammate.Id
             );
     }
 }

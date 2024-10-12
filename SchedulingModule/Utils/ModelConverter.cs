@@ -9,14 +9,14 @@ public class ModelConverter
     {
         var usersGuids = meeting
             .TeammateMeetings?
-            .Select(tm => tm.TeammateGuid)
+            .Select(tm => tm.TeammateGUID)
             .ToList();
         
         return new SimpleMeetingModel(
-            meeting.Guid, 
+            meeting.GUID, 
             meeting.Name,
             meeting.Description,
-            meeting.MeetingLeaderGuid,
+            meeting.MeetingLeaderGUID,
             meeting.Start, 
             meeting.Duration,
             meeting.Type,

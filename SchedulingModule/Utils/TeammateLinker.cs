@@ -32,20 +32,24 @@ public class TeammateLinker(IMeetingAccessor meetingAccessor,  IUserStore<Teamma
             meetingAccessor.AddLinkBetweenMeetingAndTeammate(link);
         });
        
+        meetingAccessor.SaveChanges();
         
         return true;
     }
 
     public bool UnlinkAllUsers(Meeting dbModel)
     {
+        
         foreach (var link in dbModel.TeammateMeetings)
         {
             dbModel.TeammateMeetings.Remove(link);
         }
+        
+        meetingAccessor.SaveChanges();
 
         if (dbModel.TeammateMeetings.Count != 0)
             return false;
-
+        
         return true;
     }
 }

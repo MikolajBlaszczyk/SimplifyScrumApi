@@ -3,6 +3,7 @@ using DataAccess.Context;
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Accessors;
 
@@ -16,34 +17,41 @@ public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
 
         if (user == null)
             throw new AccessorException();
-       
-        return dbContext
+
+        var meetingIds = dbContext
             .TeammateMeetings
-            .Where(tm => tm.TeammateGuid == user.Id)
-            .SelectMany(tm => dbContext.Meetings.Where(m => m.Guid == tm.TeammateGuid && m.Start.Month == month && m.Start.Year == year))
+            .Where(tm => tm.TeammateGUID == user.Id)
+            .Select(tm => tm.MeetingGUID);
+
+
+        var meetings = dbContext
+            .Meetings
+            .Where(m => meetingIds.Contains(m.GUID))
             .ToList();
+
+
+        return meetings;
     }
 
     public Meeting? GetMeetingById(string identifier) => dbContext
         .Meetings
-        .FirstOrDefault(m => m.Guid == identifier);
+        .Include(m => m.TeammateMeetings)
+        .FirstOrDefault(m => m.GUID == identifier);
 
     public Meeting? UpsertMeeting(Meeting meeting)
     {
         try
         {
-            if(dbContext.Meetings.Any(m => m.Guid == meeting.Guid))
-            {
+            if(dbContext.Meetings.Any(m => m.GUID == meeting.GUID))
                 dbContext.Update(meeting);
-            }
             else
-            {
                 dbContext.Meetings.Add(meeting);
-            }
+            
+            dbContext.SaveChanges();
             
             return meeting;
         }
-        catch
+        catch(Exception ex)
         {
             return null;
         }
@@ -54,6 +62,7 @@ public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
         try
         {
             dbContext.Remove(meeting);
+            dbContext.SaveChanges();
             return meeting;
         }
         catch
@@ -74,4 +83,6 @@ public class MeetingAccessor(SimplifyAppDbContext dbContext) : IMeetingAccessor
             return null;
         }
     }
+
+    public void SaveChanges() => dbContext.SaveChanges();
 }

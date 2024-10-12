@@ -1,5 +1,4 @@
 using DataAccess.Abstraction;
-using DataAccess.Accessors;
 using DataAccess.Enums;
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
@@ -8,7 +7,6 @@ using DataAccess.Models.Factories;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using SchedulingModule.Enums;
-using SchedulingModule.Models;
 using SchedulingModule.Records;
 using SchedulingModule.Tests.Models;
 using SchedulingModule.Tests.Utils;

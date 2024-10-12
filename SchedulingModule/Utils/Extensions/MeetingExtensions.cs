@@ -10,7 +10,7 @@ public static class MeetingExtensions
     public static void Update(this Meeting meeting, SimpleMeetingModel model)
     {
         meeting.Name = model.Name;
-        meeting.MeetingLeaderGuid = model.LeaderIdentifier;
+        meeting.MeetingLeaderGUID = model.LeaderIdentifier;
         meeting.Description = model.Description;
         meeting.Duration = model.Duration;
         meeting.Type = model.Type;
@@ -20,8 +20,8 @@ public static class MeetingExtensions
     public static void CreateLink(this TeammateMeetings link, Teammate teammate, Meeting meeting)
     {
         link.Meeting = meeting;
-        link.MeetingGuid = meeting.Guid;
-        link.TeammateGuid = teammate.Id;
+        link.MeetingGUID = meeting.GUID;
+        link.TeammateGUID = teammate.Id;
         link.Teammate = teammate;
     }
 }

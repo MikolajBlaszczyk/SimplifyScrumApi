@@ -10,4 +10,5 @@ public interface IMeetingAccessor
     Meeting? UpsertMeeting(Meeting meeting);
     Meeting? DeleteMeeting(Meeting meeting);
     TeammateMeetings? AddLinkBetweenMeetingAndTeammate(TeammateMeetings link);
+    void SaveChanges();
 }

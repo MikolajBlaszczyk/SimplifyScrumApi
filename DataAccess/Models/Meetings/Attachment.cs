@@ -9,14 +9,15 @@ namespace DataAccess.Model.Meetings;
 public class Attachment
 {
     [Key]
-    public int Id { get; set; }
+    public int ID { get; set; }
     [Required]
     [StringLength(1000, MinimumLength = 1)]
-    public string Name { get; set; }
+    public  string Name { get; set; }
     [Required]
-    public string Content { get; set; }
+    [StringLength(100000)]
+    public  string Content { get; set; }
     [Required]
-    public AttachmentType Type { get; set; }
+    public  AttachmentType Type { get; set; }
 
     public ICollection<MeetingAttachments> MeetingAttachments { get; set; }
 }

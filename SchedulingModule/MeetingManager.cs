@@ -27,7 +27,7 @@ public class MeetingManager(IMeetingAccessor meetingAccessor, TeammateLinker lin
                 simpleMeeting.Name,
                 simpleMeeting.Description,
                 simpleMeeting.LeaderIdentifier,
-                simpleMeeting.Start,
+                simpleMeeting.Start.ToLocalTime(),
                 simpleMeeting.Duration,
                 simpleMeeting.Type );
         }

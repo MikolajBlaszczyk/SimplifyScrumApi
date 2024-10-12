@@ -13,12 +13,12 @@ public class MeetingFactory
         
         return new Meeting
         {
-            Guid = guid,
+            GUID = guid,
             Name = name,
             Description = description,
             Start = start,
             Duration = duration,
-            MeetingLeaderGuid = leaderGuid,
+            MeetingLeaderGUID = leaderGuid,
             Type = type
         };
     }
@@ -30,12 +30,12 @@ public class MeetingFactory
         
         return new Meeting
         {
-            Guid = guid,
+            GUID = guid,
             Name = name,
             Description = description,
             Start = start,
             Duration = duration,
-            MeetingLeaderGuid = leaderGuid,
+            MeetingLeaderGUID = leaderGuid,
             Type = type,
             TeammateMeetings = links
         };

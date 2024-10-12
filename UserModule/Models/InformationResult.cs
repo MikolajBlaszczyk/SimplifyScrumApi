@@ -11,7 +11,7 @@ public class InformationResult : BaseResult
 
     public InformationResult(List<SimpleUserModel> users)
     {
-        
+        Users = users;
     } 
     
     public InformationResult(Exception ex): base(ex)
