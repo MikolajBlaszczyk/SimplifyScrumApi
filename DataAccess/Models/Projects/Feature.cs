@@ -12,6 +12,9 @@ public class Feature : HistoryTable
     [Key]
     [StringLength(36, MinimumLength = 36)]
     public string GUID { get; set; }
+
+    [StringLength(maximumLength:10000)]
+    public string Description { get; set; }
     
     [Required]
     [StringLength(200, MinimumLength = 4)]
