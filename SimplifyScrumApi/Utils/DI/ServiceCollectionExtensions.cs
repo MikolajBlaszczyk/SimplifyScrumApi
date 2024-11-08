@@ -1,3 +1,5 @@
+using BacklogModule;
+using BacklogModule.Abstraction;
 using DataAccess.Abstraction;
 using DataAccess.Accessors;
 using SchedulingModule;
@@ -30,6 +32,14 @@ public static class ServiceCollectionExtensions
 
         #endregion
 
+        #region backlog
+
+        services.AddScoped<IManageSprint, BacklogManager>();
+        services.AddScoped<IUserHierarchyAccessor, UserHierarchyAccessor>();
+        services.AddScoped<ISprintAccessor, SprintAccessor > ();
+
+        #endregion
+        
         #region scheduling
         
         services.AddScoped<ISchedule, Scheduler>();

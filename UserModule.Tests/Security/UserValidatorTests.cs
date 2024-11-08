@@ -15,7 +15,7 @@ public class UserValidatorTests
         {
             yield return new TestCaseData(AppUserFactory.CreateAppUser("", "secretePassword1"));
             yield return new TestCaseData(AppUserFactory.CreateAppUser("", "secretePassword2", "test nickname2"));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("", "secretePassword3", "test nickname3", ScrumRole.ProjectOwner));
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("", "secretePassword3", "", "test nickname3", ScrumRole.ProjectOwner));
         }
     }
     
@@ -35,8 +35,8 @@ public class UserValidatorTests
         get
         {
             yield return new TestCaseData(AppUserFactory.CreateAppUser("Username1", ""));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("Username2", "", "test nickname2"));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("Username3", "", "test nickname3", ScrumRole.ProjectOwner));
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("Username2", "",  "", "test nickname2"));
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("Username3", "", "", "test nickname3", ScrumRole.ProjectOwner));
         }
     }
     
@@ -56,8 +56,8 @@ public class UserValidatorTests
         get
         {
             yield return new TestCaseData(AppUserFactory.CreateAppUser("TestUsername1", "SecretPassword1"));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("TestUsername2", "SecretPassword2", "Nickname2" ));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("TestUsername3", "SecretPassword","Nickname3", ScrumRole.ProjectOwner));
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("TestUsername2", "SecretPassword2", "", "Nickname2" ));
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("TestUsername3", "SecretPassword", "","Nickname3", ScrumRole.ProjectOwner));
         }
     }
     
@@ -78,15 +78,15 @@ public class UserValidatorTests
     {
         get
         {
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("", "SecretPassword123", "Test Nickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("", "SecretPassword123", "", "Test Nickname",
                 ScrumRole.ScrumMaster));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("Incorrect User", "SecretPassword123", "Test Nickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("Incorrect User", "SecretPassword123", "", "Test Nickname",
                 ScrumRole.ScrumMaster));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("Incorrect!!!???User", "SecretPassword123", "Test Nickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("Incorrect!!!???User", "SecretPassword123", "", "Test Nickname",
                 ScrumRole.ScrumMaster));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("§§§ewasdsads", "SecretPassword123", "Test Nickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("§§§ewasdsads", "SecretPassword123", "", "Test Nickname",
                 ScrumRole.ScrumMaster));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("A", "SecretPassword123", "Test Nickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("A", "SecretPassword123", "", "Test Nickname",
                 ScrumRole.ScrumMaster));
         }
     }
@@ -128,7 +128,7 @@ public class UserValidatorTests
     {
         get
         {
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("UserAbcd", "SecretPassword123", "User ABCD",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("UserAbcd", "SecretPassword123", "", "User ABCD",
                 ScrumRole.DevelopmentTeam));
         }
     }

@@ -12,9 +12,9 @@ public class UserConverterTests
     {
         get
         {
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("ABC", "DEF", "UDASHDHSAIHUD",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("ABC", "DEF", "", "UDASHDHSAIHUD",
                 ScrumRole.DevelopmentTeam, "testemail@example.com"));
-            yield return new TestCaseData(AppUserFactory.CreateAppUser("Test username", "test password", "testnickname",
+            yield return new TestCaseData(AppUserFactory.CreateAppUser("Test username", "test password","", "testnickname",
                 ScrumRole.ProjectOwner, "someemail@wp.pl"));
             yield return new TestCaseData(AppUserFactory.CreateAppUser("", ""));
         }

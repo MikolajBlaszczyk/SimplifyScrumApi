@@ -13,7 +13,7 @@ namespace SimplifyScrumApi.Tests;
 public class UserControllerTests
 {
     private WebSimpleApiFactory factory;
-    private SimpleUserModel _createdUserModel =new SimpleUserModel("admin5", "Password123!", "example@abc.com", "admin5", ScrumRole.ProjectOwner);
+    private SimpleUserModel _createdUserModel =new SimpleUserModel("admin5", "Password123!", "example@abc.com", "", "admin5", ScrumRole.ProjectOwner);
     
     [SetUp]
     public async Task Setup()

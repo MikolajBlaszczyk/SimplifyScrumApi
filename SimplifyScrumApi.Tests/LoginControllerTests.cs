@@ -51,7 +51,7 @@ public class LoginControllerTests
     {
         using var client = factory.CreateClient();
 
-        var response = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "password", ""));
+        var response = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "password", "", ""));
         
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
@@ -83,7 +83,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com","Admin2", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com", "", "Admin2", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             
             var response = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
@@ -100,7 +100,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin3", "password34!", "example3@abc.com", "admin3", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin3", "password34!", "example3@abc.com", "", "admin3", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             
             var response = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
@@ -117,7 +117,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin4", "Password1234!", "example4@abc.com","Admin4", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin4", "Password1234!", "example4@abc.com", "", "Admin4", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             var signInResponse = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await signInResponse.Content.ReadAsStringAsync());

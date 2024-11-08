@@ -15,6 +15,7 @@ public class Sprint : HistoryTable
     [StringLength(1000, MinimumLength = 3)]
     public string Goal { get; set; }
     public int Iteration { get; set; }
+    public DateTime End { get; set; }
     
     [ForeignKey(nameof(Project))]
     [StringLength(36, MinimumLength = 36)]
@@ -22,4 +23,22 @@ public class Sprint : HistoryTable
     
     public Project Project { get; set; }
     public ICollection<SprintNote> SprintNotes { get; set; }
+    
+    
+    public static bool operator ==(Sprint first, Sprint second)
+    {
+        return (
+            first.GUID == second.GUID && 
+            first.Name == second.Name && 
+            first.End == second.End && 
+            first.Goal == second.Goal && 
+            first.Iteration == second.Iteration && 
+            first.ProjectGUID == second.ProjectGUID
+        );
+    }
+
+    public static bool operator !=(Sprint first, Sprint second)
+    {
+        return !(first == second);
+    }
 }

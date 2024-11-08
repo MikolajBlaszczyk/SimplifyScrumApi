@@ -12,13 +12,16 @@ namespace DataAccess.Context;
 
 public class SimplifyAppDbContext : IdentityDbContext<Teammate>
 {
+    public DbSet<Team> Teams { get; set; }
     public DbSet<Meeting> Meetings { get; set; }
     public DbSet<Attachment> Attachments { get; set; }
+    
     public DbSet<Project> Projects { get; set; }
     public DbSet<Feature> Features { get; set; }
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Sprint> Sprints { get; set; }
     public DbSet<SprintNote> SprintNotes { get; set; }
+    
     public DbSet<ActionHistory> ActionHistories { get; set; }
     
     

@@ -21,6 +21,18 @@
     &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a673249a_002Dba5d_002D4bb5_002D8636_002Dc83b3af9e100/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="BacklogManagerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogModelConverterTests.ConvertRecordsToModel_RecordsShouldBeCorrectlyConverted(SprintRecord { GUID = 1, Name = sprint1, Goal = to sprint, IterationNumber = 1, Duration = 5, ProjectGUID = , Creator = me, LastUpdate = me },DataAccess.Models.Projects.Sprint)&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogModelConverterTests.ConvertRecordsToModel_RecordsShouldBeCorrectlyConverted&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb711660_002D5ed2_002D449b_002Dbe1e_002Dd42934e5d4db/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BacklogModelConverterTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogModelConverterTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ffb7df3c_002D81b8_002D484f_002D87ac_002D6645d6a307a3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FactoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

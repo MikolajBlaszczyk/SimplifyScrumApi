@@ -22,6 +22,7 @@ public class UserModelConverter
             teammate.UserName,
             "",
             teammate.Email,
+            teammate.TeamGUID,
             teammate.Nickname,
             teammate.ScrumRole,
             teammate.Id
