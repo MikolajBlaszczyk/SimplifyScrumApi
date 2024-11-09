@@ -2,26 +2,19 @@ using UserModule.Security.Models;
 
 namespace UserModule;
 
-public class LogoutProcessor
+public class LogoutProcessor(AspIdentityDirector identityDirector)
 {
-    private readonly AspIdentityDirector identityDirector;
-
-    public LogoutProcessor(AspIdentityDirector identityDirector)
-    {
-        this.identityDirector = identityDirector;
-    }
-    
-    public async Task<SecurityResult> LogoutCurrentUser()
+    public async Task<SecurityResult> LogoutCurrentUserAsync()
     {
         try
         {
-            await identityDirector.Logout();
+            await identityDirector.LogoutAsync();
         }
         catch (Exception ex)
         {
-            return SecurityResultsFactory.Failure(ex);
+            return ex;
         }
 
-        return SecurityResultsFactory.Success();
+        return SecurityResult.SuccessWithoutData();
     }
 }

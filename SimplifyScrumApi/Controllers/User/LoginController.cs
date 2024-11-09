@@ -1,10 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using DataAccess.Model.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimplifyScrum.Utils;
 using UserModule.Abstraction;
+using UserModule.Informations;
 using UserModule.Records;
 
 namespace SimplifyScrum.Controllers.User;
@@ -19,11 +21,11 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] SimpleUserModel userModel)
     {
-        var result = await securityManager.Login(userModel);
+        var result = await securityManager.LoginAsync(userModel);
 
         if (result.IsSuccess)
         {
-            userModel = userModel with { Id = await securityManager.GetLoggedUsersGuid() };
+            userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
             var claims = CreateClaims(userModel);
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
@@ -37,7 +39,7 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [Authorize]
     public async Task<IActionResult> Logout()
     {
-        var result = await securityManager.Logout();
+        var result = await securityManager.LogoutAsync();
             
         if(result.IsSuccess)
             return Ok();
@@ -50,11 +52,12 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> SignIn([FromBody] SimpleUserModel userModel)
     {
-        var signInResult = await securityManager.SignIn(userModel);
+        var signInResult = await securityManager.SignInAsync(userModel);
 
         if (signInResult.IsSuccess)
         {
-            userModel = userModel with { Id = await securityManager.GetLoggedUsersGuid() };
+            await securityManager.AddRoleAsyncForCurrentUser(SystemRole.User);
+            userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
             var claims = CreateClaims(userModel);
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
@@ -69,7 +72,7 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     [Authorize]
     public async Task<IActionResult> Delete()
     {
-        var result = await securityManager.Delete();
+        var result = await securityManager.DeleteAsync();
 
         if (result.IsSuccess)
             return Ok();
@@ -77,6 +80,38 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
         return StatusCode(500, result.Exception!.Message);
     }
 
+    public class AddRoleBody
+    {
+        public Teammate user { get; set; }
+        public string role { get; set; }
+    }
+    
+    [HttpPost]
+    [Route("role")]
+    [Authorize(Roles = SystemRole.Admin)]
+    public async Task<IActionResult> AddRoleForUser([FromBody] AddRoleBody body)
+    {
+        var result = await securityManager.AddRoleForUser(body.user, body.role);
+
+        if (result.IsSuccess)
+            return Ok();
+        
+        return StatusCode(500, result.Exception!.Message);
+    }
+
+    [HttpGet]
+    [Route("isadmin")]
+    [Authorize]
+    public async Task<IActionResult> IsAdmin()
+    {
+        var isAdmin = User.IsInRole(SystemRole.Admin);
+
+        if (isAdmin)
+            return Ok();
+      
+        return BadRequest();
+    }
+    
     private List<Claim> CreateClaims(SimpleUserModel userModel)
     {
         var claims = new List<Claim>

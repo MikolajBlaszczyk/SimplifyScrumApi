@@ -1,52 +1,57 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using DataAccess.Model.User;
 using UserModule.Abstraction;
 using UserModule.Records;
 using UserModule.Security.Models;
 
 namespace UserModule.Security;
 
-public class UserSecurityManager : IManageSecurity
+public class UserSecurityManager(
+    LoginProcessor loginProcessor,
+    LogoutProcessor logoutProcessor,
+    UserAccountProcessor userAccountProcessor,
+    TokenProvider tokenProvider
+    ) : IManageSecurity
 {
-    private readonly LoginProcessor loginProcessor;
-    private readonly LogoutProcessor logoutProcessor;
-    private readonly UserAccountProcessor userAccountProcessor;
-    private readonly TokenProvider tokenProvider;
-
-    public UserSecurityManager(LoginProcessor loginProcessor, LogoutProcessor logoutProcessor, UserAccountProcessor userAccountProcessor, TokenProvider tokenProvider)
+    public async Task<SecurityResult> LoginAsync(SimpleUserModel userModel)
     {
-        this.loginProcessor = loginProcessor;
-        this.logoutProcessor = logoutProcessor;
-        this.userAccountProcessor = userAccountProcessor;
-        this.tokenProvider = tokenProvider;
-    }
-    
-    public async Task<SecurityResult> Login(SimpleUserModel userModel)
-    {
-        return await loginProcessor.LoginUser(userModel);
+        return await loginProcessor.LoginUserAsync(userModel);
     }
 
-    public async Task<SecurityResult> Logout()
+    public async Task<SecurityResult> LogoutAsync()
     {
-        return await logoutProcessor.LogoutCurrentUser();
+        return await logoutProcessor.LogoutCurrentUserAsync();
     }
 
-    public async Task<SecurityResult> SignIn(SimpleUserModel userModel)
+    public async Task<SecurityResult> SignInAsync(SimpleUserModel userModel)
     {
-        return await userAccountProcessor.SignInUser(userModel);
+        return await userAccountProcessor.SignInUserAsync(userModel);
     }
 
-    public async Task<SecurityResult> Delete()
+    public async Task<SecurityResult> DeleteAsync()
     {
-        return await userAccountProcessor.DeleteCurrentUser();
+        return await userAccountProcessor.DeleteCurrentUserAsync();
     }
+
+    public async Task<SecurityResult> AddRoleAsyncForCurrentUser(string role)
+    {
+        return await userAccountProcessor.AddRoleToCurrentUserAsync(role);
+    }
+
+    public async Task<SecurityResult> AddRoleForUser(Teammate user, string role)
+    {
+        return await userAccountProcessor.AddRoleForUser(user, role);
+    }
+
+
     public JwtSecurityToken GetToken(List<Claim> claims)
     {
         return tokenProvider.GetToken(claims);
     }
 
-    public async Task<string> GetLoggedUsersGuid()
+    public async Task<string> GetLoggedUsersGUIDAsync()
     {
-        return await userAccountProcessor.GetCurrentUserId();
+        return await userAccountProcessor.GetCurrentUserIdAsync();
     }
 }

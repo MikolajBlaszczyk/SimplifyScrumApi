@@ -2,20 +2,12 @@ namespace UserModule.Security.Models;
 
 public class SecurityResult : BaseResult
 {
-    public SecurityResult()
-    {
-        UserGUID = null;
-    }
-
-    public SecurityResult(string userGUID)
-    {
-        UserGUID = userGUID;
-    }
+    public SecurityResult() { }
+    public SecurityResult(string userGUID) { Data = userGUID; }
+    public SecurityResult(Exception ex) : base(ex) {  }
     
-    public SecurityResult(Exception ex) : base(ex)
-    {
-        UserGUID = null;
-    }
+    public static SecurityResult SuccessWithoutData() => new();
     
-    public string? UserGUID { get; set; }
+    public static implicit operator SecurityResult(string userGUID) => new(userGUID);
+    public static implicit operator SecurityResult(Exception ex) => new(ex);
 }

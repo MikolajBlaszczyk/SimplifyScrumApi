@@ -1,4 +1,5 @@
 using BacklogModule.Abstraction;
+using DataAccess.Models.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimplifyScrum.Utils;
@@ -13,16 +14,16 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
 {
     [HttpGet]
     [Route("info")]
-    public async Task<IActionResult> GetCurrentSprintGoal()
+    public async Task<IActionResult> GetCurrentSprintInfo()
     {
         var userGuid = HttpContext.User.GetUserGuid();
 
-        var hierarchyResult  = await infoManager.GetUsersProject(userGuid);
+        var hierarchyResult  = await infoManager.GetUsersProjectAsync(userGuid);
 
         if (hierarchyResult.IsFailure)
             return StatusCode(500, hierarchyResult.Exception!.Message);
         
-        var projectGuid = hierarchyResult.Project.GUID;
+        var projectGuid = ((Project)hierarchyResult.Data!).GUID;
         var result = await sprintManager.GetSprintInfoForProject(projectGuid);
         
         return Ok(result);

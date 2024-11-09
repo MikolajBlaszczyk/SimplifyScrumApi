@@ -6,9 +6,7 @@ namespace UserModule.Abstraction;
 
 public interface IManageUserInformation
 {
-    Task<InformationResult> GetInfoByUserGuid(string guid);
-
-    Task<HierarchyResult> GetUsersProject(string guid);
-
-    Task<InformationResult> GetAllUsers();
+    Task<UserInfoResult> GetInfoByUserGUIDAsync(string guid);
+    Task<HierarchyResult> GetUsersProjectAsync(string guid);
+    Task<UsersInfoResult> GetAllUsersAsync();
 }

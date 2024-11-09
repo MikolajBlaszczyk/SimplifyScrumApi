@@ -8,7 +8,7 @@ public class FactoryTests
     [Test]
     public void SecurityResultTest_ShouldCreateSuccessResult()
     {
-        var actual = SecurityResultsFactory.Success();
+        var actual = SecurityResult.SuccessWithoutData();
         
         Assert.IsTrue(actual.IsSuccess, "IsSuccess property for success result should be set to true.");
         Assert.IsFalse(actual.IsFailure, "IsFailure property for success result should be set to false.");
@@ -20,7 +20,7 @@ public class FactoryTests
     {
         var ex = new Exception();
         
-        var actual = SecurityResultsFactory.Failure(ex);
+        var actual = (SecurityResult)ex;
         
         Assert.IsTrue(actual.IsFailure, "IsFailure property for success result should be set to true.");
         Assert.IsFalse(actual.IsSuccess, "IsSuccess property for success result should be set to false.");

@@ -7,11 +7,11 @@ using DataAccess.Models.Factories;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using SchedulingModule.Enums;
+using SchedulingModule.Models;
 using SchedulingModule.Records;
 using SchedulingModule.Tests.Models;
 using SchedulingModule.Tests.Utils;
 using SchedulingModule.Utils;
-using ScheduleResultFactory = SchedulingModule.Models.Factories.ScheduleResultFactory;
 
 namespace SchedulingModule.Tests.Scheduling;
 
@@ -58,7 +58,7 @@ public class SchedulerTests
             DayFactory.CreateDayRecord(januaryDayTen, januaryDayTenMeetings)
         };
         var januaryScheduleRecord = new SimpleScheduleModel(Month.January, januaryDays);
-        var januaryScheduleResult = ScheduleResultFactory.Success(januaryScheduleRecord);
+        ScheduleResult januaryScheduleResult = januaryScheduleRecord;
         
         return new ScheduleTestResult(januaryMeetings, januaryScheduleResult);
     }
@@ -115,7 +115,7 @@ public class SchedulerTests
         };
         
         var decemberScheduleRecord = new SimpleScheduleModel(Month.December, decemberDays);
-        var decemberScheduleResult = ScheduleResultFactory.Success(decemberScheduleRecord);
+        ScheduleResult decemberScheduleResult = decemberScheduleRecord;
         
         return new ScheduleTestResult(decemberMeetings, decemberScheduleResult);
     }

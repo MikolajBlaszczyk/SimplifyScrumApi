@@ -2,6 +2,7 @@ using BacklogModule;
 using BacklogModule.Abstraction;
 using DataAccess.Abstraction;
 using DataAccess.Accessors;
+using Microsoft.AspNetCore.Identity;
 using SchedulingModule;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Utils;
@@ -20,6 +21,7 @@ public static class ServiceCollectionExtensions
     {
         #region user
 
+        services.AddScoped<IRoleManager, RoleManagerHelper>();
         services.AddScoped<IManageSecurity, UserSecurityManager>();
         services.AddScoped<LoginProcessor, LoginProcessor>();
         services.AddScoped<UserValidator, UserValidator>();

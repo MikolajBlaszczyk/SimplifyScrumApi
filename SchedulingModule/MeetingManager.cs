@@ -2,7 +2,6 @@ using DataAccess.Abstraction;
 using DataAccess.Models.Factories;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Models;
-using SchedulingModule.Models.Factories;
 using SchedulingModule.Records;
 using SchedulingModule.Utils;
 using SchedulingModule.Utils.Extensions;
@@ -34,14 +33,14 @@ public class MeetingManager(IMeetingAccessor meetingAccessor, TeammateLinker lin
 
         var usersLinked = linker.LinkUsersToMeeting(simpleMeeting, meeting);
         if (usersLinked == false)
-            return ScheduleResultFactory.Failure(new Exception("Cannot link users"));
+            return new Exception("Cannot link users");
         
         var result = meetingAccessor.UpsertMeeting(meeting);
 
         if (result is null)
-            return ScheduleResultFactory.Failure(new Exception("Could not upsert the meeting"));
+            return new Exception("Could not upsert the meeting");
 
-        return ScheduleResultFactory.Success();
+        return ScheduleResult.SuccessWithoutData();
     }
 
     public async Task<ScheduleResult> DeleteMeeting(SimpleMeetingModel simpleMeetingToDelete)
@@ -49,17 +48,17 @@ public class MeetingManager(IMeetingAccessor meetingAccessor, TeammateLinker lin
         var meeting = meetingAccessor.GetMeetingById(simpleMeetingToDelete.Identifier);
 
         if (meeting is null)
-            return ScheduleResultFactory.Failure(new Exception("Meeting does not exists"));
+            return new Exception("Meeting does not exists");
 
         var usersUnlinked = linker.UnlinkAllUsers(meeting);
         if (usersUnlinked == false)
-            return ScheduleResultFactory.Failure(new Exception("Could not all unlink users"));
+            return new Exception("Could not all unlink users");
         
         var deletedMeeting = meetingAccessor.DeleteMeeting(meeting);
         
         if (deletedMeeting is null)
-            return ScheduleResultFactory.Failure(new Exception("Meeting does not exists"));
+            return new Exception("Meeting does not exists");
 
-        return ScheduleResultFactory.Success();
+        return ScheduleResult.SuccessWithoutData();
     }
 }

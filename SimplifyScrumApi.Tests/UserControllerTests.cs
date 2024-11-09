@@ -5,6 +5,7 @@ using DataAccess.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using UserModule;
+using UserModule.Informations;
 using UserModule.Records;
 
 namespace SimplifyScrumApi.Tests;
@@ -13,7 +14,7 @@ namespace SimplifyScrumApi.Tests;
 public class UserControllerTests
 {
     private WebSimpleApiFactory factory;
-    private SimpleUserModel _createdUserModel =new SimpleUserModel("admin5", "Password123!", "example@abc.com", "", "admin5", ScrumRole.ProjectOwner);
+    private SimpleUserModel _createdUserModel =new SimpleUserModel("admin5", "Password123!", "example@abc.com", SystemRole.User, "", "admin5", ScrumRole.ProjectOwner);
     
     [SetUp]
     public async Task Setup()
@@ -23,7 +24,7 @@ public class UserControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             var processor = scope.ServiceProvider.GetService<UserAccountProcessor>();
-            await processor.SignInUser(_createdUserModel);
+            await processor.SignInUserAsync(_createdUserModel);
         }
     }
 

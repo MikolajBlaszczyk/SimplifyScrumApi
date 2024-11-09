@@ -21,7 +21,7 @@ public class SprintControllerTests
 
             var user = new SimpleUserModel("admin", "Password123!", "example@abc.com", "admin");
 
-            await processor.SignInUser(user);
+            await processor.SignInUserAsync(user);
         }
     }
     

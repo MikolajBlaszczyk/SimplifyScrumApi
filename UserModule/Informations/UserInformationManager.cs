@@ -13,24 +13,27 @@ namespace UserModule.Informations;
 public class UserInformationManager(
     UserManager<Teammate> userManager,
     UserModelConverter converter,
+    IRoleManager roleManager,
     IUserHierarchyAccessor hierarchyAccessor): IManageUserInformation
 {
-    public async Task<InformationResult> GetInfoByUserGuid(string guid)
+    public async Task<UserInfoResult> GetInfoByUserGUIDAsync(string guid)
     {
         try
         {
             var teammate = await userManager.FindByIdAsync(guid);
-            var appUser = converter.ConvertToAppUser(teammate);
+            var role = await roleManager.GetHighestSystemRoleAsync(teammate);
+            
+            var appUser = converter.ConvertToAppUser(teammate, role);
 
-            return InformationResultFactory.Success(appUser);
+            return appUser;
         }
         catch (Exception ex)
         {
-            return InformationResultFactory.Failure(ex);
+            return (UserInfoResult)ex;
         }
     }
 
-    public async Task<HierarchyResult> GetUsersProject(string guid)
+    public async Task<HierarchyResult> GetUsersProjectAsync(string guid)
     {
         try
         {
@@ -49,16 +52,22 @@ public class UserInformationManager(
         }
     }
 
-    public async Task<InformationResult> GetAllUsers()
+    public async Task<UsersInfoResult> GetAllUsersAsync()
     {
         try
         {
-           var allUsers =  userManager.Users.AsEnumerable().Select(converter.ConvertToAppUser).ToList();
-           return InformationResultFactory.Success(allUsers);
+           var allUsers =  userManager
+               .Users
+               .AsEnumerable()
+               .Select( async user => converter.ConvertToAppUser(user, await roleManager.GetHighestSystemRoleAsync(user)))
+               .Select(task => task.Result)
+               .ToList();
+           
+           return allUsers;
         }
         catch (Exception e)
         {
-            return InformationResultFactory.Failure(e);
+            return (UsersInfoResult)e;
         }
     }
 }

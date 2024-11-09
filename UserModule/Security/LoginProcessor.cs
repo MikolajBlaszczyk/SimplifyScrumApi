@@ -9,19 +9,10 @@ using UserModule.Security.Validation;
 
 namespace UserModule.Security;
 
-public class LoginProcessor 
+public class LoginProcessor (UserValidator validator, AspIdentityDirector identityDirector)
 {
-    private readonly UserValidator validator;
-    private readonly AspIdentityDirector identityDirector;
-    private readonly SignInManager<Teammate> signInManager;
-
-    public LoginProcessor(UserValidator validator, AspIdentityDirector identityDirector)
-    {
-        this.validator = validator;
-        this.identityDirector = identityDirector;
-    }
    
-    public async Task<SecurityResult> LoginUser(SimpleUserModel userModel)
+    public async Task<SecurityResult> LoginUserAsync(SimpleUserModel userModel)
     {
         try
         {
@@ -29,17 +20,17 @@ public class LoginProcessor
             if (validation.IsFailure)
                 throw new InternalValidationException(validation.Message);
             
-            var loginSucceeded = await identityDirector.Login(userModel);
+            var loginSucceeded = await identityDirector.LoginAsync(userModel);
             
             if (loginSucceeded == false)
                 throw new Exception("Login failed");
         }
         catch (Exception ex)
         {
-            return SecurityResultsFactory.Failure(ex);
+            return ex;
         }
 
-        return SecurityResultsFactory.Success();
+        return SecurityResult.SuccessWithoutData();
     }
 
 }

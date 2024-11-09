@@ -1,4 +1,5 @@
 using DataAccess.Model.User;
+using Microsoft.AspNetCore.Identity;
 using UserModule.Records;
 
 namespace UserModule.Security.Models.Converters;
@@ -16,12 +17,13 @@ public class UserModelConverter
         };
     }
 
-    public SimpleUserModel ConvertToAppUser(Teammate teammate)
+    public SimpleUserModel ConvertToAppUser(Teammate teammate, string role)
     {
         return new SimpleUserModel(
             teammate.UserName,
             "",
             teammate.Email,
+            role,
             teammate.TeamGUID,
             teammate.Nickname,
             teammate.ScrumRole,

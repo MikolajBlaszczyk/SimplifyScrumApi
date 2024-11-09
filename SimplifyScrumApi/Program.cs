@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SimplifyScrum.DI;
+using SimplifyScrum.Utils.LifeCycle.Startup;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +19,9 @@ builder.Services.AddDbContext<SimplifyAppDbContext>(options =>
 builder.Services.AddDefaultIdentity<Teammate>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
-}).AddEntityFrameworkStores<SimplifyAppDbContext>()
-.AddDefaultTokenProviders();
+}).AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<SimplifyAppDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -90,6 +92,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+RoleSeeder.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
