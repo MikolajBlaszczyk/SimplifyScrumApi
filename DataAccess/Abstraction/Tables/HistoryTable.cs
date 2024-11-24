@@ -6,8 +6,30 @@ public class HistoryTable
 {
     [Required]
     [StringLength(450, MinimumLength = 450)]
-    public string Creator { get; set; }
+    //it is user id
+    public string CreatedBy { get; set; }
     [Required]
     [StringLength(450, MinimumLength = 450)]
-    public string LastUpdate { get; set; }
+    //it is user id
+    public string LastUpdatedBy { get; set; }
+
+    [Required]
+    public DateTime LastUpdateOn { get; set; }
+    [Required]
+    public DateTime CreatedOn { get; set; }
+    
+    public static bool operator ==(HistoryTable first, HistoryTable second)
+    {
+        return (
+            first.CreatedBy == second.CreatedBy && 
+            first.CreatedOn == second.CreatedOn && 
+            first.LastUpdateOn == second.LastUpdateOn && 
+            first.LastUpdatedBy == second.LastUpdatedBy
+        );
+    }
+
+    public static bool operator !=(HistoryTable first, HistoryTable second)
+    {
+        return !(first == second);
+    }
 }

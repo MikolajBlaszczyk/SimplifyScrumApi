@@ -13,7 +13,8 @@ public interface IManageSecurity
     Task<SecurityResult> SignInAsync(SimpleUserModel userModel);
     Task<SecurityResult> DeleteAsync();
     Task<SecurityResult> AddRoleAsyncForCurrentUser(string role);
-    Task<SecurityResult> AddRoleForUser(Teammate user, string role);
+    Task<SecurityResult> AddRoleForUser(SimpleUserModel user, string role);
+    Task<SecurityResult> GetAllUserRoles(string userGUID);
     JwtSecurityToken GetToken(List<Claim> claims);
     Task<string> GetLoggedUsersGUIDAsync();
 }

@@ -229,7 +229,7 @@ public class SchedulerTests
             var firstGuid = Guid.NewGuid().ToString();
             yield return new TestCaseData(
                     new SimpleMeetingModel(firstGuid, "TestMeeting", "", "",DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom, new()),
-                    MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting", "", "", DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom)
+                    MeetingFactory.Create(firstGuid,"TestMeeting", "", "", DateTime.Now, TimeSpan.FromHours(2), MeetingType.Custom)
                 );
         }
     }
@@ -259,8 +259,8 @@ public class SchedulerTests
             var now =DateTime.Now;
             yield return new TestCaseData(
                 new SimpleMeetingModel(firstGuid, "TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily, new()),
-                MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting1", "123", "b", DateTime.MinValue, TimeSpan.Zero, MeetingType.Custom),
-                MeetingFactory.CreateMeetingWithGuid(firstGuid,"TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily)
+                MeetingFactory.Create(firstGuid,"TestMeeting1", "123", "b", DateTime.MinValue, TimeSpan.Zero, MeetingType.Custom),
+                MeetingFactory.Create(firstGuid,"TestMeeting2", "456", "a", now, TimeSpan.FromHours(2), MeetingType.Daily)
                 );
         }
     }
@@ -291,7 +291,7 @@ public class SchedulerTests
             var now = DateTime.Now;
             yield return new TestCaseData(
                 new SimpleMeetingModel(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new()),
-                MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new List<TeammateMeetings>())
+                MeetingFactory.Create(firstGuid, "Test 321", "Some description", "", now, TimeSpan.Zero, MeetingType.Planning, new List<TeammateMeetings>())
                 );
         }
     }

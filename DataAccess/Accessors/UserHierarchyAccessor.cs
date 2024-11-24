@@ -12,7 +12,6 @@ public class UserHierarchyAccessor(SimplifyAppDbContext dbContext) : IUserHierar
         return dbContext
                 .Teams
                 .FirstOrDefault(t => t.GUID == teamGUID);
-
     }
 
     public Project? GetProjectByTeam(string teamGUID)
@@ -25,5 +24,27 @@ public class UserHierarchyAccessor(SimplifyAppDbContext dbContext) : IUserHierar
             throw new Exception();
 
         return projects.FirstOrDefault();
+    }
+
+    public Team AddTeam(Team newTeam)
+    {
+        if (string.IsNullOrEmpty(newTeam.GUID))
+            newTeam.GUID = Guid.NewGuid().ToString();
+        
+        dbContext.Teams.Add(newTeam);
+        dbContext.SaveChanges();
+        return newTeam;
+    }
+
+    public List<Team> GetAllTeams()
+    {
+        return dbContext.Teams.ToList();
+    }
+
+    public Team GetTeamByGUID(string teamGUID)
+    {
+        return dbContext
+            .Teams
+            .FirstOrDefault(t => t.GUID == teamGUID);
     }
 }

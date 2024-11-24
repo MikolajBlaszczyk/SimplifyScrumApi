@@ -18,7 +18,7 @@ public class ModelConverterTests
             var firstGuid = Guid.NewGuid().ToString();
             var firstDateTime = DateTime.Now;
             yield return new TestCaseData(
-                MeetingFactory.CreateMeetingWithGuid(firstGuid, "Test", "Some description", "", firstDateTime,
+                MeetingFactory.Create(firstGuid, "Test", "Some description", "", firstDateTime,
                     TimeSpan.FromHours(1), MeetingType.Custom),
                 new SimpleMeetingModel(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
                     MeetingType.Custom, null)
@@ -27,7 +27,7 @@ public class ModelConverterTests
             var secondDateTime = DateTime.Parse("12.09.2002");
             var secondGuid = Guid.NewGuid().ToString();
             yield return new TestCaseData(
-                MeetingFactory.CreateMeetingWithGuid(secondGuid, "Test1", "Some description", "", secondDateTime ,
+                MeetingFactory.Create(secondGuid, "Test1", "Some description", "", secondDateTime ,
                     TimeSpan.FromHours(4), MeetingType.Daily),
                 new SimpleMeetingModel(secondGuid, "Test1", "Some description", "", secondDateTime,
                     TimeSpan.FromHours(4),

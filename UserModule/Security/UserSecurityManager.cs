@@ -39,9 +39,14 @@ public class UserSecurityManager(
         return await userAccountProcessor.AddRoleToCurrentUserAsync(role);
     }
 
-    public async Task<SecurityResult> AddRoleForUser(Teammate user, string role)
+    public async Task<SecurityResult> AddRoleForUser(SimpleUserModel user, string role)
     {
         return await userAccountProcessor.AddRoleForUser(user, role);
+    }
+
+    public async Task<SecurityResult> GetAllUserRoles(string userGUID)
+    {
+        return await userAccountProcessor.GetUserRoles(userGUID);
     }
 
 

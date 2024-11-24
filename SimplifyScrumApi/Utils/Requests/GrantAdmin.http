@@ -1,0 +1,17 @@
+
+
+POST http://localhost:5165/api/v1/scrum/addrole
+Content-Type: application/json
+
+{
+  "user": { 
+    "Username":  "admin",
+    "Password": "Password123!",
+    "Email": "ADMIN@EXAMPLE.ABC",
+    "ScrumRole": 0,
+    "TeamGuid": null,
+    "Nickname": "admin",
+    "Id": "64e1b3c0-7107-45e2-9324-7ae976543467"
+  },
+  "role": "Admin"
+}

@@ -4,9 +4,9 @@ using DataAccess.Model.Meetings;
 
 namespace DataAccess.Models.Factories;
 
-public class MeetingFactory
+public static class MeetingFactory
 {
-    public static Meeting CreateMeetingWithGuid(string guid, string name, string description, string leaderGuid,  DateTime start, TimeSpan duration,MeetingType type)
+    public static Meeting Create(string guid, string name, string description, string leaderGuid,  DateTime start, TimeSpan duration,MeetingType type)
     {
         if (Guid.TryParse(guid, out _) == false)
             guid = Guid.NewGuid().ToString();
@@ -23,7 +23,7 @@ public class MeetingFactory
         };
     }
     
-    public static Meeting CreateMeetingWithGuid(string guid, string name, string description, string leaderGuid,  DateTime start, TimeSpan duration,MeetingType type, List<TeammateMeetings> links)
+    public static Meeting Create(string guid, string name, string description, string leaderGuid,  DateTime start, TimeSpan duration,MeetingType type, List<TeammateMeetings> links)
     {
         if (Guid.TryParse(guid, out _) == false)
             guid = Guid.NewGuid().ToString();

@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using DataAccess.Context;
 using DataAccess.Enums;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Identity;
@@ -16,29 +17,18 @@ namespace SimplifyScrumApi.Tests;
 public class LoginControllerTests
 {
     private WebSimpleApiFactory factory;
-    
-    [SetUp]
+
+    [OneTimeSetUp]
     public async Task Setup()
     {
         factory = new WebSimpleApiFactory();
-
-        using (var scope = factory.Services.CreateScope())
-        {
-            var processor = scope.ServiceProvider.GetService<UserAccountProcessor>();
-
-            var user = new SimpleUserModel("admin", "Password123!", "example@abc.com",  Nickname: "admin");
-
-            await processor.SignInUserAsync(user);
-        }
     }
-    
-
     
     [Test]
     public async Task LoginWithExistingAccount_ShouldAuthorizeUserAndReturnToken()
     {
         using var client = factory.CreateClient();
-        
+        await client.PostAsJsonAsync("api/v1/scrum/signin", new SimpleUserModel("admin", "Password123!", "example@abc.com", Nickname:"admin"));
         var response = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "Password123!", ""));
         var body = await response.Content.ReadAsStringAsync();
         var token =  new JwtSecurityTokenHandler().ReadToken(body); 
@@ -71,7 +61,8 @@ public class LoginControllerTests
     public async Task LogoutAfterLogin_ShouldReturnOk()
     {
         using var client = factory.CreateClient();
-        var loginResponse = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "Password123!", ""));
+        await client.PostAsJsonAsync("api/v1/scrum/signin", new SimpleUserModel("admin", "Password123!", "example@abc.com", Nickname:"admin"));
+        var loginResponse = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "Password123!", "example@abc.com", Nickname:"admin"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await loginResponse.Content.ReadAsStringAsync());
         var response = await client.GetAsync("api/v1/scrum/logout");
         
@@ -84,7 +75,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com", SystemRole.User, "", "Admin2", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com",  "", "Admin2", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             var response = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -100,7 +91,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin3", "password34!", "example3@abc.com", SystemRole.User, "", "admin3", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin3", "password34!", "example3@abc.com", "", "admin3", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             
             var response = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
@@ -117,7 +108,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin4", "Password1234!", "example4@abc.com", SystemRole.User,"", "Admin4", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin4", "Password1234!", "example4@abc.com", "", "Admin4", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             var signInResponse = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await signInResponse.Content.ReadAsStringAsync());
@@ -140,9 +131,10 @@ public class LoginControllerTests
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
     }
     
-    [TearDown]
-    public void Teardown()
+    [OneTimeTearDown]
+    public async Task Teardown()
     {
+        await factory.OnDispose();
         factory.Dispose();
     }
 }

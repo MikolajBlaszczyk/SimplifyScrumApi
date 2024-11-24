@@ -30,4 +30,20 @@ public class Project : HistoryTable
     public Team ProjectTeam { get; set; }
     public ICollection<Feature> Features { get; set; }
     public ICollection<Sprint> Sprints { get; set; }
+    
+    public static bool operator ==(Project first, Project second)
+    {
+        return (
+            first.GUID == second.GUID && 
+            first.Name == second.Name && 
+            first.TeamGUID == second.TeamGUID && 
+            first.Description == second.Description && 
+            first.State == second.State
+        );
+    }
+
+    public static bool operator !=(Project first, Project second)
+    {
+        return !(first == second);
+    }
 }

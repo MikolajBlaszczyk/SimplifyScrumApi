@@ -29,4 +29,21 @@ public class Feature : HistoryTable
     
     public Project ParentProject { get; set; }
     public ICollection<Task> Tasks { get; set; }
+    
+    public static bool operator ==(Feature first, Feature second)
+    {
+        return (
+            first.GUID == second.GUID && 
+            first.Name == second.Name && 
+            first.ProjectGUID == second.ProjectGUID && 
+            first.Description == second.Description && 
+            first.Points == second.Points && 
+            first.State == second.State
+        );
+    }
+
+    public static bool operator !=(Feature first, Feature second)
+    {
+        return !(first == second);
+    }
 }

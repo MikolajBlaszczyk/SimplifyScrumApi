@@ -19,13 +19,13 @@ public static class ProjectTablesBuilder
         builder.Entity<Project>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(p => p.Creator)
+            .HasForeignKey(p => p.CreatedBy)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Project>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(p => p.LastUpdate)  
+            .HasForeignKey(p => p.LastUpdatedBy)  
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Feature>()
@@ -36,17 +36,17 @@ public static class ProjectTablesBuilder
         builder.Entity<Feature>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(f => f.Creator)
+            .HasForeignKey(f => f.CreatedBy)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Feature>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(t => t.LastUpdate)
+            .HasForeignKey(t => t.LastUpdatedBy)
             .OnDelete(DeleteBehavior.NoAction);
         
         builder.Entity<Feature>()
-            .ToTable(f => f.HasCheckConstraint("CK_Features_Points", "[Points] IN (1, 2, 3, 5, 8, 13)"));
+            .ToTable(f => f.HasCheckConstraint("CK_Features_Points", "[Points] IN (-1, 1, 2, 3, 5, 8, 13)"));
 
         builder.Entity<Task>()
             .HasOne(t => t.ParentFeature)
@@ -56,18 +56,18 @@ public static class ProjectTablesBuilder
         builder.Entity<Task>()
             .HasOne(t => t.AssignedTeammate)
             .WithMany(tm => tm.Tasks)
-            .HasForeignKey(t => t.Assigne);
+            .HasForeignKey(t => t.Assignee);
 
         builder.Entity<Task>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(t => t.Creator)
+            .HasForeignKey(t => t.CreatedBy)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Task>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(t => t.LastUpdate)
+            .HasForeignKey(t => t.LastUpdatedBy)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Sprint>()
@@ -78,13 +78,13 @@ public static class ProjectTablesBuilder
         builder.Entity<Sprint>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(s => s.Creator)
+            .HasForeignKey(s => s.CreatedBy)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Sprint>()
             .HasOne<Teammate>()
             .WithMany()
-            .HasForeignKey(s => s.LastUpdate)
+            .HasForeignKey(s => s.LastUpdatedBy)
             .OnDelete(DeleteBehavior.NoAction);
         
         builder.Entity<SprintNote>()

@@ -93,8 +93,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-RoleSeeder.SeedAsync(app.Services);
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -106,6 +104,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
+await RoleSeeder.SeedAsync(app.Services);
+await RoleSeeder.AddAdminRolesForSelectedUsers(app.Services, new[] { "64e1b3c0-7107-45e2-9324-7ae976543467" });
 
 app.MapControllers();
 app.Run();

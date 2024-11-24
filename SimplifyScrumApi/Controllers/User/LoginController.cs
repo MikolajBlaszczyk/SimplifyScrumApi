@@ -26,7 +26,8 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
         if (result.IsSuccess)
         {
             userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
-            var claims = CreateClaims(userModel);
+            var roles = (await securityManager.GetAllUserRoles(userModel.Id)).Data as List<string>;
+            var claims = CreateClaims(userModel, roles);
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
@@ -53,12 +54,12 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     public async Task<IActionResult> SignIn([FromBody] SimpleUserModel userModel)
     {
         var signInResult = await securityManager.SignInAsync(userModel);
-
+       
         if (signInResult.IsSuccess)
         {
             await securityManager.AddRoleAsyncForCurrentUser(SystemRole.User);
             userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
-            var claims = CreateClaims(userModel);
+            var claims = CreateClaims(userModel, new List<string>{ SystemRole.User });
             var token = securityManager.GetToken(claims);
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
@@ -82,12 +83,12 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
 
     public class AddRoleBody
     {
-        public Teammate user { get; set; }
+        public SimpleUserModel user { get; set; }
         public string role { get; set; }
     }
     
     [HttpPost]
-    [Route("role")]
+    [Route("addrole")]
     [Authorize(Roles = SystemRole.Admin)]
     public async Task<IActionResult> AddRoleForUser([FromBody] AddRoleBody body)
     {
@@ -101,7 +102,7 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
 
     [HttpGet]
     [Route("isadmin")]
-    [Authorize]
+    [Authorize(Roles = SystemRole.Admin)]
     public async Task<IActionResult> IsAdmin()
     {
         var isAdmin = User.IsInRole(SystemRole.Admin);
@@ -112,13 +113,18 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
         return BadRequest();
     }
     
-    private List<Claim> CreateClaims(SimpleUserModel userModel)
+    private List<Claim> CreateClaims(SimpleUserModel userModel, List<string> roles)
     {
         var claims = new List<Claim>
         {
             new (ClaimTypes.Name, userModel.Username),
             new (SimpleClaims.UserGuidClaim, userModel.Id)
         };
+
+        foreach (var role in roles)
+        {
+            claims.Add(new (ClaimTypes.Role, role));
+        }
         
         return claims;
     }

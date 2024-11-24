@@ -226,17 +226,23 @@ namespace DataAccess.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<string>("Creator")
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastUpdate")
+                    b.Property<DateTime>("LastUpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
@@ -258,15 +264,15 @@ namespace DataAccess.Migrations
 
                     b.HasKey("GUID");
 
-                    b.HasIndex("Creator");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasIndex("LastUpdate");
+                    b.HasIndex("LastUpdatedBy");
 
                     b.HasIndex("ProjectGUID");
 
                     b.ToTable("Features", t =>
                         {
-                            t.HasCheckConstraint("CK_Features_Points", "[Points] IN (1, 2, 3, 5, 8, 13)");
+                            t.HasCheckConstraint("CK_Features_Points", "[Points] IN (-1, 1, 2, 3, 5, 8, 13)");
                         });
                 });
 
@@ -276,16 +282,22 @@ namespace DataAccess.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<string>("Creator")
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastUpdate")
+                    b.Property<DateTime>("LastUpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
@@ -305,9 +317,9 @@ namespace DataAccess.Migrations
 
                     b.HasKey("GUID");
 
-                    b.HasIndex("Creator");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasIndex("LastUpdate");
+                    b.HasIndex("LastUpdatedBy");
 
                     b.HasIndex("TeamGUID");
 
@@ -319,10 +331,13 @@ namespace DataAccess.Migrations
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Creator")
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
@@ -335,7 +350,10 @@ namespace DataAccess.Migrations
                     b.Property<int>("Iteration")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastUpdate")
+                    b.Property<DateTime>("LastUpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
@@ -352,9 +370,9 @@ namespace DataAccess.Migrations
 
                     b.HasKey("GUID");
 
-                    b.HasIndex("Creator");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasIndex("LastUpdate");
+                    b.HasIndex("LastUpdatedBy");
 
                     b.HasIndex("ProjectGUID");
 
@@ -395,19 +413,25 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Assigne")
+                    b.Property<string>("Assignee")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Creator")
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FeatureGUID")
                         .IsRequired()
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<string>("LastUpdate")
+                    b.Property<DateTime>("LastUpdateOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
@@ -422,13 +446,13 @@ namespace DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Assigne");
+                    b.HasIndex("Assignee");
 
-                    b.HasIndex("Creator");
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("FeatureGUID");
 
-                    b.HasIndex("LastUpdate");
+                    b.HasIndex("LastUpdatedBy");
 
                     b.ToTable("Tasks");
                 });
@@ -666,13 +690,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("Creator")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("LastUpdate")
+                        .HasForeignKey("LastUpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -687,13 +711,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("Creator")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("LastUpdate")
+                        .HasForeignKey("LastUpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -710,13 +734,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("Creator")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("LastUpdate")
+                        .HasForeignKey("LastUpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -770,11 +794,11 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Model.User.Teammate", "AssignedTeammate")
                         .WithMany("Tasks")
-                        .HasForeignKey("Assigne");
+                        .HasForeignKey("Assignee");
 
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("Creator")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -786,7 +810,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DataAccess.Model.User.Teammate", null)
                         .WithMany()
-                        .HasForeignKey("LastUpdate")
+                        .HasForeignKey("LastUpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

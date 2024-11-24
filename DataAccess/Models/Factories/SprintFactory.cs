@@ -1,23 +1,29 @@
+using DataAccess.Abstraction.Tables;
 using DataAccess.Models.Projects;
 
 namespace DataAccess.Models.Factories;
 
-public class SprintFactory
+public static class SprintFactory
 {
-    public static Sprint CreateSprintWithGuid(string guid, string creator, string lastUpdate, string name, string goal, int iteration, DateTime end, string ProjectGUID)
+    public static Sprint Create(string guid, string name, string goal, int iteration, DateTime end, string ProjectGUID, string createdBy, DateTime createdOn)
     {
-        return new Sprint
+        return Create(guid, name, goal, iteration, end, ProjectGUID, createdBy, createdOn, createdBy , createdOn);
+    }
+    
+    public static Sprint Create(string guid, string name, string goal, int iteration, DateTime end, string ProjectGUID, string createdBy, DateTime createdOn, string lastUpdatedBy, DateTime lastUpdatedOn)
+    {
+        var newSprint =  new Sprint
         {
-            Creator = creator,
-            LastUpdate = lastUpdate,
             GUID = guid,
             Name = name,
             Goal = goal,
             Iteration = iteration,
             End = end,
             ProjectGUID = ProjectGUID,
-            Project = null,
-            SprintNotes = null
         };
+        
+        HistoryTableHelper.PopulateMissingValues(newSprint, createdBy, createdOn, lastUpdatedBy, lastUpdatedOn);
+
+        return newSprint;
     }
 }

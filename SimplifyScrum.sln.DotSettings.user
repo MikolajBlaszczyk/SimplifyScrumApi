@@ -17,6 +17,17 @@
       &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithNonExistingAccount_ShouldReturnInternalServerError&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.UserControllerTests.GetInfoFromExistingUser_ShouldCorrectlyGetUserInfo&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::83255124-3683-4B81-98F9-C570AE014986::net8.0::DataAccess.Tests.HistoryTableHelperTests.PopulateMissingHistoryValues_CorrectlyPopulateHistoryTableValues&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.ModelConverterTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetSprintByExistingProjectGUID_ShouldProperlyReturnSprintInfo&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetProjectsFromDatabase_ShouldReturnAllProjectsSuccessfully&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetFeaturesFromDatabase_ShouldReturnAllProjectsSuccessfully&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectTests.GetAll_ShouldReturnStatusOk&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.SprintControllerTests.GetGoalOfTheSprint_ShouldReturnStatusOk&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectControllerTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.SprintControllerTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectItemControllerTests&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
   &lt;/Or&gt;

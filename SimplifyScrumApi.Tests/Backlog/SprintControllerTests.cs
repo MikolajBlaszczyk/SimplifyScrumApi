@@ -1,6 +1,9 @@
 using System.Net;
+using DataAccess.Enums;
 using Microsoft.Extensions.DependencyInjection;
+using SimplifyScrumApi.Tests.Utils;
 using UserModule;
+using UserModule.Informations;
 using UserModule.Records;
 
 namespace SimplifyScrumApi.Tests;
@@ -10,32 +13,25 @@ public class SprintControllerTests
 {
     private WebSimpleApiFactory factory;
     private const string ApiUrl = "api/v1/scrum/sprint";
-    [SetUp]
+    private SimpleUserModel _createdUserModel = new ("admin", "Password123!", "example@abc.com",  Nickname: "admin");
+    
+    [OneTimeSetUp]
     public async Task Setup()
     {
         factory = new WebSimpleApiFactory();
-
-        using (var scope = factory.Services.CreateScope())
-        {
-            var processor = scope.ServiceProvider.GetService<UserAccountProcessor>();
-
-            var user = new SimpleUserModel("admin", "Password123!", "example@abc.com", "admin");
-
-            await processor.SignInUserAsync(user);
-        }
     }
     
     [Test]
     public async Task GetGoalOfTheSprint_ShouldReturnStatusOk()
     {
-        using var client = factory.CreateClient();
+        var client = await factory.CreateLoggedClient();
 
-        var response = await client.GetAsync(ApiUrl + "/");
+        var response = await client.GetAsync(ApiUrl + "/info");
         
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
     
-    [TearDown]
+    [OneTimeTearDown]
     public void Teardown()
     {
         factory.Dispose();

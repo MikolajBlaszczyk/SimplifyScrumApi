@@ -10,6 +10,7 @@ namespace DataAccess.Models.Projects;
 public class Task : HistoryTable
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
     
     [StringLength(1000)]
@@ -21,9 +22,25 @@ public class Task : HistoryTable
     [Required]
     public string FeatureGUID { get; set; }
     [ForeignKey(nameof(AssignedTeammate))]
-    public string? Assigne { get; set; }
+    public string? Assignee { get; set; }
     
     
     public Feature ParentFeature { get; set; }
     public Teammate AssignedTeammate { get; set; }
+    
+    public static bool operator ==(Task first, Task second)
+    {
+        return (
+            first.ID == second.ID && 
+            first.Name == second.Name && 
+            first.FeatureGUID == second.FeatureGUID && 
+            first.Assignee == second.Assignee && 
+            first.State == second.State
+        );
+    }
+
+    public static bool operator !=(Task first, Task second)
+    {
+        return !(first == second);
+    }
 }

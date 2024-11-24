@@ -21,7 +21,7 @@ public class MeetingManager(IMeetingAccessor meetingAccessor, TeammateLinker lin
         }
         else
         {
-            meeting = MeetingFactory.CreateMeetingWithGuid(
+            meeting = MeetingFactory.Create(
                 simpleMeeting.Identifier,
                 simpleMeeting.Name,
                 simpleMeeting.Description,

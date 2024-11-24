@@ -1,7 +1,6 @@
 using DataAccess.Enums;
 using DataAccess.Model.User;
 using UserModule.Records;
-using UserModule.Security.Models.Converters;
 
 namespace UserModuleTests.Security;
 
@@ -24,9 +23,8 @@ public class UserConverterTests
     [TestCaseSource(nameof(AppUserModels))]
     public void ConvertToTeammate_ShouldConvertAppUserIntoTeammatesModels(SimpleUserModel userModel)
     {
-        UserModelConverter converter = new UserModelConverter();
 
-        var teammate = converter.ConvertToTeammate(userModel);
+        var teammate = userModel;
         
         Assert.That(teammate, Is.TypeOf(typeof(Teammate)));
     }

@@ -22,7 +22,14 @@ public class AspIdentityDirector(
 
         return result.Succeeded;
     }
+    
+    public async Task<bool> LoginAsync(Teammate userModel, string password)
+    { 
+        var result = await signInManager.PasswordSignInAsync(userModel.UserName, password, true, false);
 
+        return result.Succeeded;
+    }
+    
     public async Task LogoutAsync()
     {
         await signInManager.SignOutAsync();
@@ -30,17 +37,29 @@ public class AspIdentityDirector(
 
     public async Task CreateUserAsync(Teammate teammate, string password)
     {
+        if (userManager.Users.Any(u => u.UserName == teammate.UserName))
+            throw new Exception("User already exsists");
+            
         var createResult = await userManager.CreateAsync(teammate, password);
-        
+
         if (createResult.Succeeded)
-            await signInManager.SignInAsync(teammate, true);
+        {
+            await LoginAsync(teammate, password);
+        }
         else
+        {
             throw new InternalIdentityException(createResult.Errors);
+        }
     }
 
+    public async Task<Teammate?> GetUserByGUIDAsync(string guid)
+    {
+        return await userManager.FindByIdAsync(guid);
+    }
+    
     public async Task DeleteUserByGUIDAsync(string guid)
     {
-        var teammate = await userManager.FindByIdAsync(guid);
+        var teammate = await GetUserByGUIDAsync(guid);
         await userManager.DeleteAsync(teammate!);
     }
 
@@ -69,8 +88,12 @@ public class AspIdentityDirector(
         {
             throw new Exception();
         }
-
-      
+        
         await userManager.AddToRoleAsync(user, role);
+    }
+
+    public async Task<List<string>> GetUserRolesAsync(Teammate user)
+    {
+        return await userManager.GetRolesAsync(user) as List<string>;
     }
 }

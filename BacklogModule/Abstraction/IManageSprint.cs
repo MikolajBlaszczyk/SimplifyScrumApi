@@ -1,8 +1,9 @@
 using BacklogModule.Models;
+using BacklogModule.Models.Results;
 
 namespace BacklogModule.Abstraction;
 
 public interface IManageSprint
 {
-    Task<SprintRecord> GetSprintInfoForProject(string projectGUID);
+    BacklogResult GetSprintInfoForProject(string projectGUID);
 }

@@ -1,9 +1,10 @@
 using DataAccess.Models.Projects;
+using Task = DataAccess.Models.Projects.Task;
 
 namespace DataAccess.Abstraction;
 
 public interface ISprintAccessor
 {
-    Sprint? GetCurrentSprintInfoByProject(string projectGUID);
-    Sprint? GetSprintByGuid(string sprintGUID);
+    Sprint? GetSprintInfoByProjectGUID(string projectGUID);
+
 }

@@ -1,18 +1,18 @@
 using DataAccess.Abstraction;
 using DataAccess.Model.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using SimplifyScrum.Utils;
 using UserModule.Abstraction;
-using UserModule.Exceptions;
 using UserModule.Models;
-using UserModule.Models.Factories;
+using UserModule.Records;
 using UserModule.Security.Models;
-using UserModule.Security.Models.Converters;
 
 namespace UserModule.Informations;
 
 public class UserInformationManager(
+    IHttpContextAccessor contextAccessor,
     UserManager<Teammate> userManager,
-    UserModelConverter converter,
     IRoleManager roleManager,
     IUserHierarchyAccessor hierarchyAccessor): IManageUserInformation
 {
@@ -22,14 +22,15 @@ public class UserInformationManager(
         {
             var teammate = await userManager.FindByIdAsync(guid);
             var role = await roleManager.GetHighestSystemRoleAsync(teammate);
-            
-            var appUser = converter.ConvertToAppUser(teammate, role);
 
+            SimpleUserModel appUser = teammate;
+            appUser.SystemRole = role;
+            
             return appUser;
         }
         catch (Exception ex)
         {
-            return (UserInfoResult)ex;
+            return ex;
         }
     }
 
@@ -38,17 +39,19 @@ public class UserInformationManager(
         try
         {
             var user = await userManager.FindByIdAsync(guid);
-            if (user is null)
+            
+            if (user is null or {TeamGUID: null or ""})
                 throw new Exception();
 
             var project = hierarchyAccessor.GetProjectByTeam(user.TeamGUID);
-
-            return HierarchyResultFactory.Success(project);
+        
+            
+            return project;
 
         }
         catch (Exception e)
         {
-            return HierarchyResultFactory.Failure(e);
+            return e;
         }
     }
 
@@ -59,7 +62,12 @@ public class UserInformationManager(
            var allUsers =  userManager
                .Users
                .AsEnumerable()
-               .Select( async user => converter.ConvertToAppUser(user, await roleManager.GetHighestSystemRoleAsync(user)))
+               .Select( async teammate =>
+               {
+                   SimpleUserModel user = teammate;
+                   user.SystemRole = await roleManager.GetHighestSystemRoleAsync(teammate);
+                   return user;
+               })
                .Select(task => task.Result)
                .ToList();
            
@@ -67,7 +75,121 @@ public class UserInformationManager(
         }
         catch (Exception e)
         {
-            return (UsersInfoResult)e;
+            return e;
+        }
+    }
+
+    public async Task<UserInfoResult> UpdateUserInfo(SimpleUserModel updatedUser)
+    {
+        try
+        {
+            var updatedTeammate = updatedUser;
+            
+            var guid = contextAccessor.HttpContext.User.GetUserGuid();
+            var original =  await userManager.FindByIdAsync(guid);
+            
+            original.Update(updatedTeammate);
+            var updateResult = await userManager.UpdateAsync(original);
+            if (updateResult.Succeeded)
+                return updatedUser;
+         
+            throw new Exception();
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<HierarchyResult> AddTeam(SimpleTeamModel newTeamModel)
+    {
+        try
+        {
+            //TODO: Validation here
+            Team newTeam = newTeamModel;
+            SimpleTeamModel addedTeam = hierarchyAccessor.AddTeam(newTeam);
+
+            return addedTeam;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<HierarchyResult> AddUsersToTeam(List<SimpleUserModel> users, SimpleTeamModel team)
+    {
+        try
+        {
+            //TODO: Validation here
+            foreach (var user in users)
+            {
+                var teammate = await userManager.FindByIdAsync(user.Id);
+                teammate.TeamGUID = team.GUID;
+                await userManager.UpdateAsync(teammate);
+            }
+
+            return HierarchyResult.SuccessWithoutData();
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<HierarchyResult> GetAllTeamsAsync()
+    {
+        try
+        {
+            var result = new List<SimpleTeamModel>();
+            var teams =  hierarchyAccessor.GetAllTeams();
+            
+            
+            foreach (var team in teams)
+            {
+                result.Add(team);
+            }
+            
+            return result;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<HierarchyResult> GetTeam(string teamGUID)
+    {
+        try
+        {
+            SimpleTeamModel team =  hierarchyAccessor.GetTeamByGUID(teamGUID);
+            
+            return team;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<HierarchyResult> GetTeamMemebers(string teamGUID)
+    {
+        try
+        {
+            List<SimpleUserModel> result = new List<SimpleUserModel>();
+            var members = userManager.Users.Where(u => u.TeamGUID == teamGUID).ToList();
+
+            foreach (var member in members)
+            {
+                SimpleUserModel user = member;
+                result.Add(user);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return ex;
         }
     }
 }

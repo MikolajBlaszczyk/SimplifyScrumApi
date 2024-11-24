@@ -1,7 +1,11 @@
 using BacklogModule;
 using BacklogModule.Abstraction;
+using BacklogModule.Preparation;
+using BacklogModule.Preparation.Creation;
 using DataAccess.Abstraction;
+using DataAccess.Abstraction.Tables;
 using DataAccess.Accessors;
+using DataAccess.Models.Projects;
 using Microsoft.AspNetCore.Identity;
 using SchedulingModule;
 using SchedulingModule.Abstraction;
@@ -10,8 +14,8 @@ using UserModule;
 using UserModule.Abstraction;
 using UserModule.Informations;
 using UserModule.Security;
-using UserModule.Security.Models.Converters;
 using UserModule.Security.Validation;
+using Task = DataAccess.Models.Projects.Task;
 
 namespace SimplifyScrum.DI;
 
@@ -28,10 +32,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<AspIdentityDirector, AspIdentityDirector>();
         services.AddScoped<LogoutProcessor, LogoutProcessor>();
         services.AddScoped<UserAccountProcessor, UserAccountProcessor>();
-        services.AddScoped<UserModelConverter, UserModelConverter>();
         services.AddScoped<IManageUserInformation, UserInformationManager>();
         services.AddScoped<TokenProvider, TokenProvider>();
-
+        
         #endregion
 
         #region backlog
@@ -39,6 +42,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IManageSprint, BacklogManager>();
         services.AddScoped<IUserHierarchyAccessor, UserHierarchyAccessor>();
         services.AddScoped<ISprintAccessor, SprintAccessor > ();
+        services.AddScoped<IManageProjectItems, BacklogManager>();
+        services.AddScoped<IProjectItemsAccessor, ProjectItemAccessor>();
+        services.AddTransient<IPrepareCreation<Project>, ProjectCreationPreparer>();
+        services.AddTransient<IPrepareCreation<Feature>, FeatureCreationPreparer>();
+        services.AddTransient<IPrepareCreation<Task>, TaskCreationPreparer>();
+        services.AddTransient<IPrepareCreation<HistoryTable>, HistoryTableCreationPreparer>();
+        services.AddSingleton<IEntityPreparerFactory, EntityPreparerFactory>();
 
         #endregion
         

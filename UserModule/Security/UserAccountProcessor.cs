@@ -1,19 +1,16 @@
 using DataAccess.Model.User;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using UserModule.Records;
 using UserModule.Security.Models;
-using UserModule.Security.Models.Converters;
 using UserModule.Security.Validation;
 
 namespace UserModule;
 
 public class UserAccountProcessor(
     UserValidator validator,
-    UserModelConverter converter,
     AspIdentityDirector identityDirector)
 {
 
+    
     public async Task<SecurityResult> SignInUserAsync(SimpleUserModel userModel)
     {
         try
@@ -22,7 +19,7 @@ public class UserAccountProcessor(
             if (validation.IsFailure)
                 throw new Exception(validation.Message);
 
-            var teammate = converter.ConvertToTeammate(userModel);
+            Teammate teammate = userModel;
             await identityDirector.CreateUserAsync(teammate, userModel.Password);
         }
         catch (Exception e)
@@ -63,11 +60,12 @@ public class UserAccountProcessor(
         return SecurityResult.SuccessWithoutData();
     }
 
-    public async Task<SecurityResult> AddRoleForUser(Teammate user, string role)
+    public async Task<SecurityResult> AddRoleForUser(SimpleUserModel user, string role)
     {
         try
         {
-            await identityDirector.AddRoleForUserAsync(user, role);
+            Teammate teammate = user;
+            await identityDirector.AddRoleForUserAsync(teammate, role);
         }
         catch(Exception ex)
         {
@@ -77,5 +75,23 @@ public class UserAccountProcessor(
         return SecurityResult.SuccessWithoutData();
     }
     
+    public async Task<SecurityResult> GetUserRoles(string userGUID)
+    {
+        try
+        {
+            var user = await identityDirector.GetUserByGUIDAsync(userGUID);
+             if (user is null)
+                throw new Exception("User does not exists");
+            
+            return await identityDirector.GetUserRolesAsync(user);
+        }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+    }
+    
     public async Task<string> GetCurrentUserIdAsync() => await identityDirector.GetLoggedUserGUIDAsync();
+
+  
 }
