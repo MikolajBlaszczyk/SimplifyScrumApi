@@ -14,7 +14,7 @@ public class FeatureManager(IFeatureStorage featureStorage, IEntityPreparerFacto
 {
     public async Task<BacklogResult> GetAllFeaturesByProjectGUID(string projectGuid)
     {
-        var features = featureStorage.GetFeatureByProjectGUID(projectGuid);
+        var features = await featureStorage.GetFeatureByProjectGUID(projectGuid);
 
         List<FeatureRecord> result = new List<FeatureRecord>();
         foreach (var feature in features)
@@ -28,7 +28,7 @@ public class FeatureManager(IFeatureStorage featureStorage, IEntityPreparerFacto
 
     public async Task<BacklogResult> GetFeatureByGuid(string featureGUID)
     {
-        FeatureRecord feature =  featureStorage.GetFeatureByGUID(featureGUID);
+        FeatureRecord feature = await featureStorage.GetFeatureByGUID(featureGUID);
         return feature;
     }
 
@@ -44,21 +44,21 @@ public class FeatureManager(IFeatureStorage featureStorage, IEntityPreparerFacto
         var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
         historyPreparer.Prepare(feature);
         
-        FeatureRecord result = featureStorage.AddFeature(feature);
+        FeatureRecord result = await featureStorage.AddFeature(feature);
         return result;
     }
 
     public async Task<BacklogResult> DeleteFeature(string featureGUID)
     {
-        var featureToDelete = featureStorage.GetFeatureByGUID(featureGUID);
-        FeatureRecord result = featureStorage.DeleteFeature(featureToDelete);
+        var featureToDelete = await featureStorage.GetFeatureByGUID(featureGUID);
+        FeatureRecord result = await featureStorage.DeleteFeature(featureToDelete);
         return result;
     }
 
     public async Task<BacklogResult> UpdateFeature(FeatureRecord record)
     {
         Feature feature = record;
-        FeatureRecord result = featureStorage.UpdateFeature(feature);
+        FeatureRecord result = await featureStorage.UpdateFeature(feature);
         return result; 
     }
 }

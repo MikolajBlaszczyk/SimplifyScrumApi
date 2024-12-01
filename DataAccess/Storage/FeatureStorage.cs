@@ -4,6 +4,7 @@ using DataAccess.Abstraction.Storage;
 using DataAccess.Context;
 using DataAccess.Models.Projects;
 using DataAccess.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Storage;
@@ -11,21 +12,20 @@ namespace DataAccess.Storage;
 public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> logger): IFeatureStorage
 {
     private IAccessor<Feature> _featureAccessor = factory.Create<Feature>();
-    
-    public List<Feature> GetFeatureByProjectGUID(string projectGUID)
+    public async Task<List<Feature>> GetFeatureByProjectGUID(string projectGUID)
     {
         var dbContext = factory.DbContext;
-        var tasks = dbContext
+        var tasks = await dbContext
             .Features
             .Where(t => t.ProjectGUID == projectGUID)
-            .ToList();
-
+            .ToListAsync();
+        
         return tasks;
     }
 
-    public Feature GetFeatureByGUID(string featureGUID)
+    public async Task<Feature> GetFeatureByGUID(string featureGUID)
     {
-        var feautre = _featureAccessor.GetByPK(featureGUID);
+        var feautre = await _featureAccessor.GetByPK(featureGUID);
         if (feautre is null)
         {
             logger.LogError($"Feature with guid {feautre} does not exists");
@@ -34,10 +34,10 @@ public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> lo
 
         return feautre;
     }
-
-    public Feature AddFeature(Feature feature)
+    
+    public async Task<Feature> AddFeature(Feature feature)
     {
-        var addedFeature = _featureAccessor.Add(feature);
+        var addedFeature = await _featureAccessor.Add(feature);
         if (addedFeature is null)
         {
             logger.LogError("Cannot add feature");
@@ -47,9 +47,9 @@ public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> lo
         return addedFeature;
     }
 
-    public Feature UpdateFeature(Feature feature)
+    public async Task<Feature> UpdateFeature(Feature feature)
     {
-        var updatedFeature = _featureAccessor.Update(feature);
+        var updatedFeature = await _featureAccessor.Update(feature);
         if (updatedFeature is null)
         {
             logger.LogError("Cannot update feature");
@@ -59,9 +59,9 @@ public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> lo
         return updatedFeature;
     }
 
-    public Feature DeleteFeature(Feature feature)
+   public async Task<Feature> DeleteFeature(Feature feature)
     {
-        var deletedFeature = _featureAccessor.Delete(feature);
+        var deletedFeature = await _featureAccessor.Delete(feature);
         if (deletedFeature is null)
         {
             logger.LogError("Cannot delete feature");

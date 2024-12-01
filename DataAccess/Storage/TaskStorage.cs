@@ -1,29 +1,30 @@
 using DataAccess.Abstraction;
 using DataAccess.Abstraction.Accessors.Factories;
 using DataAccess.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Task = DataAccess.Models.Projects.Task;
 
 namespace DataAccess.Storage;
 
-public class TaskStorage(ICreateAccessors factory, ILogger<TaskStorage> logger): ITaskStorage
+public class TaskStorage(ICreateAccessors factory, ILogger<TaskStorage> logger) : ITaskStorage
 {
-    private IAccessor<Task> _taskAccessor = factory.Create<Task>(); 
-    
-    public List<Task> GetTasksByFeatureGUID(string featureGUID)
+    private IAccessor<Task> _taskAccessor = factory.Create<Task>();
+
+    public async Task<List<Task>> GetTasksByFeatureGUID(string featureGUID)
     {
         var dbContext = factory.DbContext;
-        var tasks = dbContext
+        var tasks = await dbContext
             .Tasks
             .Where(t => t.FeatureGUID == featureGUID)
-            .ToList();
+            .ToListAsync();
 
         return tasks;
     }
 
-    public Task GetTaskByID(int taskID)
+    public async Task<Task> GetTaskByID(int taskID)
     {
-        var task = _taskAccessor.GetByPK(taskID);
+        var task = await _taskAccessor.GetByPK(taskID);
         if (task is null)
         {
             logger.LogError($"Task with id {taskID} does not exists");
@@ -33,39 +34,41 @@ public class TaskStorage(ICreateAccessors factory, ILogger<TaskStorage> logger):
         return task;
     }
 
-    public Task AddTask(Task task)
+    public async Task<Task> AddTask(Task task)
     {
-        var addedTask = _taskAccessor.Add(task);
+        var addedTask = await _taskAccessor.Add(task);
         if (addedTask is null)
         {
             logger.LogError("Cannot add task");
             throw new AccessorException("Cannot add task");
         }
-        
+
         return addedTask;
     }
 
-    public Task UpdateTask(Task task)
+    public async Task<Task> UpdateTask(Task task)
     {
-        var updatedTask = _taskAccessor.Update(task);
+        var updatedTask = await _taskAccessor.Update(task);
         if (updatedTask is null)
         {
             logger.LogError("Cannot update task");
             throw new AccessorException("Cannot update task");
         }
-        
+
         return updatedTask;
     }
 
-    public Task DeleteTask(Task task)
+    public async Task<Task> DeleteTask(Task task)
     {
-        var deleteTask = _taskAccessor.Update(task);
+        var deleteTask = await _taskAccessor.Update(task);
         if (deleteTask is null)
         {
             logger.LogError("Cannot delete task");
             throw new AccessorException("Cannot delete task");
         }
-        
+
         return deleteTask;
     }
+
+  
 }

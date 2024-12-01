@@ -4,14 +4,13 @@ namespace DataAccess.Abstraction;
 
 public interface ITaskStorage
 {
+    Task<List<Task>> GetTasksByFeatureGUID(string featureGUID);
 
-    List<Task> GetTasksByFeatureGUID(string featureGUID);
-    
-    Task GetTaskByID(int taskID);
-    
-    Task AddTask(Task task);
-    
-    Task UpdateTask(Task task);
+    Task<Task> GetTaskByID(int taskID);
 
-    Task DeleteTask(Task delete);
+    Task<Task> AddTask(Task task);
+
+    Task<Task> UpdateTask(Task task);
+
+    Task<Task> DeleteTask(Task delete);
 }

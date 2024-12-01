@@ -15,26 +15,25 @@ public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker): 
 {
     public async Task<ScheduleResult> GetByMonthYearAndUser(int year, int month, string userGuid)
     {
-        var meetings =  meetingStorage
-            .GetByMonthAndYearForUserGuid(month, year, userGuid)
-            .Select(meeting =>
-            {
-                MeetingRecord record = meeting;
-                return record;
-            }).ToList();
+        var meetings = await meetingStorage
+            .GetByMonthAndYearForUserGuid(month, year, userGuid);
         
-        return meetings;
+        return meetings.Select(meeting =>
+        {
+            MeetingRecord record = meeting;
+            return record;
+        }).ToList();
     }
 
     public async Task<ScheduleResult> UpsertMeeting(MeetingRecord record)
     {
-        MeetingRecord result = meetingStorage.UpsertMeeting(record);
+        MeetingRecord result = await meetingStorage.UpsertMeeting(record);
         return result;
     }
 
     public async Task<ScheduleResult> DeleteMeeting(MeetingRecord meetingToDelete)
     {
-        MeetingRecord result = meetingStorage.DeleteMeeting(meetingToDelete);
+        MeetingRecord result = await meetingStorage.DeleteMeeting(meetingToDelete);
         return result;
     }
     

@@ -43,7 +43,7 @@ public class UserInformationManager(
             if (user is null or {TeamGUID: null or ""})
                 throw new Exception();
 
-            var project = hierarchyStorage.GetProjectByTeam(user.TeamGUID);
+            var project = await hierarchyStorage.GetProjectByTeam(user.TeamGUID);
         
             
             return project;
@@ -107,7 +107,7 @@ public class UserInformationManager(
         {
             //TODO: Validation here
             Team newTeam = newTeamModel;
-            SimpleTeamModel addedTeam = hierarchyStorage.AddTeam(newTeam);
+            SimpleTeamModel addedTeam = await hierarchyStorage.AddTeam(newTeam);
 
             return addedTeam;
         }
@@ -142,7 +142,7 @@ public class UserInformationManager(
         try
         {
             var result = new List<SimpleTeamModel>();
-            var teams =  hierarchyStorage.GetAllTeams();
+            var teams = await hierarchyStorage.GetAllTeams();
             
             
             foreach (var team in teams)
@@ -162,7 +162,7 @@ public class UserInformationManager(
     {
         try
         {
-            SimpleTeamModel team =  hierarchyStorage.GetTeamByGUID(teamGUID);
+            SimpleTeamModel team = await hierarchyStorage.GetTeamByGUID(teamGUID);
             
             return team;
         }

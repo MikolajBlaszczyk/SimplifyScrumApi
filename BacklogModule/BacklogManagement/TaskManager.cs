@@ -13,7 +13,7 @@ public class TaskManager(ITaskStorage taskStorage, IEntityPreparerFactory prepar
 {
     public async Task<BacklogResult> GetAllTasksByFeatureGUID(string featureGUID)
     {
-        var tasks = taskStorage.GetTasksByFeatureGUID(featureGUID);
+        var tasks = await taskStorage.GetTasksByFeatureGUID(featureGUID);
 
         List<TaskRecord> result = new List<TaskRecord>();
         foreach (var task in tasks)
@@ -27,7 +27,7 @@ public class TaskManager(ITaskStorage taskStorage, IEntityPreparerFactory prepar
 
     public async Task<BacklogResult> GetTaskById(int taskId)
     {
-        TaskRecord task =  taskStorage.GetTaskByID(taskId);
+        TaskRecord task = await taskStorage.GetTaskByID(taskId);
         return task;
     }
 
@@ -45,21 +45,21 @@ public class TaskManager(ITaskStorage taskStorage, IEntityPreparerFactory prepar
         var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
         historyPreparer.Prepare(task);
         
-        TaskRecord result = taskStorage.AddTask(task);
+        TaskRecord result = await taskStorage.AddTask(task);
         return result;
     }
 
     public async Task<BacklogResult> DeleteTask(int taskID)
     {
-        var taskToDelete = taskStorage.GetTaskByID(taskID);
-        TaskRecord result = taskStorage.DeleteTask(taskToDelete);
+        var taskToDelete = await taskStorage.GetTaskByID(taskID);
+        TaskRecord result = await taskStorage.DeleteTask(taskToDelete);
         return result;
     }
 
     public async Task<BacklogResult> UpdateTask(TaskRecord record)
     {
         DataAccess.Models.Projects.Task task = record;
-        TaskRecord result = taskStorage.UpdateTask(task);
+        TaskRecord result = await taskStorage.UpdateTask(task);
         return result;
     }
 }

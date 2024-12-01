@@ -14,7 +14,7 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
 {
     public async Task<BacklogResult> GetAllProjectsForTeam(string teamGUID)
     {
-        var projects =  projectStorage.GetAllProjects();
+        var projects = await projectStorage.GetAllProjects();
             
         var teamProjects = projects.Where(p => p.TeamGUID == teamGUID);
         List<ProjectRecord> result = new List<ProjectRecord>();
@@ -29,7 +29,7 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
 
     public async Task<BacklogResult> GetProjectByGuid(string projectGUID)
     {
-        ProjectRecord record  = projectStorage.GetProjectByGUID(projectGUID);
+        ProjectRecord record  = await projectStorage.GetProjectByGUID(projectGUID);
         return record;
     }
 
@@ -45,14 +45,14 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
         var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
         historyPreparer.Prepare(project);
         
-        ProjectRecord result = projectStorage.AddProject(project);
+        ProjectRecord result = await projectStorage.AddProject(project);
         return result;
     }
 
     public async Task<BacklogResult> DeleteProject(string projectGUID)
     {
-        var projectToDelete = projectStorage.GetProjectByGUID(projectGUID);
-        ProjectRecord result = projectStorage.DeleteProject(projectToDelete);
+        var projectToDelete = await projectStorage.GetProjectByGUID(projectGUID);
+        ProjectRecord result = await projectStorage.DeleteProject(projectToDelete);
         return result;
     }
 
@@ -60,7 +60,7 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
     {
         Project project = record;
         
-        ProjectRecord result = projectStorage.UpdateProject(project);
+        ProjectRecord result = await projectStorage.UpdateProject(project);
         
         return result;
     }

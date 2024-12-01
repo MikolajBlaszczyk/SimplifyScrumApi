@@ -4,17 +4,18 @@ using DataAccess.Context;
 using DataAccess.Model.User;
 using DataAccess.Models.Projects;
 using DataAccess.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Storage;
 
 public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarchyStorage> logger) : IUserHierarchyStorage
 {
-    public Team GetTeam(string teamGUID)
+    public async Task<Team> GetTeam(string teamGUID)
     {
         var teamAccessor = factory.Create<Team>();
 
-        var team = teamAccessor.GetByPK(teamGUID);
+        var team = await teamAccessor.GetByPK(teamGUID);
 
         if (team is null)
         {
@@ -25,13 +26,13 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
         return team;
     }
 
-    public Project GetProjectByTeam(string teamGUID)
+    public async Task<Project> GetProjectByTeam(string teamGUID)
     {
         var dbContext = factory.DbContext;
         
-        var project = dbContext
+        var project = await dbContext
             .Projects
-            .FirstOrDefault(p => p.TeamGUID == teamGUID);
+            .FirstOrDefaultAsync(p => p.TeamGUID == teamGUID);
 
         if (project is null)
         {
@@ -42,14 +43,14 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
         return project;
     }
 
-    public Team AddTeam(Team newTeam)
+    public async Task<Team> AddTeam(Team newTeam)
     {
         var teamAccessor = factory.Create<Team>();
         
         if (string.IsNullOrEmpty(newTeam.GUID))
             newTeam.GUID = Guid.NewGuid().ToString();
 
-        var team =  teamAccessor.Add(newTeam);
+        var team =  await teamAccessor.Add(newTeam);
 
         if (team is null)
         {
@@ -60,10 +61,10 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
         return newTeam;
     }
 
-    public List<Team> GetAllTeams()
+    public async Task<List<Team>> GetAllTeams()
     {
         var teamAccessor = factory.Create<Team>();
-        var teams = teamAccessor.GetAll();
+        var teams = await teamAccessor.GetAll();
         
         if (teams is null)
         {
@@ -74,11 +75,11 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
         return teams;
     }
 
-    public Team GetTeamByGUID(string teamGUID)
+    public async Task<Team> GetTeamByGUID(string teamGUID)
     {
         var teamAccessor = factory.Create<Team>();
         
-        var team = teamAccessor.GetByPK(teamGUID);
+        var team = await teamAccessor.GetByPK(teamGUID);
         if (team is null)
         {
             logger.LogError($"Team with {teamGUID} is not in the database");

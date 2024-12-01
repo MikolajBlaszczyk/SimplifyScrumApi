@@ -10,12 +10,12 @@ namespace DataAccess.Accessors;
 public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAccessor<T>> logger):  IAccessor<T> where T : class, IAccessorTable
 {
     
-    public T? Add(T model)
+    public async Task<T?> Add(T model)
     {
         try
         {
-            var createdEntry  = dbContext.Set<T>().Add(model);
-            dbContext.SaveChanges();
+            var createdEntry  = await dbContext.Set<T>().AddAsync(model);
+            await dbContext.SaveChangesAsync();
             return createdEntry.Entity;
         }
         catch (Exception e)
@@ -25,7 +25,7 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
         }
     }
 
-    public List<T>? GetAllByPKs(IList<object> values)
+    public async Task<List<T>?> GetAllByPKs(IList<object> values)
     {
         if (values.Any() == false)
         {
@@ -42,8 +42,8 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
         //Only support for one key
         foreach (var value in values)
         { 
-            var searchedValue = query
-                .FirstOrDefault(e => 
+            var searchedValue = await query
+                .FirstOrDefaultAsync(e => 
                     EF.Property<object>(e, pkProperty).Equals(value));
 
             if (searchedValue is null)
@@ -58,7 +58,7 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
         return result;
     }
 
-    public T? GetByPK(object? value)
+    public async Task<T?> GetByPK(object? value)
     {
         if (value == null)
         {
@@ -72,8 +72,8 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
 
         IQueryable<T> query = dbContext.Set<T>();
 
-        var searchedValue = query
-            .FirstOrDefault(e =>
+        var searchedValue = await query
+            .FirstOrDefaultAsync(e =>
                 EF.Property<object>(e, pkProperty).Equals(value));
 
         if (searchedValue is null)
@@ -82,18 +82,18 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
         return searchedValue;
     }
 
-    public List<T>? GetAll()
+    public async Task<List<T>?> GetAll()
     {
         IQueryable<T> query = dbContext.Set<T>();
         
-        return query.ToList();
+        return await query.ToListAsync();
     }
 
-    public T? Delete(T model)
+    public async Task<T?> Delete(T model)
     {
         try
         {
-            var existingEntity = dbContext.Set<T>().Find(model.GetPrimaryKey());
+            var existingEntity = await dbContext.Set<T>().FindAsync(model.GetPrimaryKey());
             if (existingEntity == null)
             {
                 logger.LogError($"Entity of type {typeof(T).Name} with PK {model.GetPrimaryKey()} not found.");
@@ -102,7 +102,7 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
             
             
             var deletedEntry  = dbContext.Set<T>().Remove(existingEntity);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             return deletedEntry.Entity;
         }
         catch (Exception e)
@@ -112,11 +112,11 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
         }
     }
 
-    public T? Update(T model)
+    public async Task<T?> Update(T model)
     {
         try
         {
-            var existingEntity = dbContext.Set<T>().Find(model.GetPrimaryKey());
+            var existingEntity = await dbContext.Set<T>().FindAsync(model.GetPrimaryKey());
             if (existingEntity == null)
             {
                 logger.LogError($"Entity of type {typeof(T).Name} with PK {model.GetPrimaryKey()} not found.");
@@ -124,7 +124,7 @@ public class ModelAccessor<T>(SimplifyAppDbContext dbContext, ILogger<ModelAcces
             }
             
             dbContext.Entry(existingEntity).CurrentValues.SetValues(model);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             return model;
         }
         catch (Exception e)

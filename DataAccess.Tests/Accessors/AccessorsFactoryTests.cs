@@ -25,25 +25,25 @@ public class AccessorsFactoryTests
     
     [Test]
     [Order(1)]
-    public void Create_AddsValueToDatabase()
+    public async Task Create_AddsValueToDatabase()
     {
-        Add(DataAccessTestUtils.Meeting);
-        Add(DataAccessTestUtils.Sprint);
-        Add(DataAccessTestUtils.SprintNote);
-        Add(DataAccessTestUtils.Feature);
-        Add(DataAccessTestUtils.Project);
-        Add(DataAccessTestUtils.Task);
-        Add(DataAccessTestUtils.Team);
+        await Add(DataAccessTestUtils.Meeting);
+        await Add(DataAccessTestUtils.Sprint);
+        await Add(DataAccessTestUtils.SprintNote);
+        await Add(DataAccessTestUtils.Feature);
+        await Add(DataAccessTestUtils.Project);
+        await Add(DataAccessTestUtils.Task);
+        await Add(DataAccessTestUtils.Team);
     }
     
-    public void Add<T>(T model) where T : class
+    public async Task Add<T>(T model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.Add(model);
+            var actual = await accessor.Add(model);
             var count = accessorFactory.DbContext.Meetings.Count();
             
             Assert.IsNotNull(actual, $"ADD: Value for {model.GetType()} is null");
@@ -53,39 +53,39 @@ public class AccessorsFactoryTests
 
     [Test]
     [Order(2)]
-    public void Update_UpdatesValueInDatabase()
+    public async Task Update_UpdatesValueInDatabase()
     {
         var meeting =  DataAccessTestUtils.Meeting;
         meeting.Name = "ABC";
-        Update(meeting);
+        await Update(meeting);
         var sprint = DataAccessTestUtils.Sprint;
         sprint.Name = "ABC";
-        Update(sprint);
+        await Update(sprint);
         var sprintNote = DataAccessTestUtils.SprintNote;
         sprintNote.TeammateGUID = "ABC";
-        Update(sprint);
+        await Update(sprint);
         var feature = DataAccessTestUtils.Feature;
         feature.Name = "ABC";
-        Update(feature);
+        await Update(feature);
         var project = DataAccessTestUtils.Project;
         project.Name = "ABC";
-        Update(project);
+        await Update(project);
         var task = DataAccessTestUtils.Task;
         task.Name = "ABC";
-        Update(task);
+        await Update(task);
         var team = DataAccessTestUtils.Team;
         team.Name = "ABC";
-        Update(team);
+        await Update(team);
     }
     
-    public void Update<T>(T model) where T : class
+    public async Task Update<T>(T model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.Update(model);
+            var actual = await accessor.Update(model);
             
             Assert.IsNotNull(actual, $"UPDATE: Value for {model.GetType()} is null");
             Assert.IsTrue(actual == model, $"UPDATE: Values for {model.GetType()} are not equal");
@@ -94,32 +94,32 @@ public class AccessorsFactoryTests
 
     [Test]
     [Order(3)]
-    public void GetByPks_ShouldReturnNotEmptyValues()
+    public async Task GetByPks_ShouldReturnNotEmptyValues()
     {
         var meeting = DataAccessTestUtils.Meeting;
-        GetByPK(meeting.GUID, meeting);
+        await GetByPK(meeting.GUID, meeting);
         var sprint = DataAccessTestUtils.Sprint;
-        GetByPK(sprint.GUID, sprint);
+        await GetByPK(sprint.GUID, sprint);
         var sprintNote = DataAccessTestUtils.SprintNote;
-        GetByPK(sprintNote.ID, sprintNote);
+        await GetByPK(sprintNote.ID, sprintNote);
         var feature = DataAccessTestUtils.Feature;
-        GetByPK(feature.GUID, feature);
+        await GetByPK(feature.GUID, feature);
         var project = DataAccessTestUtils.Project; 
-        GetByPK(project.GUID, project);
+        await GetByPK(project.GUID, project);
         var task = DataAccessTestUtils.Task;
-        GetByPK(task.ID, task);
+        await GetByPK(task.ID, task);
         var team = DataAccessTestUtils.Team;
-        GetByPK(team.GUID, team);
+        await GetByPK(team.GUID, team);
     }
     
-    public void GetByPK<T>(object pk, T model) where T : class
+    public async Task GetByPK<T>(object pk, T model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.GetByPK(pk);
+            var actual = await accessor.GetByPK(pk);
             
             Assert.IsNotNull(actual, $"GET BY PK: Value for {model.GetType()} is null");
         }
@@ -127,32 +127,32 @@ public class AccessorsFactoryTests
     
     [Test]
     [Order(4)]
-    public void GetAllByPks_ShouldReturnNotEmptyValues()
+    public async Task GetAllByPks_ShouldReturnNotEmptyValues()
     {
         var meeting = DataAccessTestUtils.Meeting;
-        GetAllByPK(meeting.GUID, meeting);
+        await GetAllByPK(meeting.GUID, meeting);
         var sprint = DataAccessTestUtils.Sprint;
-        GetAllByPK(sprint.GUID, sprint);
+        await GetAllByPK(sprint.GUID, sprint);
         var sprintNote = DataAccessTestUtils.SprintNote;
-        GetAllByPK(sprintNote.ID, sprintNote);
+        await GetAllByPK(sprintNote.ID, sprintNote);
         var feature = DataAccessTestUtils.Feature;
-        GetAllByPK(feature.GUID, feature);
+        await GetAllByPK(feature.GUID, feature);
         var project = DataAccessTestUtils.Project; 
-        GetAllByPK(project.GUID, project);
+        await GetAllByPK(project.GUID, project);
         var task = DataAccessTestUtils.Task;
-        GetAllByPK(task.ID, task);
+        await GetAllByPK(task.ID, task);
         var team = DataAccessTestUtils.Team;
-        GetAllByPK(team.GUID, team);
+        await GetAllByPK(team.GUID, team);
     }
     
-    public void GetAllByPK<T>(object pk, T model) where T : class
+    public async Task GetAllByPK<T>(object pk, T model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.GetAllByPKs(new List<object>() {pk});
+            var actual = await accessor.GetAllByPKs(new List<object>() {pk});
             
             Assert.IsTrue(actual.Count != 0, $"GET ALL BY PK: Values for {model.GetType()} are empty");
             Assert.IsTrue(actual.Count == 1, $"GET ALL BY PK: Ther should be only one value for {model.GetType()}");
@@ -162,25 +162,25 @@ public class AccessorsFactoryTests
     
     [Test]
     [Order(5)]
-    public void GetAll_ShouldReturnNotEmptyValues()
+    public async Task GetAll_ShouldReturnNotEmptyValues()
     {
-        GetAll(DataAccessTestUtils.Meeting);
-        GetAll(DataAccessTestUtils.Sprint);
-        GetAll(DataAccessTestUtils.SprintNote);
-        GetAll(DataAccessTestUtils.Feature);
-        GetAll(DataAccessTestUtils.Project);
-        GetAll(DataAccessTestUtils.Task);
-        GetAll(DataAccessTestUtils.Team);
+        await GetAll(DataAccessTestUtils.Meeting);
+        await GetAll(DataAccessTestUtils.Sprint);
+        await GetAll(DataAccessTestUtils.SprintNote);
+        await GetAll(DataAccessTestUtils.Feature);
+        await GetAll(DataAccessTestUtils.Project);
+        await GetAll(DataAccessTestUtils.Task);
+        await GetAll(DataAccessTestUtils.Team);
     }
     
-    public void GetAll<T>(T Model) where T : class
+    public async Task GetAll<T>(T Model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.GetAll();
+            var actual = await accessor.GetAll();
             
             Assert.IsTrue(actual?.Count == 1, $"GET ALL: There should be only 1 element  {Model.GetType()}");
         }
@@ -188,33 +188,33 @@ public class AccessorsFactoryTests
     
     [Test]
     [Order(6)]
-    public void Delete_ShouldReturnNotEmptyValues()
+    public async Task Delete_ShouldReturnNotEmptyValues()
     {
          
         var meeting = DataAccessTestUtils.Meeting;
-        Delete(meeting.GUID, meeting);
+        await Delete(meeting.GUID, meeting);
         var sprint = DataAccessTestUtils.Sprint;
-        Delete(sprint.GUID, sprint);
+        await Delete(sprint.GUID, sprint);
         var sprintNote = DataAccessTestUtils.SprintNote;
-        Delete(sprintNote.ID, sprintNote);
+        await Delete(sprintNote.ID, sprintNote);
         var feature = DataAccessTestUtils.Feature;
-        Delete(feature.GUID, feature);
+        await Delete(feature.GUID, feature);
         var project = DataAccessTestUtils.Project; 
-        Delete(project.GUID, project);
+        await Delete(project.GUID, project);
         var task = DataAccessTestUtils.Task;
-        Delete(task.ID, task);
+        await Delete(task.ID, task);
         var team = DataAccessTestUtils.Team;
-        Delete(team.GUID, team);
+        await Delete(team.GUID, team);
     }
     
-    public void Delete<T>(object pk, T model) where T : class
+    public async Task Delete<T>(object pk, T model) where T : class
     {
         using (var scope = factory.Services.CreateScope())
         {
             var accessorFactory = new ModelAccessorFactory(scope.ServiceProvider);
             var accessor = accessorFactory.Create<T>();
 
-            var actual = accessor.Delete(model);
+            var actual = await accessor.Delete(model);
             
             Assert.IsNotNull(actual, $"DELETE: There should not be any element for {model.GetType()}");
         }

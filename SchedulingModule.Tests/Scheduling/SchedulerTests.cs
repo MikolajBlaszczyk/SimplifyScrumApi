@@ -286,8 +286,8 @@ public class SchedulerTests
     public async Task MeetingManagerInsertMeeting_ShouldSuccessfullyAddNewMeeting(MeetingRecord record, Meeting meeting)
     {
         var accessorMock = new Mock<IMeetingStorage>();
-        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns((Meeting?)null);
-        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).Returns(meeting);
+        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).ReturnsAsync((Meeting?)null);
+        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).ReturnsAsync(meeting);
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
@@ -317,8 +317,8 @@ public class SchedulerTests
     public async Task MeetingManagerUpdateMeeting_ShouldSuccessfullyUpdateMeeting(MeetingRecord record, Meeting meeting, Meeting updatedMeeting)
     {
         var accessorMock = new Mock<IMeetingStorage>();
-        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns(meeting);
-        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).Returns(updatedMeeting);
+        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).ReturnsAsync(meeting);
+        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).ReturnsAsync(updatedMeeting);
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
@@ -348,8 +348,8 @@ public class SchedulerTests
     public async Task MeetingManagerDeleteMeeting_ShouldSuccessfullyDeleteMeeting(MeetingRecord record, Meeting expected)
     {
         var accessorMock = new Mock<IMeetingStorage>();
-        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).Returns(expected);
-        accessorMock.Setup(a => a.DeleteMeeting(It.IsAny<Meeting>())).Returns(expected);
+        accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).ReturnsAsync(expected);
+        accessorMock.Setup(a => a.DeleteMeeting(It.IsAny<Meeting>())).ReturnsAsync(expected);
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);

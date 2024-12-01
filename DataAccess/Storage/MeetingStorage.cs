@@ -6,6 +6,7 @@ using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
 using DataAccess.Utils;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Storage;
@@ -14,11 +15,12 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
 {
     
     
-    public List<Meeting> GetByMonthAndYearForUserGuid(int month, int year, string userGuid)
+    
+    public async Task<List<Meeting>> GetByMonthAndYearForUserGuid(int month, int year, string userGuid)
     { 
-        var user = userManager
+        var user = await userManager
             .Users
-            .FirstOrDefault(u => u.Id == userGuid);
+            .FirstOrDefaultAsync(u => u.Id == userGuid);
 
         if (user == null)
         {
@@ -29,13 +31,13 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         var dbContext = factory.DbContext;
         var meetingAccessor = factory.Create<Meeting>();
 
-        var meetingIds = dbContext
+        var meetingIds = await dbContext
             .TeammateMeetings
             .Where(tm => tm.TeammateGUID == user.Id)
             .Select(tm => tm.MeetingGUID as object)
-            .ToList();
+            .ToListAsync();
         
-        var meetings = meetingAccessor.GetAllByPKs(meetingIds);
+        var meetings = await meetingAccessor.GetAllByPKs(meetingIds);
         if (meetings is null)
         {
             logger.LogError("Could not retrieved meetings");
@@ -44,12 +46,12 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         
         return meetings;
     }
-
-    public Meeting GetMeetingById(string identifier)
+    
+    public async Task<Meeting> GetMeetingById(string identifier)
     {
         var meetingAccessor =factory.Create<Meeting>();
         
-        var meeting = meetingAccessor.GetByPK(identifier);
+        var meeting = await meetingAccessor.GetByPK(identifier);
         if (meeting is null)
         {
             logger.LogError("Could not retrieved meeting");
@@ -59,18 +61,18 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         return meeting;
     } 
 
-    public Meeting UpsertMeeting(Meeting meeting)
+    public async Task<Meeting> UpsertMeeting(Meeting meeting)
     {
         Meeting? result;
         var meetingAccessor = factory.Create<Meeting>();
 
-        if (meetingAccessor.GetByPK(meeting.GUID) is not null)
+        if (await meetingAccessor.GetByPK(meeting.GUID) is not null)
         {
-            result = meetingAccessor.Update(meeting);
+            result = await meetingAccessor.Update(meeting);
         }
         else
         {
-            result = meetingAccessor.Add(meeting);
+            result = await meetingAccessor.Add(meeting);
         }
 
         if (result is null)
@@ -82,11 +84,11 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         return result;
     }
     
-    public Meeting DeleteMeeting(Meeting meeting)
+    public async Task<Meeting> DeleteMeeting(Meeting meeting)
     {
         var meetingAccessor = factory.Create<Meeting>();
 
-        var result = meetingAccessor.Delete(meeting);
+        var result = await meetingAccessor.Delete(meeting);
         if (result is null)
         {
             logger.LogError("Could not delete meeting");
@@ -96,14 +98,14 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         return result;
     }
     
-    public TeammateMeetings AddUserLink(TeammateMeetings link)
+    public async Task<TeammateMeetings> AddUserLink(TeammateMeetings link)
     {
         var dbContext = factory.DbContext;
         
         try
         {
-            dbContext.TeammateMeetings.Add(link);
-            dbContext.SaveChanges();
+            await dbContext.TeammateMeetings.AddAsync(link);
+            await dbContext.SaveChangesAsync();
             return link;
         }
         catch(Exception ex)
@@ -113,15 +115,15 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         }
     }
 
-    public List<TeammateMeetings> RemoveAllLinks(Meeting meeting)
+    public async Task<List<TeammateMeetings>> RemoveAllLinks(Meeting meeting)
     {
         var dbContext = factory.DbContext;
         
         try
         {
-            var links = dbContext.TeammateMeetings.ToList();
+            var links = await dbContext.TeammateMeetings.ToListAsync();
             dbContext.TeammateMeetings.RemoveRange(links);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
             return links;
         }
         catch(Exception ex)

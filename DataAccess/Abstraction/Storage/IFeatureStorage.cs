@@ -5,13 +5,13 @@ namespace DataAccess.Abstraction.Storage;
 
 public interface IFeatureStorage
 {
-    List<Feature> GetFeatureByProjectGUID(string projectGUID);
+    Task<List<Feature>> GetFeatureByProjectGUID(string projectGUID);
 
-    Feature GetFeatureByGUID(string featureGUID);
+    Task<Feature> GetFeatureByGUID(string featureGUID);
     
-    Feature AddFeature(Feature feature);
+    Task<Feature> AddFeature(Feature feature);
 
-    Feature UpdateFeature(Feature feature);
+    Task<Feature> UpdateFeature(Feature feature);
 
-    Feature DeleteFeature(Feature feature);
+    Task<Feature> DeleteFeature(Feature feature);
 }
