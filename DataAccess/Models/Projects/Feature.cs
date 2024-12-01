@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
+using DataAccess.Abstraction.Accessors.Factories;
 using DataAccess.Abstraction.Tables;
 using DataAccess.Enums;
 using DataAccess.Model.User;
@@ -7,7 +9,7 @@ using DataAccess.Model.User;
 namespace DataAccess.Models.Projects;
 
 [Table("Features")]
-public class Feature : HistoryTable
+public class Feature : HistoryTable, ICloneable, IAccessorTable
 {
     [Key]
     [StringLength(36, MinimumLength = 36)]
@@ -45,5 +47,27 @@ public class Feature : HistoryTable
     public static bool operator !=(Feature first, Feature second)
     {
         return !(first == second);
+    }
+
+    public object Clone()
+    {
+        return new Feature
+        {
+            CreatedBy = CreatedBy,
+            LastUpdatedBy = LastUpdatedBy,
+            LastUpdateOn = LastUpdateOn,
+            CreatedOn = CreatedOn,
+            GUID = Guid.NewGuid().ToString(),
+            Description = Description,
+            Name = Name,
+            State = State,
+            Points = Points,
+            ProjectGUID = ProjectGUID
+        };
+    }
+
+    public object GetPrimaryKey()
+    {
+        return GUID;
     }
 }

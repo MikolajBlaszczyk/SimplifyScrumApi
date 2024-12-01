@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
 using DataAccess.Abstraction.Tables;
 
 namespace DataAccess.Models.Projects;
 
 [Table("Sprints")]
-public class Sprint : HistoryTable
+public class Sprint : HistoryTable, ICloneable, IAccessorTable
 {
     [Key]
     public string GUID { get; set; }
@@ -40,5 +41,27 @@ public class Sprint : HistoryTable
     public static bool operator !=(Sprint first, Sprint second)
     {
         return !(first == second);
+    }
+
+    public object Clone()
+    {
+        return new Sprint
+        {
+            CreatedBy = CreatedBy,
+            LastUpdatedBy = LastUpdatedBy,
+            LastUpdateOn = LastUpdateOn,
+            CreatedOn = CreatedOn,
+            GUID = Guid.NewGuid().ToString(),
+            Name = Name,
+            Goal = Goal,
+            Iteration = Iteration,
+            End = End,
+            ProjectGUID = ProjectGUID
+        };
+    }
+
+    public object GetPrimaryKey()
+    {
+        return GUID;
     }
 }

@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SimplfiyTestFramework\SimplfiyTestFramework.csproj" />
       <ProjectReference Include="..\SimplifyScrumApi\SimplifyScrumApi.csproj" />
     </ItemGroup>
 

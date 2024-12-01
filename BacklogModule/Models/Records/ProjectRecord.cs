@@ -57,7 +57,7 @@ public record ProjectRecord(
             LastUpdatedOn);
     }
     
-    public static  implicit operator Project(ProjectRecord record)
+    public static  implicit operator Project(ProjectRecord? record)
     {
         return ProjectFactory
             .Create(

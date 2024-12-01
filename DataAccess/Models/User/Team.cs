@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
 using DataAccess.Models.Projects;
 
 namespace DataAccess.Model.User;
 
 [Table("Teams")]
-public class Team
+public class Team: ICloneable, IAccessorTable
 {
     [Key]
     [StringLength(36, MinimumLength = 36)]
@@ -21,4 +22,18 @@ public class Team
 
     public ICollection<Teammate> TeamMembers { get; set; }
     public ICollection<Project> Projects { get; set; }
+    public object Clone()
+    {
+        return new Team
+        {
+            GUID = Guid.NewGuid().ToString(),
+            Name = Name,
+            ManagerGUID = ManagerGUID
+        };
+    }
+
+    public object GetPrimaryKey()
+    {
+        return GUID;
+    }
 }

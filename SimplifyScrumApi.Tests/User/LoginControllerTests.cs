@@ -16,12 +16,12 @@ namespace SimplifyScrumApi.Tests;
 [TestFixture]
 public class LoginControllerTests
 {
-    private WebSimpleApiFactory factory;
+    private WebApiFactory factory;
 
     [OneTimeSetUp]
     public async Task Setup()
     {
-        factory = new WebSimpleApiFactory();
+        factory = new WebApiFactory();
     }
     
     [Test]
@@ -134,7 +134,6 @@ public class LoginControllerTests
     [OneTimeTearDown]
     public async Task Teardown()
     {
-        await factory.OnDispose();
         factory.Dispose();
     }
 }

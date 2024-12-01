@@ -1,11 +1,18 @@
 using BacklogModule;
 using BacklogModule.Abstraction;
+using BacklogModule.Abstraction.BacklogItems;
+using BacklogModule.BacklogManagement;
 using BacklogModule.Preparation;
 using BacklogModule.Preparation.Creation;
 using DataAccess.Abstraction;
+using DataAccess.Abstraction.Accessors.Factories;
+using DataAccess.Abstraction.Storage;
 using DataAccess.Abstraction.Tables;
 using DataAccess.Accessors;
+using DataAccess.Model.Meetings;
+using DataAccess.Model.User;
 using DataAccess.Models.Projects;
+using DataAccess.Storage;
 using Microsoft.AspNetCore.Identity;
 using SchedulingModule;
 using SchedulingModule.Abstraction;
@@ -39,11 +46,11 @@ public static class ServiceCollectionExtensions
 
         #region backlog
 
-        services.AddScoped<IManageSprint, BacklogManager>();
-        services.AddScoped<IUserHierarchyAccessor, UserHierarchyAccessor>();
-        services.AddScoped<ISprintAccessor, SprintAccessor > ();
-        services.AddScoped<IManageProjectItems, BacklogManager>();
-        services.AddScoped<IProjectItemsAccessor, ProjectItemAccessor>();
+        services.AddScoped<IManageFeature, FeatureManager>();
+        services.AddScoped<IManageSprint, SprintManager>();
+        services.AddScoped<IManageProject, ProjectManager>();
+        services.AddScoped<IManageTask, TaskManager>();
+        
         services.AddTransient<IPrepareCreation<Project>, ProjectCreationPreparer>();
         services.AddTransient<IPrepareCreation<Feature>, FeatureCreationPreparer>();
         services.AddTransient<IPrepareCreation<Task>, TaskCreationPreparer>();
@@ -55,14 +62,35 @@ public static class ServiceCollectionExtensions
         #region scheduling
         
         services.AddScoped<ISchedule, Scheduler>();
-        services.AddScoped<IMeetingAccessor, MeetingAccessor>();
+        services.AddScoped<IMeetingStorage, MeetingStorage>();
         services.AddScoped<MeetingGrouper, MeetingGrouper>();
         services.AddScoped<CalendarArranger, CalendarArranger>();
         services.AddScoped<ModelConverter, ModelConverter>();
         services.AddScoped<IManageMeetings, MeetingManager>();
-        services.AddScoped<TeammateLinker, TeammateLinker>();
+        services.AddScoped<UserLinker, UserLinker>();
 
         #endregion
 
+        #region DataAccess
+        
+      
+        services.AddScoped<IMeetingStorage, MeetingStorage>();
+        services.AddScoped<IUserHierarchyStorage, UserHierarchyStorage>();
+        services.AddScoped<ISprintStorage, SprintStorage > ();
+        services.AddScoped<IFeatureStorage, FeatureStorage>();
+        services.AddScoped<ITaskStorage, TaskStorage>();
+        services.AddScoped<IProjectStorage, ProjectStorage>();
+        
+        services.AddScoped<ICreateAccessors, ModelAccessorFactory>();
+        services.AddScoped(typeof(IAccessor<Meeting>), typeof(ModelAccessor<Meeting>));
+        services.AddScoped(typeof(IAccessor<Sprint>), typeof(ModelAccessor<Sprint>));
+        services.AddScoped(typeof(IAccessor<SprintNote>), typeof(ModelAccessor<SprintNote>));
+        services.AddScoped(typeof(IAccessor<Feature>), typeof(ModelAccessor<Feature>));
+        services.AddScoped(typeof(IAccessor<Task>), typeof(ModelAccessor<Task>));
+        services.AddScoped(typeof(IAccessor<Project>), typeof(ModelAccessor<Project>));
+        services.AddScoped(typeof(IAccessor<Team>), typeof(ModelAccessor<Team>));
+
+        #endregion
+        
     }
 }

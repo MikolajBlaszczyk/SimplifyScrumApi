@@ -1,4 +1,5 @@
 using BacklogModule.Abstraction;
+using BacklogModule.Abstraction.BacklogItems;
 using DataAccess.Models.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
             return NoContent();
         
         var projectGuid = ((Project)hierarchyResult.Data!)?.GUID;
-        var result = sprintManager.GetSprintInfoForProject(projectGuid);
+        var result = await sprintManager.GetSprintInfoByProjectGUID(projectGuid);
 
         if (result.IsFailure)
             return NoContent();

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
 using DataAccess.Abstraction.Tables;
 using DataAccess.Enums;
 using DataAccess.Model.User;
@@ -7,7 +8,7 @@ using DataAccess.Model.User;
 namespace DataAccess.Models.Projects;
 
 [Table("Tasks")]
-public class Task : HistoryTable
+public class Task : HistoryTable, ICloneable, IAccessorTable
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -42,5 +43,25 @@ public class Task : HistoryTable
     public static bool operator !=(Task first, Task second)
     {
         return !(first == second);
+    }
+
+    public object Clone()
+    {
+        return new Task
+        {
+            CreatedBy = CreatedBy,
+            LastUpdatedBy = LastUpdatedBy,
+            LastUpdateOn = LastUpdateOn,
+            CreatedOn = CreatedOn,
+            Name = Name,
+            State = State,
+            FeatureGUID = FeatureGUID,
+            Assignee = Assignee,
+        };
+    }
+
+    public object GetPrimaryKey()
+    {
+        return ID;
     }
 }

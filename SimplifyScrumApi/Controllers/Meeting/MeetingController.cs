@@ -17,11 +17,11 @@ public class MeetingController(ISchedule scheduler, IManageMeetings meetingsMana
     public async Task<IActionResult> GetMeetingsInThisMonthForCurrentUser()
     {
         var guid = HttpContext.User.GetUserGuid();
-        var result = await scheduler.GetScheduleByMonthForCurrentUser(DateTime.Now, guid);
+        var result = await scheduler.GetCurrentMonthSchedule(DateTime.Now, guid);
 
         if (result.IsSuccess)
         {
-            return Ok(result.ScheduleRecord!);
+            return Ok(result.Data!);
         }
         
         return StatusCode(500, result.Exception!.Message);
@@ -29,9 +29,9 @@ public class MeetingController(ISchedule scheduler, IManageMeetings meetingsMana
 
     [HttpPost("add")]
     [HttpPut("update")]
-    public async Task<IActionResult> AddMeeting([FromBody] SimpleMeetingModel model)
+    public async Task<IActionResult> AddMeeting([FromBody] MeetingRecord record)
     { 
-        var result = await meetingsManager.UpsertMeeting(model);
+        var result = await meetingsManager.UpsertMeeting(record);
 
         if (result.IsSuccess)
         {
@@ -43,13 +43,13 @@ public class MeetingController(ISchedule scheduler, IManageMeetings meetingsMana
 
     [HttpDelete]
     [Route("delete")]
-    public async Task<IActionResult> DeleteMeeting([FromBody] SimpleMeetingModel model)
+    public async Task<IActionResult> DeleteMeeting([FromBody] MeetingRecord record)
     {
-        var result = await meetingsManager.DeleteMeeting(model);
+        var result = await meetingsManager.DeleteMeeting(record);
 
         if (result.IsSuccess)
         {
-            return Ok(model.Identifier);
+            return Ok(record.GUID);
         }
 
         return StatusCode(500, result.Exception!.Message);

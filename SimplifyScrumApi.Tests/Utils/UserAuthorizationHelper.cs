@@ -1,7 +1,10 @@
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using DataAccess.Context;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using UserModule;
 using UserModule.Abstraction;
 using UserModule.Records;
@@ -38,5 +41,20 @@ public static class UserAuthorizationHelper
     public static async Task Logout()
     {
         await signInManager.SignOutAsync();
+    }
+}
+
+public static class WebApiFactoryExtensions
+{
+    public static async Task<HttpClient> CreateLoggedClient(this WebApiFactory factory)
+    {
+        var client = factory.CreateClient();
+
+        UserAuthorizationHelper.TryToCreateUser(factory.Scope);
+        
+        var loginResponse = await client.PostAsJsonAsync("api/v1/scrum/login", new SimpleUserModel("admin", "Password123!", "", Nickname:""));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await loginResponse.Content.ReadAsStringAsync());
+
+        return client;
     }
 }

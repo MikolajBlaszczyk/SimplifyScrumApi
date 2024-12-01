@@ -17,8 +17,8 @@ public abstract class MeetingsFactory
         };
     }
 
-    public static SimpleMeetingModel CreateMeetingRecordWithNameAndStart(string name, DateTime start)
+    public static MeetingRecord CreateMeetingRecordWithNameAndStart(string name, DateTime start)
     {
-        return new SimpleMeetingModel("", name, "", "", start, TimeSpan.Zero, MeetingType.Custom, new());
+        return new MeetingRecord("", name, "", "", start, TimeSpan.Zero, MeetingType.Custom, new());
     }
 }

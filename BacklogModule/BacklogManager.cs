@@ -1,68 +1,86 @@
-using BacklogModule.Abstraction;
+using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
-using BacklogModule.Models.Results;
-using BacklogModule.Utils;
-using DataAccess.Abstraction;
-using DataAccess.Abstraction.Tables;
-using DataAccess.Models.Projects;
-using Task = System.Threading.Tasks.Task;
+using BacklogModule.Utils.Results;
+using DataAccess.Abstraction.Storage;
 
 namespace BacklogModule;
 
-public class BacklogManager(ISprintAccessor sprintAccessor, IProjectItemsAccessor projectItemsAccessor, IEntityPreparerFactory preparerFactory) : IManageSprint, IManageProjectItems
+public class BacklogManager(IManageSprint sprintManager, IManageFeature featureManager, IManageProject projectManager, IManageTask taskManager) : IManageBacklog
 {
-    public BacklogResult GetSprintInfoForProject(string projectGUID)
+    #region sprint
+    
+    public async Task<BacklogResult> GetSprintInfoWithProjectGuid(string projectGuid)
     {
         try
         {
-            var sprintModel = sprintAccessor.GetSprintInfoByProjectGUID(projectGUID);
-
-            if (sprintModel is null)
-                throw new BacklogException("There is no sprint that belongs to this Project");
-
-            SprintRecord record = sprintModel;
-            return record;
+            return await sprintManager.GetSprintInfoByProjectGUID(projectGuid);
         }
         catch (Exception ex)
         {
             return ex;
         }
     }
-
-    public async Task<List<ProjectRecord>> GetAllProjectsForTeam(string teamGUID)
-    {
-        var projects =  await projectItemsAccessor.GetAllProjects();
-
-        var teamsProjects = projects.Where(p => p.TeamGUID == teamGUID);
-        
-        return teamsProjects.Select(ModelConverter.ConvertProjectModelToRecord).ToList();
-    }
-
-    public async Task<List<FeatureRecord>> GetAllFeaturesByProjectGUID(string projectGuid)
-    {
-        var features = await projectItemsAccessor.GetFeatureByProjectGUID(projectGuid);
-
-        return features.Select(ModelConverter.ConvertFeatureModelToRecord).ToList();
-    }
-
-    public async Task<List<TaskRecord>> GetAllTasksByFeatureGUID(string featureGUID)
-    {
-        var tasks = await projectItemsAccessor.GetTasksByFeatureGUID(featureGUID);
-
-        return tasks.Select(ModelConverter.ConvertTaskModelToRecord).ToList();
-    }
-
-    public async Task<BacklogResult> GetProjectByGuid(string projectGUID)
+    
+    #endregion
+    
+    
+    #region project
+    public async Task<BacklogResult> GetTeamProjects(string teamGuid)
     {
         try
         {
-            var project = await projectItemsAccessor.GetProjectByGUID(projectGUID);
+            return await projectManager.GetAllProjectsForTeam(teamGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+       
+    }
+    
+    public async Task<BacklogResult> UpdateProject(ProjectRecord record)
+    {
+        try
+        {
+            return await projectManager.UpdateProject(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
 
-            if (projectGUID is null)
-                throw new BacklogException("There is no sprint that belongs to this Project");
-
-            ProjectRecord record = project;
-            return record;
+    
+    public async Task<BacklogResult> AddProject(ProjectRecord record)
+    {
+        try
+        {
+            return await projectManager.AddProject(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
+    public async Task<BacklogResult> DeleteProject(string projectGuid)
+    {
+        try
+        {
+            return await projectManager.DeleteProject(projectGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+      
+    }
+    
+    public async Task<BacklogResult> GetProjectByGuid(string projectGuid)
+    {
+        try
+        {
+            return await projectManager.GetProjectByGuid(projectGuid);
         }
         catch (Exception ex)
         {
@@ -70,102 +88,132 @@ public class BacklogManager(ISprintAccessor sprintAccessor, IProjectItemsAccesso
         }
     
     }
+    #endregion
 
-    public async Task<BacklogResult> GetFeatureByGUID(string featureGUID)
+
+    #region feature
+    public async Task<BacklogResult> GetProjectFeatures(string projectGuid)
     {
         try
         {
-            FeatureRecord feature = await projectItemsAccessor.GetFeatureByGUID(featureGUID);
-            return feature;
+            return await featureManager.GetAllFeaturesByProjectGUID(projectGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
+    public async Task<BacklogResult> GetFeatureByGuid(string featureGuid)
+    {
+        try
+        {
+            return await featureManager.GetFeatureByGuid(featureGuid);
         }
         catch (Exception ex)
         {
             return ex;
         }
     }
-
-    public async Task<BacklogResult> getTaskByID(int taskId)
+    
+    public async Task<BacklogResult> AddFeature(FeatureRecord record)
     {
         try
         {
-            TaskRecord task = await projectItemsAccessor.GetTaskByID(taskId);
-            return task;
+            return await featureManager.AddFeature(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
+    public async Task<BacklogResult> DeleteFeature(string featureGuid)
+    {
+        try
+        {
+            return await featureManager.DeleteFeature(featureGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
+    public async Task<BacklogResult> UpdateFeature(FeatureRecord record)
+    {
+        try
+        {
+            return await featureManager.UpdateFeature(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    #endregion
+
+
+    #region Task
+    public async Task<BacklogResult> GetFeatureTasks(string featureGuid)
+    {
+        try
+        {
+            return await taskManager.GetAllTasksByFeatureGUID(featureGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
+    public async Task<BacklogResult> GetTaskById(int taskId)
+    {
+        try
+        {
+            return await taskManager.GetTaskById(taskId);
         }
         catch (Exception ex)
         {
             return ex;
         }
     }
-
-    public async Task AddProject(ProjectRecord record)
+    
+    public async Task<BacklogResult> AddTask(TaskRecord record)
     {
-        var project = ModelConverter.ConvertProjectRecordToModel(record);
-        
-        var projectPreparer =  preparerFactory.GetCreationPreparer<Project>();
-        projectPreparer.Prepare(project);
-
-        var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
-        historyPreparer.Prepare(project);
-        
-        await projectItemsAccessor.AddProject(project);
+        try
+        {
+            return await taskManager.AddTask(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+      
     }
 
-    public async Task AddFeature(FeatureRecord record)
+    public async Task<BacklogResult> DeleteTask(int taskId)
     {
-        var feature = ModelConverter.ConvertFeatureRecordToModel(record);
-
-        var featurePreparer = preparerFactory.GetCreationPreparer<Feature>();
-        featurePreparer.Prepare(feature);
-
-        var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
-        historyPreparer.Prepare(feature);
-        
-        await projectItemsAccessor.AddFeature(feature);
+        try
+        {
+            return await taskManager.DeleteTask(taskId);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
     }
-
-    public async Task AddTask(TaskRecord record)
+    
+    public async Task<BacklogResult> UpdateTask(TaskRecord record)
     {
-        var task = ModelConverter.ConvertTaskRecordToModel(record);
-
-        var taskPreparer = preparerFactory.GetCreationPreparer<DataAccess.Models.Projects.Task>();
-        taskPreparer.Prepare(task);
-        
-        var historyPreparer = preparerFactory.GetCreationPreparer<HistoryTable>();
-        historyPreparer.Prepare(task);
-        
-        await projectItemsAccessor.AddTask(task);
+        try
+        {
+            return await taskManager.UpdateTask(record);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
     }
-
-    public async Task DeleteProject(string projectGUID)
-    {
-        await projectItemsAccessor.DeleteProject(projectGUID);
-    }
-
-    public async Task DeleteFeature(string featureGUID)
-    {
-        await projectItemsAccessor.DeleteFeature(featureGUID);
-    }
-
-    public async Task DeleteTask(int taskID)
-    {
-        await projectItemsAccessor.DeleteTask(taskID);
-    }
-
-    public async Task UpdateProject(ProjectRecord record)
-    {
-        var project = ModelConverter.ConvertProjectRecordToModel(record);
-        await projectItemsAccessor.UpdateProject(project);
-    }
-
-    public async Task UpdateFeature(FeatureRecord record)
-    {
-        var feature = ModelConverter.ConvertFeatureRecordToModel(record);
-        await projectItemsAccessor.UpdateFeature(feature);
-    }
-
-    public async Task UpdateTask(TaskRecord record)
-    {
-        var task = ModelConverter.ConvertTaskRecordToModel(record);
-        await projectItemsAccessor.UpdateTask(task);
-    }
+    #endregion
 }

@@ -24,7 +24,7 @@ public class UserConverterTests
     public void ConvertToTeammate_ShouldConvertAppUserIntoTeammatesModels(SimpleUserModel userModel)
     {
 
-        var teammate = userModel;
+        Teammate teammate = userModel;
         
         Assert.That(teammate, Is.TypeOf(typeof(Teammate)));
     }

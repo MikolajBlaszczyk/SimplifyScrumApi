@@ -20,7 +20,7 @@ public class ModelConverterTests
             yield return new TestCaseData(
                 MeetingFactory.Create(firstGuid, "Test", "Some description", "", firstDateTime,
                     TimeSpan.FromHours(1), MeetingType.Custom),
-                new SimpleMeetingModel(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
+                new MeetingRecord(firstGuid, "Test", "Some description", "", firstDateTime, TimeSpan.FromHours(1),
                     MeetingType.Custom, null)
             );
 
@@ -29,7 +29,7 @@ public class ModelConverterTests
             yield return new TestCaseData(
                 MeetingFactory.Create(secondGuid, "Test1", "Some description", "", secondDateTime ,
                     TimeSpan.FromHours(4), MeetingType.Daily),
-                new SimpleMeetingModel(secondGuid, "Test1", "Some description", "", secondDateTime,
+                new MeetingRecord(secondGuid, "Test1", "Some description", "", secondDateTime,
                     TimeSpan.FromHours(4),
                     MeetingType.Daily, null)
             );
@@ -38,7 +38,7 @@ public class ModelConverterTests
 
     [Test]
     [TestCaseSource(nameof(ModelConverterTestData))]
-    public void ModelConverterConvertIntoRecord_ShouldConvertIntoNotNullRecord(Meeting meetingToConvert, SimpleMeetingModel expected)
+    public void ModelConverterConvertIntoRecord_ShouldConvertIntoNotNullRecord(Meeting meetingToConvert, MeetingRecord expected)
     {
         var converter = new ModelConverter();
 
@@ -49,7 +49,7 @@ public class ModelConverterTests
     
     [Test]
     [TestCaseSource(nameof(ModelConverterTestData))]
-    public void ModelConverterConvertIntoRecord_ShouldProduceRecordThatIsTheSameAsDbModel(Meeting meetingToConvert, SimpleMeetingModel expected)
+    public void ModelConverterConvertIntoRecord_ShouldProduceRecordThatIsTheSameAsDbModel(Meeting meetingToConvert, MeetingRecord expected)
     {
         var converter = new ModelConverter();
 

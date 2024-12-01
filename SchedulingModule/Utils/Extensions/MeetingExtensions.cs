@@ -7,21 +7,19 @@ namespace SchedulingModule.Utils.Extensions;
 
 public static class MeetingExtensions
 {
-    public static void Update(this Meeting meeting, SimpleMeetingModel model)
+    public static void Update(this Meeting meeting, MeetingRecord record)
     {
-        meeting.Name = model.Name;
-        meeting.MeetingLeaderGUID = model.LeaderIdentifier;
-        meeting.Description = model.Description;
-        meeting.Duration = model.Duration;
-        meeting.Type = model.Type;
-        meeting.Start = model.Start;
+        meeting.Name = record.Name;
+        meeting.MeetingLeaderGUID = record.LeaderGuid;
+        meeting.Description = record.Description;
+        meeting.Duration = record.Duration;
+        meeting.Type = record.Type;
+        meeting.Start = record.Start;
     }
 
-    public static void CreateLink(this TeammateMeetings link, Teammate teammate, Meeting meeting)
+    public static void CreateLink(this TeammateMeetings link, string userGuid, string meetingGuid)
     {
-        link.Meeting = meeting;
-        link.MeetingGUID = meeting.GUID;
-        link.TeammateGUID = teammate.Id;
-        link.Teammate = teammate;
+        link.TeammateGUID = userGuid;
+        link.MeetingGUID = meetingGuid;
     }
 }

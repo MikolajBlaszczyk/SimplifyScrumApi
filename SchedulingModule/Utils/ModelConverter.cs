@@ -5,14 +5,14 @@ namespace SchedulingModule.Utils;
 
 public class ModelConverter
 {
-    public SimpleMeetingModel ConvertIntoRecord(Meeting meeting)
+    public MeetingRecord ConvertIntoRecord(Meeting meeting)
     {
         var usersGuids = meeting
             .TeammateMeetings?
             .Select(tm => tm.TeammateGUID)
             .ToList();
         
-        return new SimpleMeetingModel(
+        return new MeetingRecord(
             meeting.GUID, 
             meeting.Name,
             meeting.Description,

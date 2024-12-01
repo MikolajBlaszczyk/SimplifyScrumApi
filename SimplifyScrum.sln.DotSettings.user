@@ -1,39 +1,32 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=GUID/@EntryIndexedValue">GUID</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/mikolajblaszczyk/Library/Caches/JetBrains/Rider2024.1/resharper-host/temp/Rider/vAny/CoverageData/_SimplifyScrum.883439781/Snapshot/snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=745fc90b_002Df2cd_002D443e_002Daaf9_002D7522f256bbd9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="FactoryTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=35074503_002Dff5f_002D42ad_002Daaa7_002D3935213ce104/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;NUnit3x::43499951-8AA6-4AB6-A251-F50B4850557C::net8.0::UserModuleTests.Security.FactoryTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::43499951-8AA6-4AB6-A251-F50B4850557C::net8.0::UserModuleTests.Security.UserValidatorTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.SchedulerTests.SchedulerGetMeetingsForMonth_ShouldReturnSuccessResult&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.SchedulerTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.ModelConverterTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9A82E013-F475-4DCD-BD2C-650431C1510C::net8.0::SchedulingModule.Tests.Scheduling.DateTimeConverterTests.DateTimeConverterConvertToMonthFromNumber_ShouldConvertToProperMonthEnum&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.Tests.LoginController_Login_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_Login_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithExistingAccount_ShouldAuthorizeUserAndReturnToken&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithNonExistingAccount_ShoulReturnInternalServerError&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests.LoginController_LoginWithNonExistingAccount_ShouldReturnInternalServerError&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.LoginControllerTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.UserControllerTests.GetInfoFromExistingUser_ShouldCorrectlyGetUserInfo&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::83255124-3683-4B81-98F9-C570AE014986::net8.0::DataAccess.Tests.HistoryTableHelperTests.PopulateMissingHistoryValues_CorrectlyPopulateHistoryTableValues&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.ModelConverterTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetSprintByExistingProjectGUID_ShouldProperlyReturnSprintInfo&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetProjectsFromDatabase_ShouldReturnAllProjectsSuccessfully&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::4A7B3FB0-6BAD-44FC-9240-0393969FE093::net8.0::BacklogModule.Tests.BacklogManagerTests.GetFeaturesFromDatabase_ShouldReturnAllProjectsSuccessfully&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectTests.GetAll_ShouldReturnStatusOk&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.SprintControllerTests.GetGoalOfTheSprint_ShouldReturnStatusOk&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectControllerTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.SprintControllerTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::9C292596-CF3E-4604-B771-8BB2F70B57AD::net8.0::SimplifyScrumApi.Tests.ProjectItemControllerTests&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/BacklogModule.Tests" Presentation="&amp;lt;BacklogModule.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/DataAccess.Tests" Presentation="&amp;lt;DataAccess.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SchedulingModule.Tests" Presentation="&amp;lt;SchedulingModule.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SimplifyScrumApi.Tests" Presentation="&amp;lt;SimplifyScrumApi.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6967fadb_002Db870_002D44e9_002Db0f2_002D96e0d8957960/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/BacklogModule.Tests" Presentation="&amp;lt;BacklogModule.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/DataAccess.Tests" Presentation="&amp;lt;DataAccess.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SchedulingModule.Tests" Presentation="&amp;lt;SchedulingModule.Tests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SimplifyScrumApi.Tests" Presentation="&amp;lt;SimplifyScrumApi.Tests&amp;gt;" /&gt;
     &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ffb7df3c_002D81b8_002D484f_002D87ac_002D6645d6a307a3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FactoryTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Solution /&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	
+	
+	
+	
+	
+	
+	
+	</wpf:ResourceDictionary>

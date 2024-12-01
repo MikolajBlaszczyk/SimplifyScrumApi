@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
 using DataAccess.Abstraction.Tables;
 using DataAccess.Enums;
 using DataAccess.Model.User;
@@ -7,7 +8,7 @@ using DataAccess.Model.User;
 namespace DataAccess.Models.Projects;
 
 [Table("Projects")]
-public class Project : HistoryTable
+public class Project : HistoryTable, ICloneable, IAccessorTable
 {
     [Key]
     [StringLength(36, MinimumLength = 36)]
@@ -45,5 +46,26 @@ public class Project : HistoryTable
     public static bool operator !=(Project first, Project second)
     {
         return !(first == second);
+    }
+
+    public object Clone()
+    {
+        return new Project
+        {
+            CreatedBy = CreatedBy,
+            LastUpdatedBy = LastUpdatedBy,
+            LastUpdateOn = LastUpdateOn,
+            CreatedOn = CreatedOn,
+            GUID = Guid.NewGuid().ToString(),
+            Name = Name,
+            Description = Description,
+            State = State,
+            TeamGUID = TeamGUID
+        };
+    }
+
+    public object GetPrimaryKey()
+    {
+        return GUID;
     }
 }

@@ -5,7 +5,7 @@ namespace SchedulingModule.Utils;
 
 public class MeetingGrouper(ModelConverter converter)
 {
-    public IList<IGrouping<int, SimpleMeetingModel>> GroupMeetingsByDayOfMonth(List<Meeting> meetings) =>
+    public IList<IGrouping<int, MeetingRecord>> GroupMeetingsByDayOfMonth(List<Meeting> meetings) =>
         meetings.AsEnumerable()
             .Select(converter.ConvertIntoRecord)
             .GroupBy(mr => mr.Start.Day)

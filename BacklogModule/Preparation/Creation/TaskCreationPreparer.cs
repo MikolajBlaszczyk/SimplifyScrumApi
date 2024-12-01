@@ -10,6 +10,7 @@ public class TaskCreationPreparer : IPrepareCreation<Task>
 {
     public void Prepare(Task entity)
     {
+        //TODO: Test after UT implementation
         //This probably can be change to 0
         var correct = TaskFactory.Create(
             entity.Name,

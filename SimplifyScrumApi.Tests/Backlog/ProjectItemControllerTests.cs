@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using BacklogModule.Models;
 using DataAccess.Abstraction;
+using DataAccess.Abstraction.Storage;
 using DataAccess.Enums;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
@@ -22,20 +23,22 @@ namespace SimplifyScrumApi.Tests;
 [TestFixture]
 public class ProjectItemControllerTests
 {
-    private WebSimpleApiFactory factory;
+    private WebApiFactory factory;
     private const string ApiUrl = "api/v1/scrum/";
     //TODO: start from here
           
     [OneTimeSetUp]
     public async Task Setup()
     {
-      factory = new WebSimpleApiFactory();
-      using (var scope = factory.Services.CreateScope())
+      factory = new WebApiFactory();
+      using (var scope = factory.Scope)
       {
-          var accessor = scope.ServiceProvider.GetService<IProjectItemsAccessor>();
-          await accessor.AddProject(ProjectFactory.Create("projectGUID", "", null, StandardStatus.New, "", "", DateTime.Now));
-          await accessor.AddFeature(FeatureFactory.Create("featureGUID", "", "", ExtendedStatus.New, null, null, "", DateTime.Now));
-          await accessor.AddTask(TaskFactory.Create(2, "", SimpleStatus.Done, "", "", "", DateTime.Now));
+          var featureStorage = scope.ServiceProvider.GetService<IFeatureStorage>();
+          var projectStorage = scope.ServiceProvider.GetService<IProjectStorage>();
+          var taskStorage = scope.ServiceProvider.GetService<ITaskStorage>();
+          projectStorage.AddProject(ProjectFactory.Create("projectGUID", "", null, StandardStatus.New, "", "", DateTime.Now));
+          featureStorage.AddFeature(FeatureFactory.Create("featureGUID", "", "", ExtendedStatus.New, null, null, "", DateTime.Now));
+          taskStorage.AddTask(TaskFactory.Create(2, "", SimpleStatus.Done, "", "", "", DateTime.Now));
       }
     }
 

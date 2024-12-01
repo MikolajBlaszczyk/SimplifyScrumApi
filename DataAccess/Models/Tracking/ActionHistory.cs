@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Abstraction;
 using DataAccess.Enums;
 using DataAccess.Model.User;
 
 namespace DataAccess.Models.Tracking;
 
 [Table("ActionHistories")]
-public class ActionHistory
+public class ActionHistory : IAccessorTable
 {
     [Key]
     public long ID { get; set; }
@@ -25,4 +26,8 @@ public class ActionHistory
     [StringLength(36, MinimumLength = 36)]
     public string ItemGUID { get; set; }
 
+    public object GetPrimaryKey()
+    {
+        return ID;
+    }
 }

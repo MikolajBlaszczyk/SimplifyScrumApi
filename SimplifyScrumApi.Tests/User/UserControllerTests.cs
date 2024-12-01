@@ -14,13 +14,13 @@ namespace SimplifyScrumApi.Tests;
 [TestFixture]
 public class UserControllerTests
 {
-    private WebSimpleApiFactory factory;
+    private WebApiFactory factory;
     private SimpleUserModel _createdUserModel =new ("admin77", "Password123!", "example@abc.com", "", "admin77", ScrumRole.ProjectOwner);
     
     [OneTimeSetUp]
     public async Task Setup()
     {
-        factory = new WebSimpleApiFactory();
+        factory = new WebApiFactory();
     }
 
     [Test]
@@ -44,7 +44,6 @@ public class UserControllerTests
     [OneTimeTearDown]
     public async Task Teardown()
     {
-        await factory.OnDispose();
         factory.Dispose();
     }
 }

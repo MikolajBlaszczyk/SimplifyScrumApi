@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Tests", "DataAcc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplifyFramework", "SimplifyFramework\SimplifyFramework.csproj", "{18C06D8D-CB42-4B82-9958-F9ECEC62AF93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplfiyTestFramework", "SimplfiyTestFramework\SimplfiyTestFramework.csproj", "{ACADD6F1-A615-4DF9-9589-E5C7BBFC1787}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,5 +90,9 @@ Global
 		{18C06D8D-CB42-4B82-9958-F9ECEC62AF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C06D8D-CB42-4B82-9958-F9ECEC62AF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18C06D8D-CB42-4B82-9958-F9ECEC62AF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACADD6F1-A615-4DF9-9589-E5C7BBFC1787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACADD6F1-A615-4DF9-9589-E5C7BBFC1787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACADD6F1-A615-4DF9-9589-E5C7BBFC1787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACADD6F1-A615-4DF9-9589-E5C7BBFC1787}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

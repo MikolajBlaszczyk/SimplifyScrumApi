@@ -90,7 +90,7 @@ public static class ProjectTablesBuilder
         builder.Entity<SprintNote>()
             .HasOne(sn => sn.Sprint)
             .WithMany(s => s.SprintNotes)
-            .HasForeignKey(sn => sn.SprintID);
+            .HasForeignKey(sn => sn.SprintGUID);
 
         builder.Entity<SprintNote>()
             .HasOne(s => s.Teammate)

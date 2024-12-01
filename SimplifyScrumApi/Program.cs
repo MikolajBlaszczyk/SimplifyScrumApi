@@ -91,6 +91,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
+#region MyRegion
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

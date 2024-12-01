@@ -7,7 +7,7 @@ public class FeatureCreationPreparer: IPrepareCreation<Feature>
 {
     public void Prepare(Feature entity)
     {
-        if (string.IsNullOrEmpty(entity.GUID))
-            entity.GUID = Guid.NewGuid().ToString();
+        // if (string.IsNullOrEmpty(entity.OD))
+        //     entity.OD = Guid.NewGuid().ToString();
     }
 }

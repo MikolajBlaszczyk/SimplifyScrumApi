@@ -11,14 +11,14 @@ namespace SimplifyScrumApi.Tests;
 [TestFixture]
 public class SprintControllerTests
 {
-    private WebSimpleApiFactory factory;
+    private WebApiFactory factory;
     private const string ApiUrl = "api/v1/scrum/sprint";
     private SimpleUserModel _createdUserModel = new ("admin", "Password123!", "example@abc.com",  Nickname: "admin");
     
     [OneTimeSetUp]
     public async Task Setup()
     {
-        factory = new WebSimpleApiFactory();
+        factory = new WebApiFactory();
     }
     
     [Test]

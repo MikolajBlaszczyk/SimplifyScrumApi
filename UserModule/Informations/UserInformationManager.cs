@@ -14,7 +14,7 @@ public class UserInformationManager(
     IHttpContextAccessor contextAccessor,
     UserManager<Teammate> userManager,
     IRoleManager roleManager,
-    IUserHierarchyAccessor hierarchyAccessor): IManageUserInformation
+    IUserHierarchyStorage hierarchyStorage): IManageUserInformation
 {
     public async Task<UserInfoResult> GetInfoByUserGUIDAsync(string guid)
     {
@@ -43,7 +43,7 @@ public class UserInformationManager(
             if (user is null or {TeamGUID: null or ""})
                 throw new Exception();
 
-            var project = hierarchyAccessor.GetProjectByTeam(user.TeamGUID);
+            var project = hierarchyStorage.GetProjectByTeam(user.TeamGUID);
         
             
             return project;
@@ -107,7 +107,7 @@ public class UserInformationManager(
         {
             //TODO: Validation here
             Team newTeam = newTeamModel;
-            SimpleTeamModel addedTeam = hierarchyAccessor.AddTeam(newTeam);
+            SimpleTeamModel addedTeam = hierarchyStorage.AddTeam(newTeam);
 
             return addedTeam;
         }
@@ -142,7 +142,7 @@ public class UserInformationManager(
         try
         {
             var result = new List<SimpleTeamModel>();
-            var teams =  hierarchyAccessor.GetAllTeams();
+            var teams =  hierarchyStorage.GetAllTeams();
             
             
             foreach (var team in teams)
@@ -162,7 +162,7 @@ public class UserInformationManager(
     {
         try
         {
-            SimpleTeamModel team =  hierarchyAccessor.GetTeamByGUID(teamGUID);
+            SimpleTeamModel team =  hierarchyStorage.GetTeamByGUID(teamGUID);
             
             return team;
         }

@@ -1,4 +1,5 @@
 using BacklogModule.Abstraction;
+using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
 using DataAccess.Abstraction;
 using DataAccess.Models.Projects;
@@ -14,7 +15,7 @@ namespace SimplifyScrum.Controllers.Backlog;
 [ApiController]
 [Authorize]
 [Route("api/v1/scrum")]
-public class ProjectItemController(IManageUserInformation userInfoManager, IManageProjectItems projectManager): ControllerBase
+public class ProjectItemController(IManageUserInformation userInfoManager, IManageTask projectManager): ControllerBase
 {
     [HttpGet]
     [Route("projects")]
@@ -28,17 +29,18 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
         if (infoResult.IsFailure)
             return StatusCode(500, "Server error");
 
-        var projects  = await projectManager.GetAllProjectsForTeam(infoResult.Data!.TeamGuid);
-        
-        return Ok(projects);
+        //var projects  = await projectManager.GetAllProjectsForTeam(infoResult.Data!.TeamGuid);
+
+        return Ok(); //projects);
     }
 
     [HttpGet]
     [Route("project")]
     public async Task<IActionResult> GetProject([FromQuery] string projectGUID)
     {
-        var project = await projectManager.GetProjectByGuid(projectGUID);
-        return Ok(project.Data);
+        // var project = await projectManager.GetProjectByGuid(projectGUID);
+        // return Ok(project.Data);
+        return Ok();
     }
     
 
@@ -46,7 +48,7 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
     [Route("project/delete")]
     public async Task<IActionResult> DeleteProject([FromQuery] string projectGUID)
     {
-        await projectManager.DeleteProject(projectGUID);
+        //await projectManager.DeleteProject(projectGUID);
 
         return Ok();
     }
@@ -55,7 +57,7 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
     [Route("project/add")]
     public async Task<IActionResult> AddProject([FromBody] ProjectRecord record)
     {
-        await projectManager.AddProject(record);
+        //await projectManager.AddProject(record);
 
         return Ok();
     }
@@ -65,25 +67,28 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
     [Route("project/features")]
     public async Task<IActionResult> GetFeaturesByProjectGUID([FromQuery] string projectGUID)
     {
-        var features = await projectManager.GetAllFeaturesByProjectGUID(projectGUID);
+        //var features = await projectManager.GetAllFeaturesByProjectGUID(projectGUID);
         
-        return Ok(features);
+        //return Ok(features);
+        return Ok();
     }
 
     [HttpGet]
     [Route("feature")]
     public async Task<IActionResult> GetFeature([FromQuery] string featureGUID)
     {
-        var result = await projectManager.GetFeatureByGUID(featureGUID);
-        return Ok(result.Data); 
+        // var result = await projectManager.GetFeatureByGUID(featureGUID);
+        // return Ok(result.Data); 
+        return Ok();
     }
 
     [HttpPost]
     [Route("feature/add")]
     public async Task<IActionResult> AddFeature([FromBody] FeatureRecord record)
     {
-        await projectManager.AddFeature(record);
-
+        // await projectManager.AddFeature(record);
+        //
+        // return Ok();
         return Ok();
     }
 
@@ -91,8 +96,9 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
     [Route("feature/delete")]
     public async Task<IActionResult> DeleteFeature([FromQuery] string featureGUID)
     {
-        await projectManager.DeleteFeature(featureGUID);
-
+        // await projectManager.DeleteFeature(featureGUID);
+        //
+        // return Ok();
         return Ok();
     }
     
@@ -109,7 +115,7 @@ public class ProjectItemController(IManageUserInformation userInfoManager, IMana
     [Route("task")]
     public async Task<IActionResult> GetTask([FromQuery] int taskID)
     {
-        var result = await projectManager.getTaskByID(taskID);
+        var result = await projectManager.GetTaskById(taskID);
 
         return Ok(result.Data);
     }
