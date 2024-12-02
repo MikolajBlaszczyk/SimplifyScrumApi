@@ -21,7 +21,7 @@ using TaskFactory = DataAccess.Models.Factories.TaskFactory;
 namespace SimplifyScrumApi.Tests;
 
 [TestFixture]
-public class ProjectItemControllerTests
+public class BacklogControllerTests
 {
     private WebApiFactory factory;
     private const string ApiUrl = "api/v1/scrum/";
@@ -31,15 +31,13 @@ public class ProjectItemControllerTests
     public async Task Setup()
     {
       factory = new WebApiFactory();
-      using (var scope = factory.Scope)
-      {
-          var featureStorage = scope.ServiceProvider.GetService<IFeatureStorage>();
-          var projectStorage = scope.ServiceProvider.GetService<IProjectStorage>();
-          var taskStorage = scope.ServiceProvider.GetService<ITaskStorage>();
-          projectStorage.AddProject(ProjectFactory.Create("projectGUID", "", null, StandardStatus.New, "", "", DateTime.Now));
-          featureStorage.AddFeature(FeatureFactory.Create("featureGUID", "", "", ExtendedStatus.New, null, null, "", DateTime.Now));
-          taskStorage.AddTask(TaskFactory.Create(2, "", SimpleStatus.Done, "", "", "", DateTime.Now));
-      }
+      var scope = factory.Scope;
+      var featureStorage = scope.ServiceProvider.GetService<IFeatureStorage>();
+      var projectStorage = scope.ServiceProvider.GetService<IProjectStorage>();
+      var taskStorage = scope.ServiceProvider.GetService<ITaskStorage>();
+      projectStorage.AddProject(ProjectFactory.Create("projectGUID", "", null, StandardStatus.New, "", "", DateTime.Now));
+      featureStorage.AddFeature(FeatureFactory.Create("featureGUID", "", "", ExtendedStatus.New, null, null, "", DateTime.Now));
+      taskStorage.AddTask(TaskFactory.Create(2, "", SimpleStatus.Done, "", "", "", DateTime.Now));
     }
 
     #region add project
@@ -285,28 +283,28 @@ public class ProjectItemControllerTests
     }
     
     [Test]
-    public async Task GetAllFeature_ShouldReturnStatusOk()
+    public async Task GetAllFeature_Empty_ShouldReturnStatusNoContent()
     { 
         var client = await factory.CreateLoggedClient();
 
-        var response = await client.GetAsync(ApiUrl + "/projects/features" + "?projectGUID=''");
+        var response = await client.GetAsync(ApiUrl + "project/features?" + "projectGUID=''");
         
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
     
     [Test]
-    public async Task GetAllTasks_ShouldReturnStatusOk()
+    public async Task GetAllTasks_Empty_ShouldReturnStatusNoContent()
     {
         var client = await factory.CreateLoggedClient();
 
-        var response = await client.GetAsync(ApiUrl + "/features/tasks?featureGUID=''");
+        var response = await client.GetAsync(ApiUrl + "feature/tasks?featureGUID=''");
         
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
     }
     
     [OneTimeTearDown]
     public async Task Teardown()
     {
-        factory.Dispose();
+        await factory.DisposeAsync();
     }
 }

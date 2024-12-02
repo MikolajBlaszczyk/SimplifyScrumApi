@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using SchedulingModule;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Utils;
+using SimplifyScrum.Utils;
+using SimplifyScrum.Utils.Requests;
 using UserModule;
 using UserModule.Abstraction;
 using UserModule.Informations;
@@ -30,6 +32,12 @@ public static class ServiceCollectionExtensions
 {
     public static void ConfigureDependencyInjection(this IServiceCollection services)
     {
+        #region Http Requests
+
+        services.AddScoped<ResultUnWrapper>();
+
+        #endregion
+        
         #region user
 
         services.AddScoped<IRoleManager, RoleManagerHelper>();
@@ -50,6 +58,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IManageSprint, SprintManager>();
         services.AddScoped<IManageProject, ProjectManager>();
         services.AddScoped<IManageTask, TaskManager>();
+        services.AddScoped<IManageBacklog, BacklogManager>();
         
         services.AddTransient<IPrepareCreation<Project>, ProjectCreationPreparer>();
         services.AddTransient<IPrepareCreation<Feature>, FeatureCreationPreparer>();

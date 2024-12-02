@@ -28,7 +28,7 @@ public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> lo
         var feautre = await _featureAccessor.GetByPK(featureGUID);
         if (feautre is null)
         {
-            logger.LogError($"Feature with guid {feautre} does not exists");
+            logger.LogWarning($"Feature with guid {feautre} does not exists");
             throw new AccessorException($"Feature with guid {feautre} does not exists");
         }
 

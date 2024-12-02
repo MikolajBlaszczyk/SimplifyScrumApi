@@ -1,7 +1,6 @@
 using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
 using BacklogModule.Utils.Results;
-using DataAccess.Abstraction.Storage;
 
 namespace BacklogModule;
 

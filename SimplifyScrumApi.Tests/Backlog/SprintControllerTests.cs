@@ -19,6 +19,7 @@ public class SprintControllerTests
     public async Task Setup()
     {
         factory = new WebApiFactory();
+        factory.PopulateTestData();
     }
     
     [Test]
