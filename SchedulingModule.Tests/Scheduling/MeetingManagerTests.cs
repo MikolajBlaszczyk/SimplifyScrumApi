@@ -60,7 +60,7 @@ public class MeetingManagerTests
         var manager = factory.Scope.ServiceProvider.GetService<IManageMeetings>();
         var meeting = factory.DbContext.Meetings.FirstOrDefault();
         
-        var result = await manager.DeleteMeeting(meeting);
+        var result = await manager.DeleteMeeting(meeting.GUID);
         
         Assert.IsTrue(factory.DbContext.Meetings.Contains(meeting) == false);
     }

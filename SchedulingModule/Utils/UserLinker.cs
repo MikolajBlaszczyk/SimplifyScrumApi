@@ -11,18 +11,18 @@ namespace SchedulingModule.Utils;
 
 public class UserLinker(IMeetingStorage meetingStorage,  IUserStore<Teammate> userManager)
 {
-    public void LinkUsersToMeeting(MeetingRecord meeting, List<string> guids)
+    public async Task LinkUsersToMeeting(MeetingRecord meeting, List<string> guids)
     {
         foreach (var guid in guids)
         {
             var link = new TeammateMeetings();
             link.CreateLink(guid, meeting.GUID);
-            meetingStorage.AddUserLink(link);
+            await meetingStorage.AddUserLink(link);
         }
     }
 
     public async Task UnlinkAllUsers(MeetingRecord record)
     {
-        meetingStorage.RemoveAllLinks(record);
+        await meetingStorage.RemoveAllLinks(record);
     }
 }

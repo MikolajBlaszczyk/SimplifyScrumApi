@@ -36,8 +36,8 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
 
         if (project is null)
         {
-            logger.LogError($"Project with assigned Team {teamGUID} does not exists");
-            throw new AccessorException($"Project with assigned Team {teamGUID} does not exists");        
+            logger.LogWarning($"Project with assigned Team {teamGUID} does not exists");
+            return null;
         }
 
         return project;

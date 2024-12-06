@@ -36,14 +36,15 @@ public class SprintManagementTests
     }
     
     [Test]
-    public async Task Fail_GetProjectSprint_NonExisting_ShouldThrowError()
+    public async Task Success_GetProjectSprint_NonExisting_ShouldReturnNull()
     {
         var manager = GetManager<IManageSprint>(factory.Scope);
 
-        Assert.ThrowsAsync<AccessorException>(async () =>
-        {
-            await manager.GetSprintInfoByProjectGUID("");
-        });
+        
+        var result = await manager.GetSprintInfoByProjectGUID("");
+        var actual = result.Data;
+        
+        Assert.IsNull(actual);
     }
     
     private T GetManager<T>(IServiceScope scope)

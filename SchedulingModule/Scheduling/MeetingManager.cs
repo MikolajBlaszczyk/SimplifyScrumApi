@@ -2,6 +2,7 @@ using DataAccess.Abstraction;
 using DataAccess.Abstraction.Storage;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using Microsoft.Extensions.Logging;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Models;
 using SchedulingModule.Records;
@@ -11,7 +12,7 @@ using SchedulingModule.Utils.Extensions;
 namespace SchedulingModule;
 
 
-public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker): IManageMeetings
+public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker, ILogger<MeetingManager> logger): IManageMeetings
 {
     public async Task<ScheduleResult> GetByMonthYearAndUser(int year, int month, string userGuid)
     {
@@ -31,10 +32,35 @@ public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker): 
         return result;
     }
 
-    public async Task<ScheduleResult> DeleteMeeting(MeetingRecord meetingToDelete)
+    public async Task<ScheduleResult> GetMeeting(string meetingGuid)
     {
-        MeetingRecord result = await meetingStorage.DeleteMeeting(meetingToDelete);
-        return result;
+        try
+        {
+            MeetingRecord result = await meetingStorage.GetMeetingById(meetingGuid);
+            return result;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            return e;
+        }
+    }
+
+    public async Task<ScheduleResult> DeleteMeeting(string meetingGuid)
+    {
+        try
+        {
+            var meetingToDelete = await meetingStorage.GetMeetingById(meetingGuid);
+            await UnlinkUsers(meetingToDelete);
+            MeetingRecord result = await meetingStorage.DeleteMeeting(meetingToDelete);
+            return result;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            return e;
+        }
+        
     }
     
     public async Task<ScheduleResult> UnlinkUsers(MeetingRecord record)
@@ -45,7 +71,7 @@ public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker): 
 
     public async Task<ScheduleResult> LinkUsers(MeetingRecord record, List<string> users)
     {
-        linker.LinkUsersToMeeting(record, users);
+        await linker.LinkUsersToMeeting(record, users);
         return ScheduleResult.SuccessWithoutData();
     }
 }

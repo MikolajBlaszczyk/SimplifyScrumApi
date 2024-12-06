@@ -7,6 +7,8 @@ using DataAccess.Model.User;
 using DataAccess.Models.Factories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Enums;
@@ -291,7 +293,7 @@ public class SchedulerTests
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
         
         var actual = await manager.UpsertMeeting(record);
         
@@ -322,7 +324,7 @@ public class SchedulerTests
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
 
         var actual = await manager.UpsertMeeting(record);
         
@@ -353,9 +355,9 @@ public class SchedulerTests
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker);
+        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
 
-        var actual = await manager.DeleteMeeting(record);
+        var actual = await manager.DeleteMeeting(record.GUID);
         
         Assert.IsTrue(actual.IsSuccess);
     }

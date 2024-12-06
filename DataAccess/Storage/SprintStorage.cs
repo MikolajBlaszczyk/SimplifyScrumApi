@@ -17,8 +17,8 @@ public class SprintStorage(ICreateAccessors factory, ILogger<Sprint> logger) : I
             .FirstOrDefault(s => s.ProjectGUID == projectGUID);
         if (sprint is null)
         {
-            logger.LogError($"Sprint with project guid {projectGUID} does not exsists");
-            throw new AccessorException($"Sprint with project guid {projectGUID} does not exsists");
+            logger.LogWarning($"Sprint with project guid {projectGUID} does not exsists");
+            return null;
         }
 
         return sprint;

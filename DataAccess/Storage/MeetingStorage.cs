@@ -31,17 +31,17 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         var dbContext = factory.DbContext;
         var meetingAccessor = factory.Create<Meeting>();
 
-        var meetingIds = await dbContext
+        var teammateMeetings =  await dbContext
             .TeammateMeetings
             .Where(tm => tm.TeammateGUID == user.Id)
-            .Select(tm => tm.MeetingGUID as object)
             .ToListAsync();
+        var meetingIds = teammateMeetings.Select(tm => tm.MeetingGUID as object).ToList();
         
-        var meetings = await meetingAccessor.GetAllByPKs(meetingIds);
+        var meetings = await meetingAccessor.GetAllByPKs( meetingIds);
         if (meetings is null)
         {
-            logger.LogError("Could not retrieved meetings");
-            throw new AccessorException("Could not retrieved meetings");
+            logger.LogWarning("Could not retrieved meetings");
+            return new List<Meeting>();
         }
         
         return meetings;
@@ -121,7 +121,9 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         
         try
         {
-            var links = await dbContext.TeammateMeetings.ToListAsync();
+            var links = await dbContext.TeammateMeetings
+                .Where(teammateMeetings => teammateMeetings.MeetingGUID == meeting.GUID)
+                .ToListAsync();
             dbContext.TeammateMeetings.RemoveRange(links);
             await dbContext.SaveChangesAsync();
             return links;

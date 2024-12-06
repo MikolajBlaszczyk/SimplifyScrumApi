@@ -2,6 +2,7 @@ using DataAccess.Abstraction;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SimplifyScrum.Utils;
 using UserModule.Abstraction;
 using UserModule.Models;
@@ -59,19 +60,20 @@ public class UserInformationManager(
     {
         try
         {
-           var allUsers =  userManager
+           var allUsers = await userManager
                .Users
-               .AsEnumerable()
-               .Select( async teammate =>
+               .ToListAsync();
+
+           var users = allUsers
+               .Select(async teammate =>
                {
                    SimpleUserModel user = teammate;
                    user.SystemRole = await roleManager.GetHighestSystemRoleAsync(teammate);
                    return user;
                })
-               .Select(task => task.Result)
-               .ToList();
+               .Select(task => task.Result);
            
-           return allUsers;
+           return users.ToList();
         }
         catch (Exception e)
         {

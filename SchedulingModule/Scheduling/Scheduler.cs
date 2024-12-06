@@ -17,8 +17,8 @@ public class Scheduler(IHttpContextAccessor contextAccessor, IManageMeetings mee
     {
         try
         {
-            var guid = contextAccessor.HttpContext?.User.GetUserGuid();
-            var meetingResult = await meetingStorage.GetByMonthYearAndUser(date.Year, date.Month, guid);
+          
+            var meetingResult = await meetingStorage.GetByMonthYearAndUser(date.Year, date.Month, userGuid);
             var meetings = (meetingResult.Data as List<MeetingRecord>).Select(meeting =>
             {
                 Meeting record = meeting;
@@ -56,7 +56,7 @@ public class Scheduler(IHttpContextAccessor contextAccessor, IManageMeetings mee
     {
         try
         {
-            var result = await meetingStorage.DeleteMeeting(meeting);
+            var result = await meetingStorage.DeleteMeeting(meeting.GUID);
             await meetingStorage.UnlinkUsers(meeting);
             return result;
         }

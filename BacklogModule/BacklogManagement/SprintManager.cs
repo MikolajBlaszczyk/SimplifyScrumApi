@@ -9,7 +9,11 @@ public class SprintManager(ISprintStorage sprintStorage) : IManageSprint
 {
     public async Task<BacklogResult> GetSprintInfoByProjectGUID(string projectGUID)
     {
-        SprintRecord record = sprintStorage.GetSprintInfoByProjectGUID(projectGUID);
+        var model  = sprintStorage.GetSprintInfoByProjectGUID(projectGUID);
+        if (model is null)
+            return BacklogResult.SuccessWithoutData();
+
+        SprintRecord record = model;
         return record;
     }
 }
