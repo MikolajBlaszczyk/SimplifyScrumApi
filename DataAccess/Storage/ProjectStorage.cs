@@ -61,7 +61,7 @@ public class ProjectStorage(ICreateAccessors factory, ILogger<ProjectStorage> lo
 
     public async Task<Project> DeleteProject(Project project)
     {
-        var deleteProject = await _projectAccessor.Update(project);
+        var deleteProject = await _projectAccessor.Delete(project);
         if (deleteProject is null)
         {
             logger.LogError("Cannot delete project");

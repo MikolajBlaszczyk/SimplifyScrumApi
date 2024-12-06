@@ -11,4 +11,13 @@ public static class ClaimsPrincipleExtensions
             .First(c => c.Type == SimpleClaims.UserGuidClaim)
             .Value;
     }
+    
+    
+    public static string? GetScrumClaim(this ClaimsPrincipal user)
+    {
+        return user
+            .Claims
+            .FirstOrDefault(c => c.Type == SimpleClaims.ScrumRoleClaim)
+            .Value;
+    }
 }
