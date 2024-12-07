@@ -87,6 +87,19 @@ public class BacklogManager(IManageSprint sprintManager, IManageFeature featureM
         }
     
     }
+
+    public async Task<BacklogResult> GetProjectByTeam(string teamGuid)
+    {
+        try
+        {
+            return await projectManager.GetProjectByTeamGuid(teamGuid);
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+
     #endregion
 
 

@@ -1,3 +1,4 @@
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.User;
 using DataAccess.Models.Projects;
 using DataAccess.Models.Tracking;
@@ -39,6 +40,21 @@ public static class ProjectTablesBuilder
             .HasForeignKey(f => f.CreatedBy)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Entity<SprintFeatures>()
+            .HasOne<Sprint>(sf => sf.Sprint)
+            .WithMany(s => s.SprintFeatures)
+            .HasForeignKey(sf => sf.SprintGUID);
+        
+        builder.Entity<SprintFeatures>()
+            .HasOne<Feature>(sf => sf.Feature)
+            .WithOne(f => f.featureSprint)
+            .HasForeignKey<SprintFeatures>(sf => sf.FeatureGUID);
+        
+        builder.Entity<SprintFeatures>()
+            .HasKey(sf => new { sf.FeatureGUID, sf.SprintGUID })
+            .IsClustered();
+     
+        
         builder.Entity<Feature>()
             .HasOne<Teammate>()
             .WithMany()

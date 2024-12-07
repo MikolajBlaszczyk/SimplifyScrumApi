@@ -26,13 +26,13 @@ public class UserHierarchyStorage(ICreateAccessors factory, ILogger<UserHierarch
         return team;
     }
 
-    public async Task<Project> GetProjectByTeam(string teamGUID)
+    public async Task<Project> GetActiveProjectByTeam(string teamGUID)
     {
         var dbContext = factory.DbContext;
         
         var project = await dbContext
             .Projects
-            .FirstOrDefaultAsync(p => p.TeamGUID == teamGUID);
+            .FirstOrDefaultAsync(p => p.TeamGUID == teamGUID && p.IsActive == true);
 
         if (project is null)
         {

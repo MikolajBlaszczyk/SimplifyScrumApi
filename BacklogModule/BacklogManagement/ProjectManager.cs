@@ -64,4 +64,17 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
         
         return result;
     }
+
+ 
+    public async Task<BacklogResult> GetProjectByTeamGuid(string teamGuid)
+    {
+        var projects = await projectStorage.GetAllProjects();
+        
+        var teamProject = projects.FirstOrDefault(p => p.TeamGUID == teamGuid && p.IsActive);
+        if(teamProject is null)
+            return BacklogResult.SuccessWithoutData();
+
+        ProjectRecord reuslt = teamProject;
+        return reuslt;
+    }
 }

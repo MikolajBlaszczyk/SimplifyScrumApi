@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SimplifyScrum.Utils;
+using SimplifyScrum.Utils.Messages;
+using SimplifyScrum.Utils.Requests;
 using UserModule.Abstraction;
 using UserModule.Records;
 
@@ -11,23 +13,24 @@ namespace SimplifyScrum.Controllers.User;
 [ApiController]
 [Route("api/v1/scrum/")]
 [Authorize]
-public class UserController(IManageUserInformation infoManager) : ControllerBase
+public class UserController(IManageUserInformation infoManager, ResultUnWrapper unWrapper) : ControllerBase
 {
+    private static readonly ResponseProducer _producer = ResponseProducer.Shared;
+
     [HttpGet]
     [Route("user/info")]
     public async Task<IActionResult> GetUsersInfo()
     {
         var guid = HttpContext.User.GetUserGuid();
-        var result  = await infoManager.GetInfoByUserGUIDAsync(guid);
+        var result = await infoManager.GetInfoByUserGUIDAsync(guid);
 
-        if (result.IsSuccess)
-        {
-            return Ok(result.Data);
-        }
-        
-        return StatusCode(500, result.Exception!.Message);
+        if (result.IsFailure)
+            return _producer.InternalServerError(Messages.GenericError500);
+
+        unWrapper.Unwrap(result, out SimpleUserModel user);
+
+        return Ok(user);
     }
-    
 
     [HttpPost]
     [Route("user/update")]

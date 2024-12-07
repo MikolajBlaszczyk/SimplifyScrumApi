@@ -7,7 +7,7 @@ namespace UserModule.Abstraction;
 public interface IManageUserInformation
 {
     Task<UserInfoResult> GetInfoByUserGUIDAsync(string guid);
-    Task<HierarchyResult> GetUsersProjectAsync(string guid);
+    Task<HierarchyResult> GetUsersActiveProjectAsync(string guid);
     Task<UsersInfoResult> GetAllUsersAsync();
     Task<UserInfoResult> UpdateUserInfo(SimpleUserModel updatedUser);
     Task<HierarchyResult> AddTeam(SimpleTeamModel newTeam);

@@ -11,6 +11,8 @@ using UserModule.Records;
 
 namespace SimplifyScrum.Controllers.User;
 
+
+//TODO: Write UT for this
 [ApiController]
 [Authorize]
 [Route("api/v1/scrum/permission/")]

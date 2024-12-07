@@ -12,7 +12,8 @@ public class ResultUnWrapper
         _logger = logger;
     }
     
-    public bool Unwrap<T>(BaseResult result, out T unwrapped) where T : class
+    
+    public bool Unwrap<T>(BaseResult result, out T unwrapped) where T : class?
     {
         try
         {

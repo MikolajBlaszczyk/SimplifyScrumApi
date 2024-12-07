@@ -27,6 +27,9 @@ public class Project : HistoryTable, ICloneable, IAccessorTable
     [ForeignKey(nameof(ProjectTeam))]
     [StringLength(36, MinimumLength = 36)]
     public string TeamGUID { get; set; }
+
+    public bool IsActive { get; set; }
+    
     
     public Team ProjectTeam { get; set; }
     public ICollection<Feature> Features { get; set; }

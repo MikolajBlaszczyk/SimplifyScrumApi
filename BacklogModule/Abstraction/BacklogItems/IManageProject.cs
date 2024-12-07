@@ -14,4 +14,5 @@ public interface IManageProject
     Task<BacklogResult> DeleteProject(string projectGUID);
     
     Task<BacklogResult> UpdateProject(ProjectRecord project);
+    Task<BacklogResult> GetProjectByTeamGuid(string teamGuid);
 }

@@ -65,20 +65,27 @@ public class WebApiFactory : WebApplicationFactory<Program>
                 var user = TestData.User;
                 var team = TestData.Team;
                 var project = TestData.Project;
+                var projectTwo = TestData.Project.Clone() as Project;
                 var feature = TestData.Feature;
                 var task = TestData.Task;
                 var sprint = TestData.Sprint;
+                var sprintTwo = TestData.Sprint.Clone() as Sprint;
+                
 
                 context.Users.Add(user);
                 context.Teams.Add(team);
-
-                sprint.ProjectGUID = project.GUID;
+            
+                sprint.ProjectGUID = projectTwo.GUID;
+                sprintTwo.ProjectGUID = projectTwo.GUID;
                 project.TeamGUID = team.GUID;
+                projectTwo.TeamGUID = team.GUID;
                 feature.ProjectGUID = project.GUID;
                 task.FeatureGUID = feature.GUID;
 
                 context.Sprints.Add(sprint);
+                context.Sprints.Add(sprintTwo);
                 context.Projects.Add(project);
+                context.Projects.Add(projectTwo);
                 context.Features.Add(feature);
                 context.Tasks.Add(task);
 

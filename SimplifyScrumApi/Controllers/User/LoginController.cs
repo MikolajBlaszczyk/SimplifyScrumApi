@@ -5,6 +5,8 @@ using DataAccess.Model.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimplifyScrum.Utils;
+using SimplifyScrum.Utils.Messages;
+using SimplifyScrum.Utils.Requests;
 using UserModule.Abstraction;
 using UserModule.Informations;
 using UserModule.Records;
@@ -13,8 +15,9 @@ namespace SimplifyScrum.Controllers.User;
 
 [ApiController]
 [Route("api/v1/scrum/")]
-public class LoginController(IManageSecurity securityManager) : ControllerBase
+public class LoginController(IManageSecurity securityManager, IManageUserInformation infoManager, ResultUnWrapper unWrapper) : ControllerBase
 {
+    private static readonly ResponseProducer _producer = ResponseProducer.Shared;
     
     [HttpPost]
     [Route("login")]
@@ -23,16 +26,21 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     {
         var result = await securityManager.LoginAsync(userModel);
 
-        if (result.IsSuccess)
-        {
-            userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
-            var roles = (await securityManager.GetAllUserRoles(userModel.Id)).Data as List<string>;
-            var claims = CreateClaims(userModel, roles);
-            var token = securityManager.GetToken(claims);
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
-        }
+        if(result.IsFailure)
+            return Unauthorized(result.Exception!.Message);
+        
+        var guid = await securityManager.GetLoggedUsersGUIDAsync();
+        var infoResult = await infoManager.GetInfoByUserGUIDAsync(guid);
 
-        return Unauthorized(result.Exception!.Message);
+        if (infoResult.IsFailure)
+            return _producer.InternalServerError(Messages.GenericError500);
+        
+        var unwrappedUser = unWrapper.Unwrap(infoResult, out SimpleUserModel user);
+        var roles = (await securityManager.GetAllUserRoles(user.Id)).Data as List<string>;
+        var claims = CreateClaims(user, roles);
+        var token = securityManager.GetToken(claims);
+        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+        
     }
     
     [HttpGet]
@@ -54,18 +62,22 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
     public async Task<IActionResult> SignIn([FromBody] SimpleUserModel userModel)
     {
         var signInResult = await securityManager.SignInAsync(userModel);
-       
-        if (signInResult.IsSuccess)
-        {
-            await securityManager.AddRoleAsyncForCurrentUser(SystemRole.User);
-            userModel = userModel with { Id = await securityManager.GetLoggedUsersGUIDAsync() };
-            var claims = CreateClaims(userModel, new List<string>{ SystemRole.User });
-            var token = securityManager.GetToken(claims);
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
-        }
-        
-        return StatusCode(500, signInResult.Exception!.Message);
 
+        if (signInResult.IsFailure)
+            return _producer.InternalServerError(signInResult.Exception!.Message);
+        
+       
+        await securityManager.AddRoleAsyncForCurrentUser(SystemRole.User);
+        var guid = await securityManager.GetLoggedUsersGUIDAsync();
+        var infoResult = await infoManager.GetInfoByUserGUIDAsync(guid);
+        if (infoResult.IsFailure)
+            return _producer.InternalServerError(Messages.GenericError500);
+        
+        var unwrappedUser = unWrapper.Unwrap(infoResult, out SimpleUserModel user);
+        var roles = (await securityManager.GetAllUserRoles(user.Id)).Data as List<string>;
+        var claims = CreateClaims(user, roles);
+        var token = securityManager.GetToken(claims);
+        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
     [HttpDelete]
@@ -118,7 +130,8 @@ public class LoginController(IManageSecurity securityManager) : ControllerBase
         var claims = new List<Claim>
         {
             new (ClaimTypes.Name, userModel.Username),
-            new (SimpleClaims.UserGuidClaim, userModel.Id)
+            new (SimpleClaims.UserGuidClaim, userModel.Id),
+            new (SimpleClaims.TeamGuidClaim, userModel.TeamGuid ?? "")
         };
 
         foreach (var role in roles)

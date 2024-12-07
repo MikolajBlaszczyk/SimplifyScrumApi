@@ -20,5 +20,12 @@ public static class Messages
     public const string DeleteFeatureParams = "Feature GUID is required.";
     public const string GetTasksByFeatureGUIDParams = "Feature GUID is required.";
     
+    public const string PlanSprintParams = "Plan requires at least one feature.";
+    #endregion
+
+    #region Generics
+
+    public const string UserIsNotInAnyTeam = "User is not in any team.";
+
     #endregion
 }

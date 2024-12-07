@@ -75,7 +75,7 @@ public class LoginControllerTests
         using (var scope = factory.Services.CreateScope())
         {
             using var client = factory.CreateClient();
-            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com",  "", "Admin2", ScrumRole.DevelopmentTeam);
+            var appUser = new SimpleUserModel("Admin2", "Password1234!", "example2@abc.com",  "ABC", "Admin2", ScrumRole.DevelopmentTeam);
             var userManager = scope.ServiceProvider.GetService<UserManager<Teammate>>();
             var response = await client.PostAsJsonAsync("api/v1/scrum/signin", appUser);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

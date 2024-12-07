@@ -35,7 +35,7 @@ public class UserInformationManager(
         }
     }
 
-    public async Task<HierarchyResult> GetUsersProjectAsync(string guid)
+    public async Task<HierarchyResult> GetUsersActiveProjectAsync(string guid)
     {
         try
         {
@@ -44,7 +44,7 @@ public class UserInformationManager(
             if (user is null or {TeamGUID: null or ""})
                 throw new Exception();
 
-            var project = await hierarchyStorage.GetProjectByTeam(user.TeamGUID);
+            var project = await hierarchyStorage.GetActiveProjectByTeam(user.TeamGUID);
         
             
             return project;

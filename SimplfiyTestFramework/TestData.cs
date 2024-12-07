@@ -1,3 +1,4 @@
+using BacklogModule.Models;
 using DataAccess.Enums;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
@@ -78,4 +79,32 @@ public static class TestData
         TeamGUID = "",
     };
 
+    #region Sprint Management
+    
+    public static Project Project_Success_PlanSprint_ShouldReturnNotNull 
+    {
+        get
+        {
+            return ProjectFactory.Create(Guid.NewGuid().ToString(), "Test", "", StandardStatus.New, "412432141241234", "Me", DateTime.Now);
+        }
+    }
+    public static IEnumerable<Feature> Features_Success_PlanSprint_ShouldReturnNotNull
+    {
+        get
+        {
+            yield return FeatureFactory.Create(Guid.NewGuid().ToString(), "Test", "Test", ExtendedStatus.New, 1,
+                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now);
+            
+            yield return FeatureFactory.Create(Guid.NewGuid().ToString(), "Test2", "Test", ExtendedStatus.New, 1,
+                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now);
+        }
+    }
+    public static SprintRecord Sprint_Success_PlanSprint_ShouldReturnNotNull = SprintRecord.Create("", "Test",
+        "Some Goal", 1, DateTime.Now.AddDays(28), TestData.Project.GUID, "Me", DateTime.Now);
+    
+    public static SprintRecord Sprint_Fail_PlanSprint_NotSprintInfo_ShouldReturnNull = SprintRecord.Create("", "",
+        "", -1, DateTime.Now.AddDays(29), TestData.Project.GUID, "Me", DateTime.Now);
+
+        
+    #endregion
 }

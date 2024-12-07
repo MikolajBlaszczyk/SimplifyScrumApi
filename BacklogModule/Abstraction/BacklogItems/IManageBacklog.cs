@@ -12,6 +12,8 @@ public interface IManageBacklog
     Task<BacklogResult> AddProject(ProjectRecord record);
     Task<BacklogResult> DeleteProject(string projectGuid);
     Task<BacklogResult> GetProjectByGuid(string projectGuid);
+    Task<BacklogResult> GetProjectByTeam(string teamGuid);
+    
     
     Task<BacklogResult> GetProjectFeatures(string projectGuid);
     Task<BacklogResult> GetFeatureByGuid(string featureGuid);

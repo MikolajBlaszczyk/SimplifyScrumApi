@@ -4,6 +4,7 @@ using DataAccess.Abstraction;
 using DataAccess.Abstraction.Accessors.Factories;
 using DataAccess.Abstraction.Tables;
 using DataAccess.Enums;
+using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.User;
 
 namespace DataAccess.Models.Projects;
@@ -28,8 +29,11 @@ public class Feature : HistoryTable, ICloneable, IAccessorTable
     [ForeignKey(nameof(ParentProject))]
     [StringLength(36, MinimumLength = 36)]
     public string? ProjectGUID { get; set; }
+
+    public bool AssignedToSprint { get; set; }
     
     public Project ParentProject { get; set; }
+    public SprintFeatures featureSprint { get; set; }
     public ICollection<Task> Tasks { get; set; }
     
     public static bool operator ==(Feature first, Feature second)

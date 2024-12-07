@@ -3,8 +3,10 @@ using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
 using DataAccess.Models.Projects;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SimplifyScrum.Utils;
+using SimplifyScrum.Utils.Messages;
 using SimplifyScrum.Utils.Requests;
 using UserModule.Abstraction;
 
@@ -25,7 +27,7 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
         if (userGuid is null)
             return _producer.InternalServerError();
         
-        var hierarchyResult  = await infoManager.GetUsersProjectAsync(userGuid);
+        var hierarchyResult  = await infoManager.GetUsersActiveProjectAsync(userGuid);
         if (hierarchyResult.IsFailure)
             return _producer.InternalServerError();
         
@@ -41,5 +43,26 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
         
         return Ok(sprint);
     }
+
+
+
+    [HttpPost]
+    [Route("plan")]
+    public async Task<IActionResult> PlanSprint(PlanSprintRecord plan)
+    {
+        if (plan.FeatureGUIDs.Count == 0)
+            return _producer.BadRequest(Messages.PlanSprintParams);
+
+        var result = await sprintManager.PlanSprint(plan);
+
+        if (result.IsFailure)
+            return _producer.BadRequest(Messages.GenericError500);
+
+        unWrapper.Unwrap(result, out SprintRecord record);
+        
+        return Ok(record);
+    }
+    
     
 }
+

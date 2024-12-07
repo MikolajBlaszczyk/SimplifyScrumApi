@@ -4,6 +4,7 @@ using DataAccess.Model.User;
 using DataAccess.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SimplifyScrum.Utils;
 using SimplifyScrum.Utils.Messages;
 using SimplifyScrum.Utils.Requests;
@@ -46,6 +47,28 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
         
         return Ok(projectResult.Data);
     }
+
+    //TODO: Write UT for this
+    [HttpGet]
+    [Route("project/active")]
+    public async Task<IActionResult> GetActiveProject()
+    {
+        var teamGuid = HttpContext.User.GetTeamGuid();
+        if (teamGuid.IsNullOrEmpty())
+            return _producer.BadRequest(Messages.UserIsNotInAnyTeam);
+        
+        var result = await backlogManager.GetProjectByTeam(teamGuid);
+
+        if (result.IsFailure)
+            return _producer.InternalServerError(Messages.GenericError500);
+        
+        unWrapper.Unwrap(result, out ProjectRecord? project);
+        if (project is null)
+            return _producer.NoContent();
+        
+        return Ok(project);
+    }
+    
 
     [HttpGet]
     [Route("project")]

@@ -5,7 +5,7 @@ namespace DataAccess.Abstraction;
 
 public interface IUserHierarchyStorage
 {
-    Task<Project> GetProjectByTeam(string teamGUID);
+    Task<Project> GetActiveProjectByTeam(string teamGUID);
     Task<Team> GetTeam(string teamGUID);
     Task<Team> AddTeam(Team newTeam);
     Task<List<Team>> GetAllTeams();

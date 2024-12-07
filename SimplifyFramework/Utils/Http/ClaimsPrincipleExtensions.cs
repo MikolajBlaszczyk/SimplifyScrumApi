@@ -18,6 +18,15 @@ public static class ClaimsPrincipleExtensions
         return user
             .Claims
             .FirstOrDefault(c => c.Type == SimpleClaims.ScrumRoleClaim)
-            .Value;
+            ?.Value;
+    }
+    
+    public static string? GetTeamGuid(this ClaimsPrincipal user)
+    {
+        return user
+            .Claims
+            .FirstOrDefault(c => c.Type == SimpleClaims.TeamGuidClaim)
+            ?.Value;
     }
 }
+

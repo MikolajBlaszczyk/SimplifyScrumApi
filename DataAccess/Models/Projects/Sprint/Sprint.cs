@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DataAccess.Abstraction;
 using DataAccess.Abstraction.Tables;
+using DataAccess.Model.ConnectionTables;
 
 namespace DataAccess.Models.Projects;
 
@@ -9,6 +10,7 @@ namespace DataAccess.Models.Projects;
 public class Sprint : HistoryTable, ICloneable, IAccessorTable
 {
     [Key]
+    [StringLength(36, MinimumLength = 36)]
     public string GUID { get; set; }
     
     [StringLength(1000, MinimumLength = 3)]
@@ -24,7 +26,7 @@ public class Sprint : HistoryTable, ICloneable, IAccessorTable
     
     public Project Project { get; set; }
     public ICollection<SprintNote> SprintNotes { get; set; }
-    
+    public ICollection<SprintFeatures> SprintFeatures { get; set; }
     
     public static bool operator ==(Sprint first, Sprint second)
     {

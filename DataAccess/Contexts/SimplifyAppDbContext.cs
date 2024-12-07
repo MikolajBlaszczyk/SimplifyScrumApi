@@ -27,6 +27,7 @@ public class SimplifyAppDbContext : IdentityDbContext<Teammate>
     
     public DbSet<TeammateMeetings> TeammateMeetings { get; set; }
     public DbSet<MeetingAttachments> MeetingAttachments { get; set; }
+    public DbSet<SprintFeatures> SprintFeatures { get; set; }
     
     public SimplifyAppDbContext(DbContextOptions<SimplifyAppDbContext> options) : base(options) {}
 
