@@ -14,7 +14,9 @@ public record FeatureRecord(
         string CreatedBy,
         DateTime CreatedOn,
         string LastUpdatedBy,
-        DateTime LastUpdateOn)
+        DateTime LastUpdateOn,
+        bool AssignedToSprint,
+        RefinementState RefinementState)
 {
     public static FeatureRecord Create(
         string GUID,
@@ -36,7 +38,9 @@ public record FeatureRecord(
             CreatedBy,
             CreatedOn,
             CreatedBy,
-            CreatedOn
+            CreatedOn,
+            false, 
+            RefinementState.NotReady
         );
     }
     
@@ -50,7 +54,9 @@ public record FeatureRecord(
         string CreatedBy,
         DateTime CreatedOn,
         string LastUpdatedBy,
-        DateTime LastUpdateOn)
+        DateTime LastUpdateOn,
+        bool AssignedToSprint,
+        RefinementState RefinementState)
     {
         return new FeatureRecord(
             GUID,
@@ -62,7 +68,9 @@ public record FeatureRecord(
             CreatedBy,
             CreatedOn,
             LastUpdatedBy,
-            LastUpdateOn
+            LastUpdateOn,
+            AssignedToSprint,
+            RefinementState
         );
     }
     
@@ -79,7 +87,9 @@ public record FeatureRecord(
                 record.CreatedBy,
                 record.CreatedOn,
                 record.LastUpdatedBy,
-                record.LastUpdateOn
+                record.LastUpdateOn,
+                record.AssignedToSprint,
+                record.RefinementState
             );
     }
     
@@ -95,7 +105,9 @@ public record FeatureRecord(
             model.CreatedBy,
             model.CreatedOn,
             model.LastUpdatedBy,
-            model.LastUpdateOn
+            model.LastUpdateOn,
+            model.AssignedToSprint,
+            model.RefinementState
         );
     }
 }

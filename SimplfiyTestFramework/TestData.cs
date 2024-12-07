@@ -93,10 +93,10 @@ public static class TestData
         get
         {
             yield return FeatureFactory.Create(Guid.NewGuid().ToString(), "Test", "Test", ExtendedStatus.New, 1,
-                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now);
+                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now, false, RefinementState.Ready);
             
             yield return FeatureFactory.Create(Guid.NewGuid().ToString(), "Test2", "Test", ExtendedStatus.New, 1,
-                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now);
+                Project_Success_PlanSprint_ShouldReturnNotNull.GUID, "Me", DateTime.Now, "me", DateTime.Now, false, RefinementState.Ready);
         }
     }
     public static SprintRecord Sprint_Success_PlanSprint_ShouldReturnNotNull = SprintRecord.Create("", "Test",

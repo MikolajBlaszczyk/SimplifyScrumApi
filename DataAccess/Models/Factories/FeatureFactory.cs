@@ -8,10 +8,10 @@ public static class FeatureFactory
 {
     public static Feature Create(string guid, string name, string description, ExtendedStatus state, int? points, string? projectGUID, string createdBy, DateTime createdOn)
     {
-        return Create(guid, name, description, state, points, projectGUID, createdBy, createdOn, createdBy, createdOn);
+        return Create(guid, name, description, state, points, projectGUID, createdBy, createdOn, createdBy, createdOn, null, null);
     }
     
-    public static Feature Create(string guid, string name, string description, ExtendedStatus state, int? points, string? projectGUID, string createdBy, DateTime createdOn, string lastUpdatedBy, DateTime lastUpdateOn)
+    public static Feature Create(string guid, string name, string description, ExtendedStatus state, int? points, string? projectGUID, string createdBy, DateTime createdOn, string lastUpdatedBy, DateTime lastUpdateOn, bool? assignedToSprint, RefinementState? refinementState)
     {
         var newFeature =  new Feature
         {
@@ -26,6 +26,12 @@ public static class FeatureFactory
             LastUpdatedBy = lastUpdatedBy,
             LastUpdateOn = lastUpdateOn,
         };
+        
+        if (assignedToSprint.HasValue)
+            newFeature.AssignedToSprint = assignedToSprint.Value;
+        
+        if (refinementState.HasValue)
+            newFeature.RefinementState = refinementState.Value;
         
         HistoryTableHelper.PopulateMissingValues(newFeature, createdBy, createdOn, createdBy, createdOn);
 

@@ -29,8 +29,8 @@ public class Feature : HistoryTable, ICloneable, IAccessorTable
     [ForeignKey(nameof(ParentProject))]
     [StringLength(36, MinimumLength = 36)]
     public string? ProjectGUID { get; set; }
-
     public bool AssignedToSprint { get; set; }
+    public RefinementState RefinementState { get; set; }
     
     public Project ParentProject { get; set; }
     public SprintFeatures featureSprint { get; set; }

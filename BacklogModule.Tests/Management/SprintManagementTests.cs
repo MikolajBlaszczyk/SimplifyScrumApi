@@ -39,9 +39,10 @@ public class SprintManagementTests
     public async Task Success_GetProjectSprint_NonExisting_ShouldReturnNull()
     {
         var storage =new Mock<ISprintStorage>();
+        var featureStorage =new Mock<IFeatureStorage>();
         storage.Setup(s => s.AddSprint(It.IsAny<Sprint>())).ReturnsAsync(new Sprint());
         storage.Setup(s => s.LinkSprintWithFeatures(It.IsNotNull<Sprint>(), It.IsNotNull<List<string>>()));
-        var manager = new SprintManager(storage.Object);
+        var manager = new SprintManager(storage.Object, featureStorage.Object, null);
         
         var result = await manager.GetSprintInfoByProjectGUID("");
         var actual = result.Data;

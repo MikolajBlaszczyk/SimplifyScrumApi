@@ -1,3 +1,4 @@
+using DataAccess.Enums;
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.User;
 using DataAccess.Models.Projects;
@@ -64,6 +65,14 @@ public static class ProjectTablesBuilder
         builder.Entity<Feature>()
             .ToTable(f => f.HasCheckConstraint("CK_Features_Points", "[Points] IN (-1, 1, 2, 3, 5, 8, 13)"));
 
+        builder.Entity<Feature>()
+            .Property(f => f.RefinementState)
+            .HasDefaultValue(RefinementState.NotReady);
+
+        builder.Entity<Feature>()
+            .Property(f => f.AssignedToSprint)
+            .HasDefaultValue(false);
+        
         builder.Entity<Task>()
             .HasOne(t => t.ParentFeature)
             .WithMany(f => f.Tasks)
