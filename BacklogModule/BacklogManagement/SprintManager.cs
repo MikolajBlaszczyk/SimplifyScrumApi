@@ -8,7 +8,7 @@ using DataAccess.Models.Projects;
 
 namespace BacklogModule.BacklogManagement;
 
-public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage featureStorage, IEntityPreparerFactory preparerFactory) : IManageSprint
+public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage featureStorage, IEntityPreparerFactory preparerFactory, ISprintNoteStorage sprintNoteStorage) : IManageSprint
 {
     public async Task<BacklogResult> GetSprintInfoByProjectGUID(string projectGUID)
     {
@@ -51,6 +51,26 @@ public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage feature
         }
         catch (Exception e)
         {
+            return e;
+        }
+    }
+
+    public async Task<BacklogResult> RateSprint(SprintNoteRecord record)
+    {
+        try
+        {
+            SprintNote note = record;
+            await sprintNoteStorage.AddSprintNotes(note);
+       
+            var sprint =  await sprintStorage.GetSprintByGuid(record.SprintGUID);
+            sprint.IsFinished = true;
+            SprintRecord updatedSprint = await sprintStorage.UpdateSprint(sprint);
+            
+            return updatedSprint;
+        }
+        catch (Exception e)
+        {
+            
             return e;
         }
     }

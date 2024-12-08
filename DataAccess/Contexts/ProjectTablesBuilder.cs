@@ -1,9 +1,11 @@
+using System.Text.Json;
 using DataAccess.Enums;
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.User;
 using DataAccess.Models.Projects;
 using DataAccess.Models.Tracking;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Task = DataAccess.Models.Projects.Task;
 
 namespace DataAccess.Context;
@@ -107,6 +109,10 @@ public static class ProjectTablesBuilder
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Sprint>()
+            .Property(s => s.IsFinished)
+            .HasDefaultValue(false);
+            
+        builder.Entity<Sprint>()
             .HasOne<Teammate>()
             .WithMany()
             .HasForeignKey(s => s.LastUpdatedBy)
@@ -123,10 +129,10 @@ public static class ProjectTablesBuilder
             .HasForeignKey(s => s.TeammateGUID);
 
         builder.Entity<SprintNote>()
-            .OwnsOne(sn => sn.Value, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
+            .Property(sn => sn.Value)
+            .HasConversion(
+                c => JsonSerializer.Serialize(c, JsonSerializerOptions.Default),
+                s => JsonSerializer.Deserialize<SprintRateValue>(s, JsonSerializerOptions.Default)!);
 
         builder.Entity<ActionHistory>()
             .HasOne<Teammate>()

@@ -7,18 +7,19 @@ public record SprintRecord(
     string GUID,
     string Name,
     string Goal,
-    int IterationNumber,
+    int Iteration,
     DateTime End,
     string ProjectGUID,
     string CreatedBy,
     DateTime CreatedOn,
     string LastUpdateBy,
-    DateTime LastUpdateOn)
+    DateTime LastUpdateOn,
+    bool IsFinished)
 {
     public static SprintRecord Create(string GUID,
         string Name,
         string Goal,
-        int IterationNumber,
+        int Iteration,
         DateTime End,
         string ProjectGUID,
         string CreatedBy,
@@ -28,36 +29,39 @@ public record SprintRecord(
             GUID,
             Name,
             Goal,
-            IterationNumber,
+            Iteration,
             End,
             ProjectGUID,
             CreatedBy,
             CreatedOn,
             CreatedBy,
-            CreatedOn);
+            CreatedOn,
+            false);
     }
     
     public static SprintRecord Create(string GUID,
         string Name,
         string Goal,
-        int IterationNumber,
+        int Iteration,
         DateTime End,
         string ProjectGUID,
         string CreatedBy,
         DateTime CreatedOn,
         string LastUpdateBy,
-        DateTime LastUpdateOn)
+        DateTime LastUpdateOn,
+        bool IsFinished)
     {
         return new SprintRecord(GUID,
             Name,
             Goal,
-            IterationNumber,
+            Iteration,
             End,
             ProjectGUID,
             CreatedBy,
             CreatedOn,
             LastUpdateBy,
-            LastUpdateOn);
+            LastUpdateOn,
+            IsFinished);
     }
 
     public static  implicit operator Sprint(SprintRecord record)
@@ -67,13 +71,14 @@ public record SprintRecord(
                 record.GUID,
                 record.Name,
                 record.Goal,
-                record.IterationNumber,
+                record.Iteration,
                 record.End,
                 record.ProjectGUID,
                 record.CreatedBy,
                 record.CreatedOn,
                 record.LastUpdateBy,
-                record.LastUpdateOn
+                record.LastUpdateOn,
+                record.IsFinished
             );
     }
     
@@ -89,7 +94,8 @@ public record SprintRecord(
             model.CreatedBy,
             model.CreatedOn,
             model.LastUpdatedBy,
-            model.LastUpdateOn
+            model.LastUpdateOn,
+            model.IsFinished
         );
     }
 }

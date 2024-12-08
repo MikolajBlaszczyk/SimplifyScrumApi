@@ -8,4 +8,6 @@ public interface IManageSprint
     Task<BacklogResult> GetSprintInfoByProjectGUID(string projectGUID);
 
     Task<BacklogResult> PlanSprint(PlanSprintRecord record);
+    
+    Task<BacklogResult> RateSprint(SprintNoteRecord record);
 }

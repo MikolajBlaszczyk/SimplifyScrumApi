@@ -23,7 +23,8 @@ public class Sprint : HistoryTable, ICloneable, IAccessorTable
     [ForeignKey(nameof(Project))]
     [StringLength(36, MinimumLength = 36)]
     public string ProjectGUID { get; set; }
-    
+
+    public bool IsFinished { get; set; }
     public Project Project { get; set; }
     public ICollection<SprintNote> SprintNotes { get; set; }
     public ICollection<SprintFeatures> SprintFeatures { get; set; }

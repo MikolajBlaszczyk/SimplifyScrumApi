@@ -45,9 +45,9 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
     }
 
 
-
+    //TODO: Write UT 
     [HttpPost]
-    [Route("plan")]
+    [Route("finish")]
     public async Task<IActionResult> PlanSprint(PlanSprintRecord plan)
     {
         if (plan.FeatureGUIDs.Count == 0)
@@ -62,7 +62,20 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
         
         return Ok(record);
     }
-    
-    
+
+    //TODO: Write UT 
+    [HttpPost]
+    [Route("rate")]
+    public async Task<IActionResult> RateSprint(SprintNoteRecord record)
+    {
+        //TODO: Validation
+        var result = await sprintManager.RateSprint(record);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+
+        unWrapper.Unwrap(result, out SprintRecord sprintRecord);
+        
+        return Ok(sprintRecord);
+    }
 }
 

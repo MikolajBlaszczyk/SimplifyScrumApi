@@ -26,6 +26,20 @@ public class SprintStorage(ICreateAccessors factory, ILogger<Sprint> logger) : I
         return sprint;
     }
 
+    public async Task<Sprint> GetSprintByGuid(string sprintGuid)
+    {
+        var accessors = factory.Create<Sprint>();
+        
+        var sprint = await accessors.GetByPK(sprintGuid);
+        if (sprint is null)
+        {
+            logger.LogWarning($"Sprint with guid {sprint} does not exists");
+            throw new AccessorException($"Sprint with guid {sprint} does not exists");
+        }
+
+        return sprint;
+    }
+
     public async Task<Sprint> AddSprint(Sprint sprint)
     {
         var accessor = factory.Create<Sprint>();
@@ -38,6 +52,20 @@ public class SprintStorage(ICreateAccessors factory, ILogger<Sprint> logger) : I
         }
 
         return addedSprint;
+    }
+
+    public async Task<Sprint> UpdateSprint(Sprint sprint)
+    {
+        var accessor = factory.Create<Sprint>();
+        
+        var updatedSprint = await accessor.Update(sprint);
+        if (updatedSprint is null)
+        {
+            logger.LogError("Cannot update sprint");
+            throw new AccessorException("Cannot update sprint");
+        }
+
+        return updatedSprint;
     }
 
     public async System.Threading.Tasks.Task LinkSprintWithFeatures(Sprint sprint, List<string> featureGuids)

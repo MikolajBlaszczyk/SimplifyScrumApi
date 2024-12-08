@@ -1,3 +1,4 @@
+using DataAccess.Enums;
 using DataAccess.Models.Projects;
 
 namespace DataAccess.Models.Factories;
@@ -6,7 +7,7 @@ public static class SprintNoteFactory
 {
    
     
-    public static SprintNote Create(int ID, SprintNoteValue value, string teammateGUID, string sprintGUID)
+    public static SprintNote Create(int ID, SprintRateValue value, string teammateGUID, string sprintGUID)
     {
         var newSprintNote =  new SprintNote
         {

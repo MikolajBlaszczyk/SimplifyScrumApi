@@ -4,6 +4,7 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(SimplifyAppDbContext))]
-    partial class SimplifyAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208135053_Retro changes for Sprint and SprintNote tables")]
+    partial class RetrochangesforSprintandSprintNotetables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AttachmentID");
 
-                    b.ToTable("MeetingAttachments", (string)null);
+                    b.ToTable("MeetingAttachments");
                 });
 
             modelBuilder.Entity("DataAccess.Model.ConnectionTables.SprintFeatures", b =>
@@ -60,7 +63,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("SprintGUID");
 
-                    b.ToTable("SprintFeatures", (string)null);
+                    b.ToTable("SprintFeatures");
                 });
 
             modelBuilder.Entity("DataAccess.Model.ConnectionTables.TeammateMeetings", b =>
@@ -79,7 +82,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("MeetingGUID");
 
-                    b.ToTable("TeammateMeetings", (string)null);
+                    b.ToTable("TeammateMeetings");
                 });
 
             modelBuilder.Entity("DataAccess.Model.Meetings.Attachment", b =>
@@ -105,7 +108,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("DataAccess.Model.Meetings.Meeting", b =>
@@ -141,7 +144,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("MeetingLeaderGUID");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("DataAccess.Model.User.Team", b =>
@@ -161,7 +164,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("GUID");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("DataAccess.Model.User.Teammate", b =>
@@ -302,7 +305,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProjectGUID");
 
-                    b.ToTable("Features", null, t =>
+                    b.ToTable("Features", t =>
                         {
                             t.HasCheckConstraint("CK_Features_Points", "[Points] IN (-1, 1, 2, 3, 5, 8, 13)");
                         });
@@ -358,7 +361,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("TeamGUID");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Projects.Sprint", b =>
@@ -417,7 +420,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProjectGUID");
 
-                    b.ToTable("Sprints", (string)null);
+                    b.ToTable("Sprints");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Projects.SprintNote", b =>
@@ -437,13 +440,16 @@ namespace DataAccess.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("SprintGUID");
 
                     b.HasIndex("TeammateGUID");
 
-                    b.ToTable("SprintNotes", (string)null);
+                    b.ToTable("SprintNotes");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Projects.Task", b =>
@@ -495,7 +501,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("LastUpdatedBy");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Tracking.ActionHistory", b =>
@@ -529,7 +535,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserGUID");
 
-                    b.ToTable("ActionHistories", (string)null);
+                    b.ToTable("ActionHistories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -827,14 +833,14 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("DataAccess.Models.Projects.SprintNote.Value#DataAccess.Models.Projects.SprintRateValue", "Value", b1 =>
+                    b.OwnsOne("DataAccess.Models.Projects.SprintRateValue", "Value", b1 =>
                         {
                             b1.Property<int>("SprintNoteID")
                                 .HasColumnType("int");
 
                             b1.HasKey("SprintNoteID");
 
-                            b1.ToTable("SprintNotes", (string)null);
+                            b1.ToTable("SprintNotes");
 
                             b1.ToJson("Value");
 

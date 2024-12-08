@@ -89,6 +89,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IFeatureStorage, FeatureStorage>();
         services.AddScoped<ITaskStorage, TaskStorage>();
         services.AddScoped<IProjectStorage, ProjectStorage>();
+        services.AddScoped<ISprintNoteStorage, SprintNoteStorage>();
         
         services.AddScoped<ICreateAccessors, ModelAccessorFactory>();
         services.AddScoped(typeof(IAccessor<Meeting>), typeof(ModelAccessor<Meeting>));

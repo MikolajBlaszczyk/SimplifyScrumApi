@@ -42,7 +42,7 @@ public class SprintManagementTests
         var featureStorage =new Mock<IFeatureStorage>();
         storage.Setup(s => s.AddSprint(It.IsAny<Sprint>())).ReturnsAsync(new Sprint());
         storage.Setup(s => s.LinkSprintWithFeatures(It.IsNotNull<Sprint>(), It.IsNotNull<List<string>>()));
-        var manager = new SprintManager(storage.Object, featureStorage.Object, null);
+        var manager = new SprintManager(storage.Object, featureStorage.Object, null, null);
         
         var result = await manager.GetSprintInfoByProjectGUID("");
         var actual = result.Data;

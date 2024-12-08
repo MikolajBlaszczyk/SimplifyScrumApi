@@ -32,7 +32,7 @@ public static class TestData
 
     public static SprintNote SprintNote = SprintNoteFactory.Create(
         Random.Shared.Next(),
-        new SprintNoteValue(),
+        new SprintRateValue(),
         "",
         "");
 

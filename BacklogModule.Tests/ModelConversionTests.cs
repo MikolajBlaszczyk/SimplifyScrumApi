@@ -21,7 +21,7 @@ public class ModelConversionTests
             DateTime time = DateTime.Now;
             yield return new TestCaseData(
                     SprintFactory.Create("1", "sprint1", "to sprint", 1, time, "", "me", time),
-                    SprintRecord.Create("1", "sprint1", "to sprint", 1, time ,"", "me", time, "me", time)
+                    SprintRecord.Create("1", "sprint1", "to sprint", 1, time ,"", "me", time, "me", time, false)
                 );
         }
     } 
