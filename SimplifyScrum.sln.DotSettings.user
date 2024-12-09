@@ -1,16 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=GUID/@EntryIndexedValue">GUID</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/mikolajblaszczyk/Library/Caches/JetBrains/Rider2024.1/resharper-host/temp/Rider/vAny/CoverageData/_SimplifyScrum.883439781/Snapshot/snapshot.utdcvr</s:String>
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6967fadb_002Db870_002D44e9_002Db0f2_002D96e0d8957960/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Or&gt;
-    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/BacklogModule.Tests" Presentation="&amp;lt;BacklogModule.Tests&amp;gt;" /&gt;
-    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/DataAccess.Tests" Presentation="&amp;lt;DataAccess.Tests&amp;gt;" /&gt;
-    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SchedulingModule.Tests" Presentation="&amp;lt;SchedulingModule.Tests&amp;gt;" /&gt;
-    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/SimplifyScrumApi.Tests" Presentation="&amp;lt;SimplifyScrumApi.Tests&amp;gt;" /&gt;
-    &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum/UserModule.Tests" Presentation="&amp;lt;UserModule.Tests&amp;gt;" /&gt;
-  &lt;/Or&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b33e3c77_002D16c7_002D40d6_002Da665_002Dcfffaabe18ba/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/mikolajblaszczyk/RiderProjects/SimplifyScrum" Presentation="&amp;lt;Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
+	
+	
+	
 	
 	
 	

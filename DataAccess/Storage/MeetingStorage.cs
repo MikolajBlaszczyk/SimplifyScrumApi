@@ -13,9 +13,13 @@ namespace DataAccess.Storage;
 
 public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors factory, ILogger<MeetingStorage> logger) : IMeetingStorage
 {
-    
-    
-    
+    public async Task<List<Meeting>> GetAllMeetings()
+    {
+        var meetingAccessor = factory.Create<Meeting>();
+
+        return await meetingAccessor.GetAll();
+    }
+
     public async Task<List<Meeting>> GetByMonthAndYearForUserGuid(int month, int year, string userGuid)
     { 
         var user = await userManager

@@ -60,7 +60,7 @@ public class TaskStorage(ICreateAccessors factory, ILogger<TaskStorage> logger) 
 
     public async Task<Task> DeleteTask(Task task)
     {
-        var deleteTask = await _taskAccessor.Update(task);
+        var deleteTask = await _taskAccessor.Delete(task);
         if (deleteTask is null)
         {
             logger.LogError("Cannot delete task");

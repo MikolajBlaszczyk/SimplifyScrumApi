@@ -5,6 +5,7 @@ namespace DataAccess.Abstraction.Storage;
 
 public interface IMeetingStorage
 {
+    Task<List<Meeting>> GetAllMeetings();
     Task<List<Meeting>> GetByMonthAndYearForUserGuid(int month, int year, string userGuid);
     Task<Meeting> GetMeetingById(string identifier);
     Task<Meeting> UpsertMeeting(Meeting meeting);

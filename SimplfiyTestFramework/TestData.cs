@@ -1,8 +1,10 @@
 using BacklogModule.Models;
 using DataAccess.Enums;
+using DataAccess.Enums.Notification;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using DataAccess.Models.Notifications;
 using DataAccess.Models.Projects;
 using Task = DataAccess.Models.Projects.Task;
 using TaskFactory = DataAccess.Models.Factories.TaskFactory;
@@ -77,6 +79,15 @@ public static class TestData
         Nickname = "user",
         ScrumRole = ScrumRole.DevelopmentTeam,
         TeamGUID = "",
+    };
+    
+    public static Notification Notification = new Notification
+    {
+        NotificationSourceGUID = Guid.NewGuid().ToString(),
+        SourceType = NotificationItem.Meeting, 
+        Type = NotificationType.Info,
+        Advance = 30,
+        Sent = false
     };
 
     #region Sprint Management

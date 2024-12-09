@@ -11,6 +11,7 @@ using DataAccess.Abstraction.Tables;
 using DataAccess.Accessors;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
+using DataAccess.Models.Notifications;
 using DataAccess.Models.Projects;
 using DataAccess.Storage;
 using Microsoft.AspNetCore.Identity;
@@ -99,6 +100,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IAccessor<Task>), typeof(ModelAccessor<Task>));
         services.AddScoped(typeof(IAccessor<Project>), typeof(ModelAccessor<Project>));
         services.AddScoped(typeof(IAccessor<Team>), typeof(ModelAccessor<Team>));
+        services.AddScoped(typeof(IAccessor<Notification>), typeof(ModelAccessor<Notification>));
 
         #endregion
         

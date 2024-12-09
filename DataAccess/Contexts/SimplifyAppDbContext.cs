@@ -1,6 +1,7 @@
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
+using DataAccess.Models.Notifications;
 using DataAccess.Models.Projects;
 using DataAccess.Models.Tracking;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -23,7 +24,7 @@ public class SimplifyAppDbContext : IdentityDbContext<Teammate>
     public DbSet<SprintNote> SprintNotes { get; set; }
     
     public DbSet<ActionHistory> ActionHistories { get; set; }
-    
+    public DbSet<Notification> Notifications { get; set; }
     
     public DbSet<TeammateMeetings> TeammateMeetings { get; set; }
     public DbSet<MeetingAttachments> MeetingAttachments { get; set; }
@@ -38,5 +39,6 @@ public class SimplifyAppDbContext : IdentityDbContext<Teammate>
 
         MeetingTablesBuilder.BuildMeetingRelatedTables(builder);
         ProjectTablesBuilder.BuildProjectRelatedTables(builder);
+        NotificationTablesBuilder.BuildNotificationRelatedTables(builder);
     }
 }

@@ -21,6 +21,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BacklogModule\BacklogModule.csproj" />
       <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+      <ProjectReference Include="..\OpenConnectionManagement\OpenConnectionManagement.csproj" />
       <ProjectReference Include="..\SchedulingModule\SchedulingModule.csproj" />
       <ProjectReference Include="..\UserModule\UserModule.csproj" />
     </ItemGroup>

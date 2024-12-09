@@ -14,6 +14,25 @@ namespace SchedulingModule;
 
 public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker, ILogger<MeetingManager> logger): IManageMeetings
 {
+    public async Task<ScheduleResult> GetAllMeetings()
+    {
+        try
+        {
+            var meetings = await meetingStorage.GetAllMeetings();
+            List<MeetingRecord> results = meetings.Select(m =>
+            {
+                MeetingRecord record = m;
+                return record;
+            }).ToList();
+            return results;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            return e;
+        }
+    }
+
     public async Task<ScheduleResult> GetByMonthYearAndUser(int year, int month, string userGuid)
     {
         var meetings = await meetingStorage

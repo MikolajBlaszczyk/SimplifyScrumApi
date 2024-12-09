@@ -37,6 +37,7 @@ public static class UserAuthorizationHelper
         Description = "",
         State = StandardStatus.Done,
         TeamGUID = Team.GUID,
+        IsActive = true
     };
     static readonly Sprint Sprint = new()
     {

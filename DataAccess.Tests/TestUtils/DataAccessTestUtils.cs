@@ -6,6 +6,7 @@ using DataAccess.Enums;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using DataAccess.Models.Notifications;
 using DataAccess.Models.Projects;
 using Microsoft.Extensions.DependencyInjection;
 using SimplifyScrumApi.Tests;
@@ -16,6 +17,7 @@ namespace DataAccess.Tests.TestUtils;
 
 public static class DataAccessTestUtils
 {
+    public static Notification Notification = TestData.Notification;
     public static Meeting Meeting = TestData.Meeting;
 
     public static Sprint Sprint = TestData.Sprint;

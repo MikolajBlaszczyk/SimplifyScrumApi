@@ -6,6 +6,7 @@ namespace SchedulingModule.Abstraction;
 
 public interface IManageMeetings
 {
+    Task<ScheduleResult> GetAllMeetings();   
     Task<ScheduleResult> GetByMonthYearAndUser(int year, int month, string userGuid);
     Task<ScheduleResult> UnlinkUsers(MeetingRecord record);
     Task<ScheduleResult> LinkUsers(MeetingRecord record, List<string> usersGuids);
