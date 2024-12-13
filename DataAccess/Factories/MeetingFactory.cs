@@ -19,7 +19,7 @@ public static class MeetingFactory
             Start = start,
             Duration = duration,
             MeetingLeaderGUID = leaderGuid,
-            Type = type
+            Type = type,
         };
     }
     

@@ -87,7 +87,8 @@ public static class TestData
         SourceType = NotificationItem.Meeting, 
         Type = NotificationType.Info,
         Advance = 30,
-        Sent = false
+        Sent = false,
+        Receivers = new List<string>()
     };
 
     #region Sprint Management

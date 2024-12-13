@@ -10,7 +10,7 @@ using SimplifyScrum.Utils;
 
 namespace SchedulingModule;
 
-public class Scheduler(IHttpContextAccessor contextAccessor, IManageMeetings meetingStorage, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
+public class Scheduler(IHttpContextAccessor contextAccessor, IScheduleMeetings meetingStorage, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
 {
     
     public async Task<ScheduleResult> GetCurrentMonthSchedule(DateTime date, string userGuid)
@@ -42,7 +42,7 @@ public class Scheduler(IHttpContextAccessor contextAccessor, IManageMeetings mee
     {
         try
         {
-            var result = await meetingStorage.UpsertMeeting(meeting);
+            var result = await meetingStorage.AddMeeting(meeting);
             await meetingStorage.LinkUsers(meeting, meeting.UserGuids);
             return result;
         }

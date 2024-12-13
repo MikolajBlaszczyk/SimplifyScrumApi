@@ -1,11 +1,12 @@
 using System.Text;
-using System.Text.Json;
 using DataAccess.Context;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenConnectionManagement.Hubs;
+using OpenConnectionManagement.Workers;
 using SimplifyScrum.DI;
 using SimplifyScrum.Utils.LifeCycle.Startup;
 
@@ -56,9 +57,10 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
-            policy.AllowAnyOrigin();
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
@@ -86,12 +88,15 @@ builder.Services.AddAuthentication(options =>
 #endif
 builder.Services.ConfigureDependencyInjection();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<NotificationWorker>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
-builder.Services.AddSignalR();
+
 
 
 #region MyRegion
@@ -110,14 +115,19 @@ if (app.Environment.IsDevelopment())
     app.UseCors();
 }
 
+
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
+
 
 await RoleSeeder.SeedAsync(app.Services);
 await RoleSeeder.AddAdminRolesForSelectedUsers(app.Services, new[] { "64e1b3c0-7107-45e2-9324-7ae976543467" });
 
+
+app.MapHub<MeetingsHub>("/meetingshub");
 app.MapControllers();
+
 app.Run();
 
 public partial class Program { }

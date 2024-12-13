@@ -1,18 +1,16 @@
-using DataAccess.Abstraction;
 using DataAccess.Abstraction.Storage;
-using DataAccess.Model.User;
+using DataAccess.Enums.Notification;
 using DataAccess.Models.Factories;
 using Microsoft.Extensions.Logging;
 using SchedulingModule.Abstraction;
 using SchedulingModule.Models;
 using SchedulingModule.Records;
 using SchedulingModule.Utils;
-using SchedulingModule.Utils.Extensions;
 
-namespace SchedulingModule;
+namespace SchedulingModule.Scheduling;
 
 
-public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker, ILogger<MeetingManager> logger): IManageMeetings
+public class MeetingSchedulerManager(IMeetingStorage meetingStorage, INotificationStorage notificationStorage, UserLinker linker, ILogger<MeetingSchedulerManager> logger): IScheduleMeetings
 {
     public async Task<ScheduleResult> GetAllMeetings()
     {
@@ -45,10 +43,58 @@ public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker, I
         }).ToList();
     }
 
-    public async Task<ScheduleResult> UpsertMeeting(MeetingRecord record)
+    public async Task<ScheduleResult> AddMeeting(MeetingRecord meeting)
     {
-        MeetingRecord result = await meetingStorage.UpsertMeeting(record);
-        return result;
+        try
+        {
+            MeetingRecord result = await meetingStorage.AddMeeting(meeting);
+
+            if (meeting.UserGuids != null)
+            {
+                var notification = NotificationFactory.Create(
+                    result.GUID,
+                    NotificationItem.Meeting,
+                    NotificationType.Reminder, 
+                    30, 
+                    false,
+                    meeting.UserGuids);
+                await notificationStorage.AddAsync(notification);
+            }
+            
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<ScheduleResult> UpdateMeeting(MeetingRecord meeting)
+    {
+        try
+        {
+            MeetingRecord result = await meetingStorage.UpdateMeeting(meeting);
+            
+            if (meeting.UserGuids != null)
+            {
+                var notification = NotificationFactory.Create(
+                    result.GUID,
+                    NotificationItem.Meeting,
+                    NotificationType.Reminder, 
+                    30, 
+                    false,
+                    meeting.UserGuids);
+                await notificationStorage.UpdateAsync(notification);
+            }
+            
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<ScheduleResult> GetMeeting(string meetingGuid)
@@ -93,4 +139,6 @@ public class MeetingManager(IMeetingStorage meetingStorage, UserLinker linker, I
         await linker.LinkUsersToMeeting(record, users);
         return ScheduleResult.SuccessWithoutData();
     }
+
+ 
 }

@@ -15,9 +15,14 @@ using DataAccess.Models.Notifications;
 using DataAccess.Models.Projects;
 using DataAccess.Storage;
 using Microsoft.AspNetCore.Identity;
+using OpenConnectionManagement.Abstraction;
+using OpenConnectionManagement.Notifications;
 using SchedulingModule;
 using SchedulingModule.Abstraction;
+using SchedulingModule.Scheduling;
 using SchedulingModule.Utils;
+using SimplifyFramework.Cache;
+using SimplifyFramework.Cache.Implementation.KeyValue;
 using SimplifyScrum.Utils;
 using SimplifyScrum.Utils.Requests;
 using UserModule;
@@ -36,7 +41,14 @@ public static class ServiceCollectionExtensions
         #region Http Requests
 
         services.AddScoped<ResultUnWrapper>();
+        services.AddScoped<INotificationSender, MeetingNotificationSender>();
 
+        #endregion
+        
+        #region Simplfiy Framework
+
+        services.AddTransient<ICacheKeyValuePairs, InMemoryKeyValueCache>();
+        
         #endregion
         
         #region user
@@ -76,9 +88,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<MeetingGrouper, MeetingGrouper>();
         services.AddScoped<CalendarArranger, CalendarArranger>();
         services.AddScoped<ModelConverter, ModelConverter>();
-        services.AddScoped<IManageMeetings, MeetingManager>();
+        services.AddScoped<IScheduleMeetings, MeetingSchedulerManager>();
         services.AddScoped<UserLinker, UserLinker>();
-
+        
         #endregion
 
         #region DataAccess
@@ -91,6 +103,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITaskStorage, TaskStorage>();
         services.AddScoped<IProjectStorage, ProjectStorage>();
         services.AddScoped<ISprintNoteStorage, SprintNoteStorage>();
+        services.AddScoped<INotificationStorage, NotificationStorage>();
         
         services.AddScoped<ICreateAccessors, ModelAccessorFactory>();
         services.AddScoped(typeof(IAccessor<Meeting>), typeof(ModelAccessor<Meeting>));

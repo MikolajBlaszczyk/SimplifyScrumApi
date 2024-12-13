@@ -4,6 +4,7 @@ using DataAccess.Abstraction.Storage;
 using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
+using DataAccess.Models.Notifications;
 using DataAccess.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,10 @@ namespace DataAccess.Storage;
 
 public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors factory, ILogger<MeetingStorage> logger) : IMeetingStorage
 {
+    private readonly IAccessor<Meeting> meetingAccessor = factory.Create<Meeting>();
+    
     public async Task<List<Meeting>> GetAllMeetings()
     {
-        var meetingAccessor = factory.Create<Meeting>();
-
         return await meetingAccessor.GetAll();
     }
 
@@ -33,7 +34,6 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         }
         
         var dbContext = factory.DbContext;
-        var meetingAccessor = factory.Create<Meeting>();
 
         var teammateMeetings =  await dbContext
             .TeammateMeetings
@@ -53,8 +53,6 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
     
     public async Task<Meeting> GetMeetingById(string identifier)
     {
-        var meetingAccessor =factory.Create<Meeting>();
-        
         var meeting = await meetingAccessor.GetByPK(identifier);
         if (meeting is null)
         {
@@ -63,25 +61,26 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         }
 
         return meeting;
-    } 
+    }
 
-    public async Task<Meeting> UpsertMeeting(Meeting meeting)
+    public async Task<Meeting> AddMeeting(Meeting meeting)
     {
-        Meeting? result;
-        var meetingAccessor = factory.Create<Meeting>();
-
-        if (await meetingAccessor.GetByPK(meeting.GUID) is not null)
-        {
-            result = await meetingAccessor.Update(meeting);
-        }
-        else
-        {
-            result = await meetingAccessor.Add(meeting);
-        }
-
+        Meeting? result = await meetingAccessor.Add(meeting);
         if (result is null)
         {
-            logger.LogError("Could not upsert meeting");
+            logger.LogError("Could not add meeting");
+            throw new AccessorException("Could not upsert meeting");
+        }
+        
+        return result;
+    }
+
+    public async Task<Meeting> UpdateMeeting(Meeting meeting)
+    {
+        Meeting? result = await meetingAccessor.Update(meeting);
+        if (result is null)
+        {
+            logger.LogError("Could not update meeting");
             throw new AccessorException("Could not upsert meeting");
         }
         
@@ -90,7 +89,6 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
     
     public async Task<Meeting> DeleteMeeting(Meeting meeting)
     {
-        var meetingAccessor = factory.Create<Meeting>();
 
         var result = await meetingAccessor.Delete(meeting);
         if (result is null)

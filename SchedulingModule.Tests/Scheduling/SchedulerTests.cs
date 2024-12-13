@@ -5,6 +5,7 @@ using DataAccess.Model.ConnectionTables;
 using DataAccess.Model.Meetings;
 using DataAccess.Model.User;
 using DataAccess.Models.Factories;
+using DataAccess.Models.Notifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using SchedulingModule.Abstraction;
 using SchedulingModule.Enums;
 using SchedulingModule.Models;
 using SchedulingModule.Records;
+using SchedulingModule.Scheduling;
 using SchedulingModule.Tests.Models;
 using SchedulingModule.Tests.Utils;
 using SchedulingModule.Utils;
@@ -25,10 +27,13 @@ namespace SchedulingModule.Tests.Scheduling;
 public class SchedulerTests
 { 
     private Mock<IHttpContextAccessor> _contextAccessorMock;
-
+    private Mock<INotificationStorage> _notificationStorageMock;
     [SetUp]
     public void SetUp()
     {
+        _notificationStorageMock = new Mock<INotificationStorage>();
+        _notificationStorageMock.Setup(ns => ns.AddAsync(It.IsAny<Notification>()))
+            .ReturnsAsync((Notification notification) => notification);
         _contextAccessorMock = new Mock<IHttpContextAccessor>();
 
         var claims = new List<Claim>
@@ -165,7 +170,7 @@ public class SchedulerTests
     [TestCaseSource(nameof(SchedulerRetrievingTestData))]
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnSuccessResult(int month, int year, ScheduleTestResult result)
     {
-        var accessorMock = new Mock<IManageMeetings>();
+        var accessorMock = new Mock<IScheduleMeetings>();
         accessorMock.Setup(a => a.GetByMonthYearAndUser(year, month, It.IsAny<string>()))
             .ReturnsAsync(() =>
             {
@@ -186,7 +191,7 @@ public class SchedulerTests
     [TestCaseSource(nameof(SchedulerRetrievingTestData))]
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperMonth(int month, int year, ScheduleTestResult result)
     {
-        var accessorMock = new Mock<IManageMeetings>();
+        var accessorMock = new Mock<IScheduleMeetings>();
         accessorMock.Setup(a => a.GetByMonthYearAndUser(year, month, It.IsAny<string?>()))
             .ReturnsAsync(() =>
             {
@@ -207,7 +212,7 @@ public class SchedulerTests
     [TestCaseSource(nameof(SchedulerRetrievingTestData))]
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperNumberOfDaysWithMeetings(int month, int year, ScheduleTestResult result)
     {
-        var accessorMock = new Mock<IManageMeetings>();
+        var accessorMock = new Mock<IScheduleMeetings>();
         accessorMock.Setup(a => a.GetByMonthYearAndUser(year, month, ""))
             .ReturnsAsync(() =>
             {
@@ -254,7 +259,7 @@ public class SchedulerTests
     public async Task SchedulerGetMeetingsForMonth_ShouldReturnProperNumberOfDaysForMonths(int month, int year,
         int expectedNumberOfDays)
     {
-        var accessorMock = new Mock<IManageMeetings>();
+        var accessorMock = new Mock<IScheduleMeetings>();
         accessorMock.Setup(a => a.GetByMonthYearAndUser(year, month, It.IsAny<string>()))
             .ReturnsAsync(() =>
             {
@@ -289,13 +294,13 @@ public class SchedulerTests
     {
         var accessorMock = new Mock<IMeetingStorage>();
         accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).ReturnsAsync((Meeting?)null);
-        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).ReturnsAsync(meeting);
+        accessorMock.Setup(a => a.AddMeeting(It.IsAny<Meeting>())).ReturnsAsync(meeting);
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
+        MeetingSchedulerManager schedulerManager = new MeetingSchedulerManager(accessorMock.Object, _notificationStorageMock.Object, linker,  NullLogger<MeetingSchedulerManager>.Instance);
         
-        var actual = await manager.UpsertMeeting(record);
+        var actual = await schedulerManager.AddMeeting(record);
         
         Assert.IsTrue(actual.IsSuccess);
     }
@@ -320,13 +325,13 @@ public class SchedulerTests
     {
         var accessorMock = new Mock<IMeetingStorage>();
         accessorMock.Setup(a => a.GetMeetingById(It.IsAny<string>())).ReturnsAsync(meeting);
-        accessorMock.Setup(a => a.UpsertMeeting(It.IsAny<Meeting>())).ReturnsAsync(updatedMeeting);
+        accessorMock.Setup(a => a.UpdateMeeting(It.IsAny<Meeting>())).ReturnsAsync(updatedMeeting);
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
+        MeetingSchedulerManager schedulerManager = new MeetingSchedulerManager(accessorMock.Object, _notificationStorageMock.Object, linker, NullLogger<MeetingSchedulerManager>.Instance);
 
-        var actual = await manager.UpsertMeeting(record);
+        var actual = await schedulerManager.UpdateMeeting(record);
         
         Assert.IsTrue(actual.IsSuccess);
     }
@@ -355,9 +360,9 @@ public class SchedulerTests
         var userStoreMock = new Mock<IUserStore<Teammate>>();
         userStoreMock.Setup(us => us.FindByIdAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Teammate());
         var linker = new UserLinker(accessorMock.Object, userStoreMock.Object);
-        MeetingManager manager = new MeetingManager(accessorMock.Object, linker, NullLogger<MeetingManager>.Instance);
+        MeetingSchedulerManager schedulerManager = new MeetingSchedulerManager(accessorMock.Object, _notificationStorageMock.Object, linker, NullLogger<MeetingSchedulerManager>.Instance);
 
-        var actual = await manager.DeleteMeeting(record.GUID);
+        var actual = await schedulerManager.DeleteMeeting(record.GUID);
         
         Assert.IsTrue(actual.IsSuccess);
     }

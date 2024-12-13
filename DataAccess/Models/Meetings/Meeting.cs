@@ -28,7 +28,6 @@ public class Meeting : ICloneable, IAccessorTable
     [StringLength(36, MinimumLength = 36)]
     public string MeetingLeaderGUID { get; set; }
     
-
     public Teammate MeetingLeader { get; set; }
     public ICollection<TeammateMeetings> TeammateMeetings { get; set; }
     public ICollection<MeetingAttachments> MeetingAttachments { get; set; }

@@ -24,6 +24,7 @@ public record MeetingRecord(
         MeetingType type,
         List<string> users = null)
     {
+        
         return new MeetingRecord(
             guid,
             name,

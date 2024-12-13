@@ -23,6 +23,8 @@ public class Notification :  IAccessorTable
     public int Advance { get; set; }
     [Required]
     public bool Sent { get; set; }
+    [Required]
+    public List<string> Receivers { get; set; }
 
     public object GetPrimaryKey()
     {
