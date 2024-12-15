@@ -23,7 +23,7 @@ public class LoginProcessor (UserValidator validator, AspIdentityDirector identi
             var loginSucceeded = await identityDirector.LoginAsync(userModel);
             
             if (loginSucceeded == false)
-                throw new Exception("Login failed");
+                throw new Exception("Wrong username or password. Please provide correct credentials.");
         }
         catch (Exception ex)
         {
@@ -32,5 +32,4 @@ public class LoginProcessor (UserValidator validator, AspIdentityDirector identi
 
         return SecurityResult.SuccessWithoutData();
     }
-
 }
