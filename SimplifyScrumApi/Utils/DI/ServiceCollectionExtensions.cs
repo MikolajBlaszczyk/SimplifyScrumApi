@@ -36,12 +36,27 @@ namespace SimplifyScrum.DI;
 
 public static class ServiceCollectionExtensions
 {
-    public static void ConfigureDependencyInjection(this IServiceCollection services)
+    public static void ConfigureDependencyInjection(this IServiceCollection services, IConfiguration? configuration = null)
     {
+        bool useTestingNotificationSender = configuration.GetValue<bool>("NotificationSettings:UseTestingNotificationSender");
+        
         #region Http Requests
 
         services.AddScoped<ResultUnWrapper>();
+        
+        #if DEBUG
+        if (useTestingNotificationSender)
+        {
+            services.AddScoped<INotificationSender, TestingNotificationSender>();
+        }
+        else
+        {
+            services.AddScoped<INotificationSender, MeetingNotificationSender>();
+        }
+        #else
         services.AddScoped<INotificationSender, MeetingNotificationSender>();
+        #endif
+   
 
         #endregion
         

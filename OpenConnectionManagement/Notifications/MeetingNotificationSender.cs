@@ -40,8 +40,9 @@ public class MeetingNotificationSender(
         return requireToSend;
     }
 
-    public async Task<bool> SendNotification(Notification notification, string message)
+    public async Task<bool> SendNotification(Notification notification, string message, string title)
     {
+        
         if(notification.Receivers.Count == 0)
             return false;
         
@@ -57,7 +58,7 @@ public class MeetingNotificationSender(
         }
         
         
-        await hubContext.Clients.Group(groupName).SendAsync(ClientSignalrMethods.IncomingMeeting, message);
+        await hubContext.Clients.Group(groupName).SendAsync(ClientSignalrMethods.IncomingMeeting, message, Guid.NewGuid().ToString());
         
         notification.Sent = true;
         notificationStorage.UpdateAsync(notification);

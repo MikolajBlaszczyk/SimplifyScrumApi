@@ -71,7 +71,7 @@ public class MeetingNotificationSenderTests
 
             _hubContextMock.Setup(hc => hc.Clients.Group(It.IsAny<string>())).Returns(clientProxyMock.Object);
 
-            var result = await _notificationSender.SendNotification(notification, "Test message");
+            var result = await _notificationSender.SendNotification(notification, "Test message", "Test");
 
             Assert.IsTrue(result);
         }
@@ -81,7 +81,7 @@ public class MeetingNotificationSenderTests
         {
             var notification = new Notification { Receivers = new List<string>() };
             
-            var result = await _notificationSender.SendNotification(notification, "Test message");
+            var result = await _notificationSender.SendNotification(notification, "Test message", "Test");
 
             Assert.IsFalse(result);
         }

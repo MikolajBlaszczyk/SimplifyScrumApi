@@ -9,3 +9,4 @@ riderModule.iml
 SimplifyScrum/.DS_Store
 SimplifyScrum/appsettings.Development.json
 compose.yml
+SimplifyScrumApi/appsettings.Development.json

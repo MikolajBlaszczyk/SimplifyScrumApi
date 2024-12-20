@@ -86,12 +86,18 @@ builder.Services.AddAuthentication(options =>
 
     
 #endif
-builder.Services.ConfigureDependencyInjection();
+builder.Services.ConfigureDependencyInjection(configuration: builder.Configuration);
 
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<NotificationWorker>();
+#if DEBUG
+if (builder.Configuration.GetValue<bool>("NotificationSettings:UseTestingNotificationSender"))
+{
+    builder.Services.AddHostedService<TestingWorker>();
+}
+#endif
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();

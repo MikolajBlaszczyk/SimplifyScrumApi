@@ -25,6 +25,7 @@ public class NotificationWorker(IServiceScopeFactory serviceScopeFactory) : Back
         
         while (!stoppingToken.IsCancellationRequested)
         {
+            
             await NotifyAboutIncomingMeetings();
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
@@ -38,7 +39,7 @@ public class NotificationWorker(IServiceScopeFactory serviceScopeFactory) : Back
         
         foreach(var notification in notifications)
         {
-            await sender.SendNotification(notification, NotificationParameterProvider.GetParameters(notification));
+            await sender.SendNotification(notification, NotificationParameterProvider.GetParameters(notification), "Incoming Meeting");
         }
     }
 }
