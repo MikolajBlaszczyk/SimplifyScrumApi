@@ -75,6 +75,12 @@ public class MeetingSchedulerManager(IMeetingStorage meetingStorage, INotificati
         try
         {
             MeetingRecord result = await meetingStorage.UpdateMeeting(meeting);
+
+            var oldNotification = await  notificationStorage.GetByNotificationSourceGUIDAsync(meeting.GUID);
+            if (oldNotification.Any())
+            {
+                await notificationStorage.DeleteAsync(oldNotification.FirstOrDefault().ID);
+            }
             
             if (meeting.UserGuids != null)
             {
@@ -85,7 +91,7 @@ public class MeetingSchedulerManager(IMeetingStorage meetingStorage, INotificati
                     30, 
                     false,
                     meeting.UserGuids);
-                await notificationStorage.UpdateAsync(notification);
+                await notificationStorage.AddAsync(notification);
             }
             
             return result;

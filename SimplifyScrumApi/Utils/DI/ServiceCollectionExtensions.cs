@@ -38,7 +38,7 @@ public static class ServiceCollectionExtensions
 {
     public static void ConfigureDependencyInjection(this IServiceCollection services, IConfiguration? configuration = null)
     {
-        bool useTestingNotificationSender = configuration.GetValue<bool>("NotificationSettings:UseTestingNotificationSender");
+        bool useTestingNotificationSender = configuration?.GetValue<bool>("NotificationSettings:UseTestingNotificationSender") ?? false;
         
         #region Http Requests
 

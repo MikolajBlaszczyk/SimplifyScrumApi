@@ -66,7 +66,7 @@ public class MeetingController(ISchedule scheduler, IScheduleMeetings meetingsMa
         if (linkingResult.IsFailure)
             return _producer.InternalServerError(Messages.GenericError500);
 
-        return Ok();
+        return Ok(meeting);
     }
     
     [HttpPost("update")]
