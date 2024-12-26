@@ -1,10 +1,11 @@
 using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
 using BacklogModule.Utils.Results;
+using SimplifyScrum.Utils;
 
 namespace BacklogModule;
 
-public class BacklogManager(IManageSprint sprintManager, IManageFeature featureManager, IManageProject projectManager, IManageTask taskManager) : IManageBacklog
+public class BacklogManager(IManageSprint sprintManager, IManageFeature featureManager, IManageProject projectManager, IManageTask taskManager, ResultUnWrapper unWrapper) : IManageBacklog
 {
     #region sprint
     
@@ -66,6 +67,22 @@ public class BacklogManager(IManageSprint sprintManager, IManageFeature featureM
     {
         try
         {
+            var featureListResult = await featureManager.GetAllFeaturesByProjectGUID(projectGuid);
+            unWrapper.Unwrap(featureListResult, out List<FeatureRecord> featureRecords);
+            
+            foreach (var feature in featureRecords)
+            {
+                var taskListResult = await taskManager.GetAllTasksByFeatureGUID(feature.GUID);
+                unWrapper.Unwrap(taskListResult, out List<TaskRecord> taskRecords);
+                
+                foreach (var task in taskRecords)
+                {
+                    await taskManager.DeleteTask(task.Id);
+                }
+                
+                await featureManager.DeleteFeature(feature.GUID);
+            }
+            
             return await projectManager.DeleteProject(projectGuid);
         }
         catch (Exception e)

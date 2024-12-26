@@ -26,7 +26,8 @@ public static class ProjectFactory
         string createdBy,
         DateTime createdOn,
         string lastUpdatedBy,
-        DateTime lastUpdateOn)
+        DateTime lastUpdateOn,
+        bool isActive = false)
     {
         var newProject =  new Project()
         {
@@ -35,6 +36,7 @@ public static class ProjectFactory
             Description = description,
             State = state,
             TeamGUID = teamGUID,
+            IsActive = isActive
         };
         
         HistoryTableHelper.PopulateMissingValues(newProject, createdBy,  createdOn, lastUpdatedBy, lastUpdateOn);

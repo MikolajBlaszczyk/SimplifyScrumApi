@@ -32,6 +32,9 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
             return _producer.InternalServerError();
         
         unWrapper.Unwrap(hierarchyResult, out Project project);
+        if (project is null)
+            return _producer.NoContent();
+        
         var result = await sprintManager.GetSprintInfoByProjectGUID(project.GUID);
 
         if (result.IsFailure)

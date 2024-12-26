@@ -13,7 +13,8 @@ public record ProjectRecord(
     string CreatedBy,
     DateTime CreatedOn,
     string LastUpdatedBy,
-    DateTime LastUpdatedOn
+    DateTime LastUpdatedOn,
+    bool IsActive 
 )
 {
     public static ProjectRecord Create( string GUID,
@@ -43,7 +44,8 @@ public record ProjectRecord(
         string CreatedBy,
         DateTime CreatedOn,
         string LastUpdatedBy,
-        DateTime LastUpdatedOn)
+        DateTime LastUpdatedOn,
+        bool isActive = false)
     {
         return new ProjectRecord(
             GUID,
@@ -54,7 +56,8 @@ public record ProjectRecord(
             CreatedBy,
             CreatedOn,
             LastUpdatedBy,
-            LastUpdatedOn);
+            LastUpdatedOn,
+            isActive);
     }
     
     public static  implicit operator Project(ProjectRecord? record)

@@ -126,6 +126,21 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
         return Ok(project) ;
     }
     
+    [HttpPost]
+    [Route("project/update")]
+    public async Task<IActionResult> UpdateProject([FromBody] ProjectRecord record)
+    {
+        var result = await backlogManager.UpdateProject(record);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(result, out ProjectRecord? project);
+        if(project is null)
+            return _producer.InternalServerError(Messages.ActionFailed);
+        
+        return Ok(project) ;
+    }
+    
     
     [HttpGet]
     [Route("project/features")]
@@ -178,6 +193,21 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
         return Ok(feature);
     }
 
+    [HttpPost]
+    [Route("feature/update")]
+    public async Task<IActionResult> UpdateFeature([FromBody] FeatureRecord record)
+    {
+        var result = await backlogManager.UpdateFeature(record);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(result, out FeatureRecord? feature);
+        if(feature is null)
+            return _producer.InternalServerError(Messages.ActionFailed);
+        
+        return Ok(feature);
+    }
+    
     [HttpDelete]
     [Route("feature/delete")]
     public async Task<IActionResult> DeleteFeature([FromQuery] string featureGUID)
@@ -236,6 +266,21 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
     public async Task<IActionResult> AddTask([FromBody] TaskRecord record)
     {
         var result = await backlogManager.AddTask(record);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(result, out TaskRecord? task);
+        if(task is null)
+            return _producer.InternalServerError(Messages.ActionFailed);
+        
+        return Ok(task);
+    }
+    
+    [HttpPost]
+    [Route("task/update")]
+    public async Task<IActionResult> UpdateTask([FromBody] TaskRecord record)
+    {
+        var result = await backlogManager.UpdateTask(record);
         if(result.IsFailure)
             return _producer.InternalServerError();
         
