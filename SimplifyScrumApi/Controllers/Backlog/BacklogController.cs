@@ -1,5 +1,6 @@
 using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
+using DataAccess.Enums;
 using DataAccess.Model.User;
 using DataAccess.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +59,7 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
             return _producer.BadRequest(Messages.UserIsNotInAnyTeam);
         
         var result = await backlogManager.GetProjectByTeam(teamGuid);
-
+        
         if (result.IsFailure)
             return _producer.InternalServerError(Messages.GenericError500);
         
@@ -68,6 +69,7 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
         
         return Ok(project);
     }
+    
     
 
     [HttpGet]
@@ -158,6 +160,47 @@ public class BacklogController(IManageUserInformation userInfoManager, IManageBa
             return _producer.NoContent();
 
         return Ok(features);
+    }
+    
+    [HttpGet]
+    [Route("project/features/status")]
+    public async Task<IActionResult> GetFeaturesReadyForRefinementByProject([FromQuery] string projectGUID, [FromQuery] ExtendedStatus status)
+    {
+        if (string.IsNullOrEmpty(projectGUID))
+            return _producer.BadRequest(Messages.MissingRequiredValue(Messages.GetFeaturesByProjectGUIDParams));
+        
+        var result = await backlogManager.GetProjectFeatures(projectGUID);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(result, out List<FeatureRecord> features);
+        if(features.Count == 0)
+            return _producer.NoContent();
+
+        var refinementFeatures = features.Where(f => f.State == status);
+        
+        return Ok(refinementFeatures);
+    }
+    
+    //TODO: Remove this endpoint after frontend rewritten to use generic endpoint
+    [HttpGet]
+    [Route("project/features/refinement")]
+    public async Task<IActionResult> GetFeaturesReadyForRefinementByProject([FromQuery] string projectGUID)
+    {
+        if (string.IsNullOrEmpty(projectGUID))
+            return _producer.BadRequest(Messages.MissingRequiredValue(Messages.GetFeaturesByProjectGUIDParams));
+        
+        var result = await backlogManager.GetProjectFeatures(projectGUID);
+        if(result.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(result, out List<FeatureRecord> features);
+        if(features.Count == 0)
+            return _producer.NoContent();
+
+        var refinementFeatures = features.Where(f => f.State == ExtendedStatus.ReadyForRefinement);
+        
+        return Ok(refinementFeatures);
     }
 
     [HttpGet]

@@ -54,7 +54,7 @@ public class RefinementController(IManageFeature featureManager, ResultUnWrapper
             return _producer.InternalServerError();
 
         unWrapper.Unwrap(featureGetResult, out FeatureRecord feature);
-        feature = feature with { Points = body.Points, RefinementState = RefinementState.Refined};
+        feature = feature with { Points = body.Points, RefinementState = RefinementState.Refined,  State = ExtendedStatus.Refined};
         
         var result  = await featureManager.UpdateFeature(feature);
         
@@ -76,7 +76,10 @@ public class RefinementController(IManageFeature featureManager, ResultUnWrapper
             return _producer.InternalServerError();
 
         unWrapper.Unwrap(featureGetResult, out FeatureRecord feature);
-        feature = feature with { RefinementState = RefinementState.ShouldBeSplitted};
+        feature = feature with
+        {
+            RefinementState = RefinementState.ShouldBeSplitted
+        };
         
         var result  = await featureManager.UpdateFeature(feature);
         

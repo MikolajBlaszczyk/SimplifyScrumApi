@@ -90,6 +90,7 @@ public static class ServiceCollectionExtensions
         
         services.AddTransient<IPrepareCreation<Project>, ProjectCreationPreparer>();
         services.AddTransient<IPrepareCreation<Feature>, FeatureCreationPreparer>();
+        services.AddTransient<IPrepareCreation<Sprint>, SprintCreationPreparer>();
         services.AddTransient<IPrepareCreation<Task>, TaskCreationPreparer>();
         services.AddTransient<IPrepareCreation<HistoryTable>, HistoryTableCreationPreparer>();
         services.AddSingleton<IEntityPreparerFactory, EntityPreparerFactory>();

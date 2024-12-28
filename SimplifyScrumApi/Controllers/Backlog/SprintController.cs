@@ -50,7 +50,7 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
 
     //TODO: Write UT 
     [HttpPost]
-    [Route("finish")]
+    [Route("plan")]
     public async Task<IActionResult> PlanSprint(PlanSprintRecord plan)
     {
         if (plan.FeatureGUIDs.Count == 0)

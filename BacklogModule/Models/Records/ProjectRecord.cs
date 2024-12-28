@@ -72,7 +72,8 @@ public record ProjectRecord(
                 record.CreatedBy,
                 record.CreatedOn,
                 record.LastUpdatedBy,
-                record.LastUpdatedOn
+                record.LastUpdatedOn,
+                record.IsActive
             );
     }
     
@@ -87,7 +88,8 @@ public record ProjectRecord(
             model.CreatedBy,
             model.CreatedOn,
             model.LastUpdatedBy,
-            model.LastUpdateOn
+            model.LastUpdateOn,
+            model.IsActive
         );
     }
 }
