@@ -1,6 +1,7 @@
 using BacklogModule.Abstraction;
 using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.Models;
+using BacklogModule.Utils.Exceptions;
 using BacklogModule.Utils.Results;
 using DataAccess.Abstraction.Storage;
 using DataAccess.Abstraction.Tables;
@@ -12,12 +13,22 @@ public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage feature
 {
     public async Task<BacklogResult> GetSprintInfoByProjectGUID(string projectGUID)
     {
-        var model  = sprintStorage.GetSprintInfoByProjectGUID(projectGUID);
-        if (model is null)
-            return BacklogResult.SuccessWithoutData();
+        try
+        {
+            var model = sprintStorage.GetSprintInfoByProjectGUID(projectGUID);
+            if (model is null)
+                return BacklogResult.SuccessWithoutData();
 
-        SprintRecord record = model;
-        return record;
+            SprintRecord record = model;
+
+            if (record.IsFinished)
+                return BacklogResult.SuccessWithoutData();;
+            return record;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
     }
 
     public async Task<BacklogResult> PlanSprint(PlanSprintRecord record)
