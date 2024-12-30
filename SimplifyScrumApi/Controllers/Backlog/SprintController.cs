@@ -23,7 +23,7 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
     [Route("info")]
     public async Task<IActionResult> GetCurrentSprintInfo()
     {
-        var userGuid = HttpContext.User.GetUserGuid();
+        var userGuid = User.GetUserGuid();
         if (userGuid is null)
             return _producer.InternalServerError();
         
@@ -79,6 +79,31 @@ public class SprintController(IManageSprint sprintManager, IManageUserInformatio
         unWrapper.Unwrap(result, out SprintRecord sprintRecord);
         
         return Ok(sprintRecord);
+    }
+
+    [HttpGet]
+    [Route("items")]
+    public async Task<IActionResult> GetItemsForActiveSprint()
+    {
+
+        var userGuid = User.GetUserGuid();
+        if (userGuid is null)
+            return _producer.InternalServerError();
+        
+        var hierarchyResult  = await infoManager.GetUsersActiveProjectAsync(userGuid);
+        if (hierarchyResult.IsFailure)
+            return _producer.InternalServerError();
+        
+        unWrapper.Unwrap(hierarchyResult, out Project project);
+        if (project is null)
+            return _producer.NoContent();
+        
+        var result = await sprintManager.GetActiveItemsForSprint(project.GUID);
+        unWrapper.Unwrap(result, out List<FeatureRecord> feature);
+        if(feature is null)
+            return _producer.NoContent();
+        
+        return Ok(feature);
     }
 }
 

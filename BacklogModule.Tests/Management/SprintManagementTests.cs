@@ -2,14 +2,19 @@ using BacklogModule.Abstraction.BacklogItems;
 using BacklogModule.BacklogManagement;
 using BacklogModule.Models;
 using DataAccess.Abstraction.Storage;
+using DataAccess.Enums;
+using DataAccess.Models.Factories;
 using DataAccess.Models.Projects;
 using DataAccess.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework.Internal;
+using SimplifyScrum.Utils;
 using SimplifyScrumApi.Tests;
 using Task = System.Threading.Tasks.Task;
+using TaskFactory = System.Threading.Tasks.TaskFactory;
 
 namespace BacklogModule.Tests.Management;
 
@@ -19,8 +24,16 @@ namespace BacklogModule.Tests.Management;
 public class SprintManagementTests
 {
     private  WebApiFactory factory;
+    private Mock<ISprintStorage> sprintStorageMock;
+    private Mock<IFeatureStorage> featureStorageMock;
+
+    [SetUp]
+    public void Setup()
+    {
+        sprintStorageMock = new Mock<ISprintStorage>();
+        featureStorageMock = new Mock<IFeatureStorage>();
+    }
     
-   
     [Test]
     public async Task Success_GetProjectSprint_ShouldGetNotNullValue()
     {
@@ -80,7 +93,7 @@ public class SprintManagementTests
   
     
     [Test]
-    public async Task Fail_PlanSprint_NotSprintInfo_ShouldReturnNull()
+    public async Task Fail_PlanSprint_NoSprintInfo_ShouldReturnNull()
     {
         var manager = GetManager<IManageSprint>(factory.Scope);
         var features = TestData.Features_Success_PlanSprint_ShouldReturnNotNull.Select(f => f.GUID).ToList();
@@ -91,6 +104,42 @@ public class SprintManagementTests
         var actual = result.Data;
         
         Assert.IsNotNull(actual);
+    }
+
+
+    [Test]
+    public async Task Success_GetItemsForActiveSprint_WithExistingFeaturesAndTasks_ShouldReturnListOfFeaturesWithTasks()
+    {
+        sprintStorageMock.Setup(m => m.GetSprintInfoByProjectGUID(It.IsRegex(".*")))
+            .Returns(
+                SprintFactory.Create("GUID", "", "", 1, DateTime.Now, "", "", DateTime.Now)
+                );
+        featureStorageMock.Setup(m => m.GetFeaturesWithTasksBySprintGUID("GUID")).ReturnsAsync(
+            () =>
+            {
+                var feature = FeatureFactory.Create("", "", "", ExtendedStatus.Refined, 2, "", "", DateTime.Now);
+                var task = DataAccess.Models.Factories.TaskFactory.Create(0, "", SimpleStatus.Doing, "", "", "",
+                    DateTime.Now);
+
+                feature.Tasks = new List<DataAccess.Models.Projects.Task>()
+                {
+                    (DataAccess.Models.Projects.Task)task.Clone(), (DataAccess.Models.Projects.Task)task.Clone()
+                };
+
+                return new List<Feature>()
+                {
+                    feature
+                };
+            });
+          
+        var manager = new SprintManager(sprintStorageMock.Object, featureStorageMock.Object, null, null);
+
+        var actualResult = await manager.GetActiveItemsForSprint("GUID");
+
+        new ResultUnWrapper(NullLogger<ResultUnWrapper>.Instance).Unwrap(actualResult, out List<FeatureRecord> actual);
+        
+        Assert.That(actual.Count, Is.EqualTo(1));
+        Assert.That(actual.First().Tasks.Count, Is.EqualTo(2));
     }
     
     private T GetManager<T>(IServiceScope scope)

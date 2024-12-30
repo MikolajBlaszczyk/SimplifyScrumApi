@@ -8,6 +8,7 @@ public interface IFeatureStorage
     Task<List<Feature>> GetFeatureByProjectGUID(string projectGUID);
 
     Task<Feature> GetFeatureByGUID(string featureGUID);
+    Task<List<Feature>> GetFeaturesWithTasksBySprintGUID(string sprintGUID);
     
     Task<Feature> AddFeature(Feature feature);
 

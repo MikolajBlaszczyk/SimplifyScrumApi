@@ -85,4 +85,36 @@ public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage feature
             return e;
         }
     }
+
+    public async Task<BacklogResult> GetActiveItemsForSprint(string projectGUID)
+    {
+        try
+        {
+            var sprintResult = await GetSprintInfoByProjectGUID(projectGUID);
+            var sprint = sprintResult.Data as SprintRecord;
+
+            var featuresWithTasks = await featureStorage.GetFeaturesWithTasksBySprintGUID(sprint.GUID);
+            
+            List<FeatureRecord> featureRecords = new List<FeatureRecord>();
+            foreach (var feature in featuresWithTasks)
+            {
+                FeatureRecord featureRecord = feature;
+                List<TaskRecord> taskRecords = new List<TaskRecord>();
+                foreach (var task in feature.Tasks)
+                {
+                    TaskRecord taskRecord = task;
+                    taskRecords.Add(taskRecord);
+                }
+
+                featureRecord = featureRecord with { Tasks = taskRecords };
+                featureRecords.Add(featureRecord);
+            }
+
+            return featureRecords;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
 }

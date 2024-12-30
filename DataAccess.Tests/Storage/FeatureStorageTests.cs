@@ -117,6 +117,18 @@ namespace DataAccess.Tests.Storage
             _mockAccessor.Verify(a => a.GetByPK(It.IsAny<string>()), Times.Once);
         }
 
+
+        [Test]
+        public void Success_GetFeaturesWithTasksBySprint_ShouldNotThrowException_WhenListIsEmpty()
+        {
+            //TODO: DbContext tests
+        }
+        
+        [Test]
+        public void Success_GetFeaturesWithTasksBySprint_ShouldReturnNotEmptyList()
+        {
+            //TODO: DbContext tests
+        }
        
     }
 }

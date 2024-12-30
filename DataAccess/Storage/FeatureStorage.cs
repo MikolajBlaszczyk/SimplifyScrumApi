@@ -34,7 +34,19 @@ public class FeatureStorage(ICreateAccessors factory, ILogger<FeatureStorage> lo
 
         return feautre;
     }
-    
+
+    public async Task<List<Feature>> GetFeaturesWithTasksBySprintGUID(string sprintGUID)
+    {
+        var dbContext = factory.DbContext;
+        var featuresWithTasks = await dbContext.Features
+            .Include(f => f.featureSprint)
+            .Include(f => f.Tasks)
+            .Where(f => f.featureSprint.SprintGUID == sprintGUID)
+            .ToListAsync();
+
+        return featuresWithTasks;
+    }
+
     public async Task<Feature> AddFeature(Feature feature)
     {
         var addedFeature = await _featureAccessor.Add(feature);

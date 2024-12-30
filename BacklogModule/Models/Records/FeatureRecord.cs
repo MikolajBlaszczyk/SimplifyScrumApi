@@ -16,7 +16,8 @@ public record FeatureRecord(
         string LastUpdatedBy,
         DateTime LastUpdateOn,
         bool AssignedToSprint,
-        RefinementState RefinementState)
+        RefinementState RefinementState,
+        List<TaskRecord>? Tasks = null)
 {
     public static FeatureRecord Create(
         string GUID,

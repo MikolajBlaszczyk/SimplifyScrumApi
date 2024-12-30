@@ -10,4 +10,6 @@ public interface IManageSprint
     Task<BacklogResult> PlanSprint(PlanSprintRecord record);
     
     Task<BacklogResult> RateSprint(SprintNoteRecord record);
+
+    Task<BacklogResult> GetActiveItemsForSprint(string projectGUID);
 }
