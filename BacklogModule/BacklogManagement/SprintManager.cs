@@ -5,6 +5,7 @@ using BacklogModule.Utils.Exceptions;
 using BacklogModule.Utils.Results;
 using DataAccess.Abstraction.Storage;
 using DataAccess.Abstraction.Tables;
+using DataAccess.Enums;
 using DataAccess.Models.Projects;
 
 namespace BacklogModule.BacklogManagement;
@@ -53,6 +54,7 @@ public class SprintManager(ISprintStorage sprintStorage, IFeatureStorage feature
                 if (record.FeatureGUIDs.Contains(feature.GUID))
                 {
                     feature.AssignedToSprint = true;
+                    feature.State = ExtendedStatus.ReadyForImplementation;
                     await featureStorage.UpdateFeature(feature);
                 }
             }
