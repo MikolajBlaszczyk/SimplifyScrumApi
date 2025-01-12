@@ -14,7 +14,7 @@ public class RoleManagerHelper(UserManager<Teammate> userManager): IRoleManager
 
         foreach (var role in roles)
         {
-            if (role == SystemRole.Admin)
+            if (role == SystemRole.TeamAdmin)
                 highestRole = role;
         }
 

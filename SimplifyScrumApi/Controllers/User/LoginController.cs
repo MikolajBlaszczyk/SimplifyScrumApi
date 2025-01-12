@@ -101,7 +101,7 @@ public class LoginController(IManageSecurity securityManager, IManageUserInforma
     
     [HttpPost]
     [Route("addrole")]
-    [Authorize(Roles = SystemRole.Admin)]
+    [Authorize(Roles = SystemRole.TeamAdmin)]
     public async Task<IActionResult> AddRoleForUser([FromBody] AddRoleBody body)
     {
         var result = await securityManager.AddRoleForUser(body.user, body.role);
@@ -114,10 +114,10 @@ public class LoginController(IManageSecurity securityManager, IManageUserInforma
 
     [HttpGet]
     [Route("isadmin")]
-    [Authorize(Roles = SystemRole.Admin)]
+    [Authorize(Roles = SystemRole.TeamAdmin)]
     public async Task<IActionResult> IsAdmin()
     {
-        var isAdmin = User.IsInRole(SystemRole.Admin);
+        var isAdmin = User.IsInRole(SystemRole.TeamAdmin);
 
         if (isAdmin)
             return Ok();

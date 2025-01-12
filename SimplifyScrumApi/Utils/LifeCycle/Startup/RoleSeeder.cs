@@ -13,7 +13,7 @@ public static class RoleSeeder
         using (var scope = serviceProvider.CreateScope())
         {
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] roleNames = { SystemRole.Admin, SystemRole.User };
+            string[] roleNames = { SystemRole.TeamAdmin, SystemRole.User };
 
             foreach (var role in roleNames)
             {
@@ -37,8 +37,8 @@ public static class RoleSeeder
                 var user = userManager.Users.FirstOrDefault(u => u.Id == guid);
                 if (user is not null)
                 {
-                    if(await userManager.IsInRoleAsync(user, SystemRole.Admin))
-                        await userManager.AddToRoleAsync(user, SystemRole.Admin);
+                    if(await userManager.IsInRoleAsync(user, SystemRole.TeamAdmin))
+                        await userManager.AddToRoleAsync(user, SystemRole.TeamAdmin);
                 }
             }
         }
