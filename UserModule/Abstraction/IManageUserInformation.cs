@@ -15,4 +15,5 @@ public interface IManageUserInformation
     Task<HierarchyResult> GetAllTeamsAsync();
     Task<HierarchyResult> GetTeam(string teamGUID);
     Task<HierarchyResult> GetTeamMemebers(string teamGUID);
+    Task<HierarchyResult> UpdateTeamMembers(TeamMembersUpdate teamMembersUpdate);
 }

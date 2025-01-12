@@ -194,4 +194,41 @@ public class UserInformationManager(
             return ex;
         }
     }
+
+    public async Task<HierarchyResult> UpdateTeamMembers(TeamMembersUpdate teamMembersUpdate)
+    {
+        try
+        {
+            List<SimpleUserModel> updatedTeamMembers = new List<SimpleUserModel>();
+            
+            foreach (var id in teamMembersUpdate.userIDs)
+            {
+                var original =  await userManager.FindByIdAsync(id);
+                original.TeamGUID = teamMembersUpdate.teamGUID;
+                await userManager.UpdateAsync(original);
+                updatedTeamMembers.Add(original);
+            }
+            
+            var currentMembers = await userManager.Users
+                .Where(u => u.TeamGUID == teamMembersUpdate.teamGUID)
+                .ToListAsync();
+            
+            foreach (var member in currentMembers)
+            {
+                if(updatedTeamMembers.Any(u => u.Id == member.Id))
+                    continue;
+                
+                var original =  await userManager.FindByIdAsync(member.Id);
+                original.TeamGUID = null;
+                await userManager.UpdateAsync(original);
+                updatedTeamMembers.Add(original);
+            }
+
+            return updatedTeamMembers;
+        }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+    }
 }

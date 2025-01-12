@@ -111,6 +111,19 @@ public class UserController(IManageUserInformation infoManager, ResultUnWrapper 
        
         return Ok();
     }
+    
+    [HttpPost]
+    [Route("team/members/update")]
+    public async Task<IActionResult> UpdateTeamMembers([FromBody] TeamMembersUpdate teamMemberUpdate)
+    {
+        var result = await infoManager.UpdateTeamMembers(teamMemberUpdate);
+        if (result.IsSuccess)
+        {
+            return Ok();
+        }
+        
+        return StatusCode(500, result.Exception!.Message);
+    }
 
    
 }
