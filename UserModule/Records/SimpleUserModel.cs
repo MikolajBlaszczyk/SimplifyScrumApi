@@ -12,7 +12,8 @@ public record SimpleUserModel(
     string TeamGuid = "",
     string Nickname = "",
     ScrumRole? Role = null,
-    string Id = "")
+    string Id = "",
+    bool NewUser = false)
 {
     public string? SystemRole { get; set; }
     public static implicit operator Teammate(SimpleUserModel userModel)
@@ -22,7 +23,8 @@ public record SimpleUserModel(
             Nickname = userModel.Nickname,
             UserName = userModel.Username,
             Email = userModel.Email,
-            ScrumRole = userModel.Role
+            ScrumRole = userModel.Role,
+            NewUser = userModel.NewUser,
         };
     }
     public static implicit operator SimpleUserModel(Teammate teammate)
@@ -34,7 +36,8 @@ public record SimpleUserModel(
             teammate.TeamGUID,
             teammate.Nickname,
             teammate.ScrumRole,
-            teammate.Id
+            teammate.Id,
+            teammate.NewUser
         );
     }
 

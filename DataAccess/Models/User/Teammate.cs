@@ -19,6 +19,7 @@ public class Teammate : IdentityUser, IAccessorTable
     
     [ForeignKey(nameof(Team))]
     public string? TeamGUID { get; set; }
+    public bool NewUser { get; set; }
     
     public Team Team { get; set; }
     public ICollection<TeammateMeetings> TeammateMeetings { get; set; }

@@ -9,6 +9,7 @@ public static class TeammateExtensions
         origin.TeamGUID = partial.TeamGUID ?? origin.TeamGUID;
         origin.Email =  ChooseValueToUpdate(partial.Email, origin.Email);
         origin.UserName = ChooseValueToUpdate(partial.UserName, origin.UserName);
+        origin.NewUser = partial.NewUser;
     }
 
     private static string ChooseValueToUpdate(string? newValue, string? oldValue) =>

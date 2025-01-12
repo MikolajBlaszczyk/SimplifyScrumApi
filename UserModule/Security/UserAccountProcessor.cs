@@ -20,6 +20,7 @@ public class UserAccountProcessor(
                 throw new Exception(validation.Message);
 
             Teammate teammate = userModel;
+            teammate.NewUser = true;
             await identityDirector.CreateUserAsync(teammate, userModel.Password);
         }
         catch (Exception e)
