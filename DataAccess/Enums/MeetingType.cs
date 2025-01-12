@@ -6,5 +6,6 @@ public enum MeetingType
     Refinement = 2,
     Retrospective = 3,
     Planning = 4,
-    Custom = 5
+    Custom = 5,
+    Review = 6
 }
