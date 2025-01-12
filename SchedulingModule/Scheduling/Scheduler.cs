@@ -13,7 +13,7 @@ namespace SchedulingModule;
 public class Scheduler(IHttpContextAccessor contextAccessor, IScheduleMeetings meetingStorage, MeetingGrouper grouper, CalendarArranger arranger) : ISchedule
 {
     
-    public async Task<ScheduleResult> GetCurrentMonthSchedule(DateTime date, string userGuid)
+    public async Task<ScheduleResult> GetScheduleByMonth(DateTime date, string userGuid)
     {
         try
         {
@@ -37,6 +37,8 @@ public class Scheduler(IHttpContextAccessor contextAccessor, IScheduleMeetings m
             return e;
         }
     }
+
+   
 
     public async Task<ScheduleResult> ScheduleMeeting(MeetingRecord meeting)
     {

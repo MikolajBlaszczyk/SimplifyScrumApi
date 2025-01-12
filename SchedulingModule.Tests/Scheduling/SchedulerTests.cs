@@ -181,7 +181,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(_contextAccessorMock.Object, accessorMock.Object, grouper, arranger);
 
-        var actual = await scheduler.GetCurrentMonthSchedule(DateTime.Parse($"01.{month}.{year}"), "");
+        var actual = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         
         Assert.IsTrue(actual.IsSuccess);
     }
@@ -202,7 +202,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler( _contextAccessorMock.Object, accessorMock.Object, grouper, arranger);
 
-        var res = await scheduler.GetCurrentMonthSchedule(DateTime.Parse($"01.{month}.{year}"), "");
+        var res = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         var actual = res.Data as Schedule;
         var expected = result.Expected.Data as Schedule;
         Assert.That(actual.month,Is.EqualTo(expected.month));
@@ -223,7 +223,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(_contextAccessorMock.Object, accessorMock.Object, grouper, arranger);
 
-        var res = await scheduler.GetCurrentMonthSchedule(DateTime.Parse($"01.{month}.{year}"), "");
+        var res = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         var actual = res.Data as Schedule;
         var expected = result.Expected.Data as Schedule;
         
@@ -270,7 +270,7 @@ public class SchedulerTests
         var arranger = new CalendarArranger();
         Scheduler scheduler = new Scheduler(_contextAccessorMock.Object, accessorMock.Object, grouper, arranger);
 
-        var res = await scheduler.GetCurrentMonthSchedule(DateTime.Parse($"01.{month}.{year}"), "");
+        var res = await scheduler.GetScheduleByMonth(DateTime.Parse($"01.{month}.{year}"), "");
         
         var actual = res.Data as Schedule;
         Assert.That(actual.days.Count, Is.EqualTo(expectedNumberOfDays));

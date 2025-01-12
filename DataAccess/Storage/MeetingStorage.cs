@@ -106,6 +106,11 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         
         try
         {
+            if(dbContext.TeammateMeetings.Any(tm => tm.MeetingGUID == link.MeetingGUID && tm.TeammateGUID == link.TeammateGUID))
+            {
+                logger.LogWarning("Link already exists");
+                return link;
+            }
             await dbContext.TeammateMeetings.AddAsync(link);
             await dbContext.SaveChangesAsync();
             return link;

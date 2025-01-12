@@ -21,11 +21,29 @@ public class MeetingController(ISchedule scheduler, IScheduleMeetings meetingsMa
     public async Task<IActionResult> GetMeetingsInThisMonthForCurrentUser()
     {
         var guid = HttpContext.User.GetUserGuid();
-        var result = await scheduler.GetCurrentMonthSchedule(DateTime.Now, guid);
+        var result = await scheduler.GetScheduleByMonth(DateTime.Now, guid);
 
         if (result.IsSuccess)
         {
             return Ok(result.Data!);
+        }
+        
+        return StatusCode(500, result.Exception!.Message);
+    }
+
+    
+    [HttpPost]
+    [Route("date")]
+    public async Task<IActionResult> GetDayInfoByDate([FromBody] DateTime day)
+    {
+        var guid = HttpContext.User.GetUserGuid();
+        var result = await scheduler.GetScheduleByMonth(day, guid);
+
+        var unwrapped = unWrapper.Unwrap(result, out Schedule schedule);
+        if (unwrapped)
+        {
+            var dayInfo = schedule.days.FirstOrDefault(d => d.date.Day == day.Day);
+            return Ok(dayInfo);
         }
         
         return StatusCode(500, result.Exception!.Message);
