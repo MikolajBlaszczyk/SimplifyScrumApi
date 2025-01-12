@@ -6,6 +6,7 @@ using SimplifyScrum.Utils;
 using SimplifyScrum.Utils.Messages;
 using SimplifyScrum.Utils.Requests;
 using UserModule.Abstraction;
+using UserModule.Informations;
 using UserModule.Records;
 
 namespace SimplifyScrum.Controllers.User;
@@ -13,7 +14,7 @@ namespace SimplifyScrum.Controllers.User;
 [ApiController]
 [Route("api/v1/scrum/")]
 [Authorize]
-public class UserController(IManageUserInformation infoManager, ResultUnWrapper unWrapper) : ControllerBase
+public class UserController(IManageSecurity securityManager, IManageUserInformation infoManager, ResultUnWrapper unWrapper) : ControllerBase
 {
     private static readonly ResponseProducer _producer = ResponseProducer.Shared;
 
@@ -107,6 +108,8 @@ public class UserController(IManageUserInformation infoManager, ResultUnWrapper 
         {
             var user = await infoManager.GetInfoByUserGUIDAsync(model.ManagerGUID);
             await infoManager.AddUsersToTeam(new List<SimpleUserModel>{ user.Data }, result.Data);
+
+            securityManager.AddRoleForUser(user.Data, SystemRole.Admin);
         }
        
         return Ok();
