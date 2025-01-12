@@ -2,9 +2,9 @@ namespace DataAccess.Enums;
 
 public enum RefinementState
 {
-    NotReady,
-    Ready, 
-    Refined,
-    ShouldBeSplitted,
-    MoreInfoNeeded
+    NotReady = 1,
+    Ready = 2, 
+    Refined = 3,
+    ShouldBeSplitted = 4,
+    MoreInfoNeeded = 5
 }
