@@ -25,4 +25,12 @@
       <ProjectReference Include="..\SchedulingModule\SchedulingModule.csproj" />
       <ProjectReference Include="..\UserModule\UserModule.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="out\web.config" />
+      <_ContentIncludedByDefault Remove="out\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="out\appsettings.json" />
+      <_ContentIncludedByDefault Remove="out\SimplifyScrumApi.deps.json" />
+      <_ContentIncludedByDefault Remove="out\SimplifyScrumApi.runtimeconfig.json" />
+    </ItemGroup>
 </Project>

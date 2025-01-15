@@ -25,6 +25,7 @@ public static class FeatureFactory
             CreatedOn = createdOn,
             LastUpdatedBy = lastUpdatedBy,
             LastUpdateOn = lastUpdateOn,
+            RefinementState = refinementState ?? RefinementState.NotReady
         };
         
         if (assignedToSprint.HasValue)

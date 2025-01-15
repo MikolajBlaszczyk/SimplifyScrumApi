@@ -41,7 +41,7 @@ public class UserInformationManager(
         {
             var user = await userManager.FindByIdAsync(guid);
             
-            if (user is null or {TeamGUID: null or ""})
+            if (user is null)
                 throw new Exception();
 
             var project = await hierarchyStorage.GetActiveProjectByTeam(user.TeamGUID);

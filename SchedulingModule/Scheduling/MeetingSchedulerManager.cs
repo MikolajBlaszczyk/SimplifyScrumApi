@@ -49,8 +49,13 @@ public class MeetingSchedulerManager(IMeetingStorage meetingStorage, INotificati
         {
             MeetingRecord result = await meetingStorage.AddMeeting(meeting);
 
+            
+            
             if (meeting.UserGuids != null)
             {
+                if(meeting.UserGuids.Count == 0)
+                    meeting.UserGuids.Add(meeting.LeaderGuid);
+                
                 var notification = NotificationFactory.Create(
                     result.GUID,
                     NotificationItem.Meeting,
