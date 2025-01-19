@@ -84,7 +84,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-    
+builder.Configuration.AddEnvironmentVariables();
+
 #endif
 builder.Services.ConfigureDependencyInjection(configuration: builder.Configuration);
 
