@@ -12,6 +12,7 @@ using SimplifyScrum.Utils.LifeCycle.Startup;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.docker.json", true);
 
 var simplifyDatabaseCs = builder.Configuration.GetConnectionString("SimplifyDatabase");
 builder.Services.AddDbContext<SimplifyAppDbContext>(options =>
@@ -52,17 +53,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 #if  DEBUG
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
-});
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -84,7 +75,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Configuration.AddEnvironmentVariables();
+
 
 #endif
 builder.Services.ConfigureDependencyInjection(configuration: builder.Configuration);
@@ -113,14 +104,26 @@ builder.Logging.AddConsole();
 
 #endregion
 
+builder.Services.AddCors(options =>
+{
+
+    
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors();
+
 
 
 app.UseHttpsRedirection();

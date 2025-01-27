@@ -1,7 +1,7 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
-WORKDIR /app
 
+WORKDIR /app
 
 COPY *.sln ./
 COPY BacklogModule/*.csproj ./BacklogModule/
@@ -30,6 +30,8 @@ RUN dotnet publish ./SimplifyScrumApi/SimplifyScrumApi.csproj -c Release -o out 
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
+ENV ASPNETCORE_HTTP_PORTS=8080
+EXPOSE 8080
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "SimplifyScrumApi.dll"]
+ENTRYPOINT ["dotnet", "SimplifyScrumApi.dll", "--server.urls", "https://+:8080"]

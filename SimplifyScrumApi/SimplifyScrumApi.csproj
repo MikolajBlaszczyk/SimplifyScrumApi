@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>SimplifyScrum</RootNamespace>
+        <UserSecretsId>88eda6e3-f759-46f9-bd30-c59a679215c0</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
