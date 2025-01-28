@@ -51,7 +51,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
-#if  DEBUG
+
 
 
 
@@ -77,7 +77,6 @@ builder.Services.AddAuthentication(options =>
 
 
 
-#endif
 builder.Services.ConfigureDependencyInjection(configuration: builder.Configuration);
 
 builder.Services.AddMemoryCache();
