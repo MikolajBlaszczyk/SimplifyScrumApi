@@ -1,4 +1,5 @@
 using DataAccess.Enums;
+using Microsoft.IdentityModel.Tokens;
 using TaskFactory = DataAccess.Models.Factories.TaskFactory;
 using Task = DataAccess.Models.Projects.Task;
 
@@ -49,7 +50,7 @@ public record TaskRecord(
                 record.Name,
                 record.State,
                 record.FeatureGUID,
-                record.Assignee,
+                record.Assignee.IsNullOrEmpty() ? null : record.Assignee,
                 record.CreatedBy,
                 record.CreatedOn,
                 record.LastUpdatedBy,
