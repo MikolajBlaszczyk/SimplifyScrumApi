@@ -103,17 +103,19 @@ builder.Logging.AddConsole();
 
 #endregion
 
+var corsSettings = builder.Configuration.GetSection("CorsSettings");
+
+var allowedOrigin = corsSettings["AllowedOrigins"];
 builder.Services.AddCors(options =>
 {
-
-    
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddPolicy("SimplifyCorsPolicy", builder =>
+    {
+        builder.WithOrigins(allowedOrigin)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+   
 });
 
 var app = builder.Build();
@@ -124,7 +126,7 @@ app.UseSwaggerUI();
 app.UseCors();
 
 
-
+app.UseCors("SimplifyCorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
