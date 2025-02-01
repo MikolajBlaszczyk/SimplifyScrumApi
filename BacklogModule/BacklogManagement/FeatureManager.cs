@@ -59,6 +59,7 @@ public class FeatureManager(IFeatureStorage featureStorage, IEntityPreparerFacto
     {
         Feature feature = record;
         FeatureRecord result = await featureStorage.UpdateFeature(feature);
+        
         return result; 
     }
 }

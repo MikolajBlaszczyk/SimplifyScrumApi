@@ -38,6 +38,13 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
         if (record is null)
             throw new BacklogException();
         
+        var allProjects = await projectStorage.GetAllProjects();
+        foreach(var p in allProjects)
+        {
+            p.IsActive = false;
+            await projectStorage.UpdateProject(p);
+        }
+        
         Project project = record;
         var projectPreparer =  preparerFactory.GetCreationPreparer<Project>();
         projectPreparer.Prepare(project);
@@ -58,8 +65,15 @@ public class ProjectManager(IProjectStorage projectStorage, IEntityPreparerFacto
 
     public async Task<BacklogResult> UpdateProject(ProjectRecord record)
     {
-        Project project = record;
+    
+        var allProjects = await projectStorage.GetAllProjects();
+        foreach(var p in allProjects)
+        {
+            p.IsActive = false;
+            await projectStorage.UpdateProject(p);
+        }
         
+        Project project = record;
         ProjectRecord result = await projectStorage.UpdateProject(project);
         
         return result;
