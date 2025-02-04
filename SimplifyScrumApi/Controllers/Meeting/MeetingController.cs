@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchedulingModule.Abstraction;
+using SchedulingModule.Enums;
 using SchedulingModule.Records;
 using SimplifyScrum.Utils;
 using SimplifyScrum.Utils.Messages;
@@ -30,7 +31,22 @@ public class MeetingController(ISchedule scheduler, IScheduleMeetings meetingsMa
         
         return StatusCode(500, result.Exception!.Message);
     }
+    
+    [HttpGet]
+    [Route("schedule")]
+    public async Task<IActionResult> GetScheduleByDateForCurrentUser([FromQuery] DateTime date)
+    {
+        var guid = HttpContext.User.GetUserGuid();
+        var result = await scheduler.GetScheduleByMonth(date, guid);
 
+        if (result.IsSuccess)
+        {
+            return Ok(result.Data!);
+        }
+        
+        return StatusCode(500, result.Exception!.Message);
+    }
+    
     
     [HttpPost]
     [Route("date")]
