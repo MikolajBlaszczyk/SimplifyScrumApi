@@ -42,7 +42,7 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
         var meetingIds = teammateMeetings.Select(tm => tm.MeetingGUID as object).ToList();
         
         var meetings = await meetingAccessor.GetAllByPKs( meetingIds);
-        meetings = meetings.Where(m => m.Start.Year == year && m.Start.Month == month).ToList();
+        meetings = meetings?.Where(m => m.Start.Year == year && m.Start.Month == month).ToList();
         if (meetings is null)
         {
             logger.LogWarning("Could not retrieved meetings");

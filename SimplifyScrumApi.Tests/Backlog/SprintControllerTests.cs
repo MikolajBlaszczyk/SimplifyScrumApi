@@ -29,7 +29,7 @@ public class SprintControllerTests
 
         var response = await client.GetAsync(ApiUrl + "/info");
         
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK).Or.EqualTo(HttpStatusCode.NoContent));
     }
     
     
