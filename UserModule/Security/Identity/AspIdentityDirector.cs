@@ -1,3 +1,4 @@
+using DataAccess.Context;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,8 @@ public class AspIdentityDirector(
         SignInManager<Teammate> signInManager,
         UserManager<Teammate> userManager,
         RoleManager<IdentityRole> roleManager,
-        IHttpContextAccessor accessor)
+        IHttpContextAccessor accessor,
+        SimplifyAppDbContext context)
 {
 
     public async Task<bool> LoginAsync(SimpleUserModel userModel)
@@ -84,11 +86,11 @@ public class AspIdentityDirector(
     
     public async Task AddRoleForUserAsync(Teammate user, string role)
     {
-        if (!await roleManager.RoleExistsAsync(role))
+        if (!(await roleManager.RoleExistsAsync(role)))
         {
             throw new Exception();
         }
-        
+       
         await userManager.AddToRoleAsync(user, role);
     }
 

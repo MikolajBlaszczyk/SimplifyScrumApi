@@ -86,8 +86,8 @@ public class UserInformationManager(
         try
         {
             var updatedTeammate = updatedUser;
-            
-            var guid = contextAccessor.HttpContext.User.GetUserGuid();
+
+            var guid = updatedUser.Id;
             var original =  await userManager.FindByIdAsync(guid);
             
             original.Update(updatedTeammate);

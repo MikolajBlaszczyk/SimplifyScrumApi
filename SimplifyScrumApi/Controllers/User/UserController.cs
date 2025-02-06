@@ -1,3 +1,4 @@
+using DataAccess.Enums;
 using DataAccess.Model.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -109,7 +110,8 @@ public class UserController(IManageSecurity securityManager, IManageUserInformat
             var user = await infoManager.GetInfoByUserGUIDAsync(model.ManagerGUID);
             await infoManager.AddUsersToTeam(new List<SimpleUserModel>{ user.Data }, result.Data);
 
-            securityManager.AddRoleForUser(user.Data, SystemRole.TeamAdmin);
+            await securityManager.AddRoleForUser(user.Data, SystemRole.TeamAdmin);
+            
         }
        
         return Ok();

@@ -65,7 +65,7 @@ public class UserAccountProcessor(
     {
         try
         {
-            Teammate teammate = user;
+            var teammate = await identityDirector.GetUserByGUIDAsync(user.Id);
             await identityDirector.AddRoleForUserAsync(teammate, role);
         }
         catch(Exception ex)
