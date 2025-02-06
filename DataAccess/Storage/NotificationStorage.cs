@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Storage;
 
-public class NotificationStorage(ICreateAccessors accessorsFactory, ILogger<NotificationStorage> logger) : INotificationStorage
+public class NotificationStorage(ICreateAccessors accessorsFactory, SimplifyAppDbContext dbContext, ILogger<NotificationStorage> logger) : INotificationStorage
 {
     private readonly IAccessor<Notification> _accessor = accessorsFactory.Create<Notification>();
 
@@ -62,12 +62,13 @@ public class NotificationStorage(ICreateAccessors accessorsFactory, ILogger<Noti
 
     public async Task<IEnumerable<Notification>?> GetAllAsync()
     {
-        return await _accessor.GetAll();
+        return dbContext.Notifications.ToList();
     }
 
     public async Task<IEnumerable<Notification>> GetByNotificationSourceGUIDAsync(string notificationSourceGUID)
     {
-        var notification = await GetAllAsync();
+        logger.LogDebug($"{dbContext.Notifications.Count()}");
+        var notification = dbContext.Notifications.ToList();
         return notification.Where(n => n.NotificationSourceGUID == notificationSourceGUID).ToList();;
     }
 

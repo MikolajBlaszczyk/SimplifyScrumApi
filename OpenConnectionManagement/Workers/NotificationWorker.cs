@@ -27,7 +27,7 @@ public class NotificationWorker(IServiceScopeFactory serviceScopeFactory) : Back
         {
             
             await NotifyAboutIncomingMeetings();
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
         }
         
     }

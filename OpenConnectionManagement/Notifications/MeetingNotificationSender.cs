@@ -32,7 +32,12 @@ public class MeetingNotificationSender(
             var notifications = await notificationStorage.GetByNotificationSourceGUIDAsync(meeting.GUID);
 
             var requireToSendForMeeting = notifications
-                .Where(n => n.Sent == false && n.Advance <= now.Subtract(meeting.Start).Minutes);
+                .Where(n =>
+                {
+                    var minutes = now.Subtract(meeting.Start).Minutes; 
+                    logger.LogDebug($"{now.Subtract(meeting.Start).Minutes}");
+                    return n.Sent == false && n.Advance >= now.Subtract(meeting.Start).Minutes;
+                });
             
             requireToSend.AddRange(requireToSendForMeeting);
         }

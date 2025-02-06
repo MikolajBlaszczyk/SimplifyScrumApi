@@ -28,6 +28,10 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish ./SimplifyScrumApi/SimplifyScrumApi.csproj -c Release -o out --verbosity diagnostic
 
+RUN apt-get update && apt-get install -y tzdata
+ENV TZ=Europe/Warsaw
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 ENV ASPNETCORE_HTTP_PORTS=8080
