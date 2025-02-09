@@ -21,6 +21,11 @@ public class UserLinker(IMeetingStorage meetingStorage,  IUserStore<Teammate> us
         }
     }
 
+    public async Task<List<TeammateMeetings>> GetLinksForMeeting(string guid)
+    {
+        return await meetingStorage.GetLinksByMeetingGuid(guid);
+    }
+    
     public async Task UnlinkAllUsers(MeetingRecord record)
     {
         await meetingStorage.RemoveAllLinks(record);

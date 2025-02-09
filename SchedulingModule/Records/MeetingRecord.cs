@@ -53,7 +53,6 @@ public record MeetingRecord(
     
     public static  implicit operator MeetingRecord(Meeting model)
     {
-        var users =model.TeammateMeetings?.Select(tm => tm.TeammateGUID).ToList();
         
         return Create(
             model.GUID,
@@ -63,7 +62,7 @@ public record MeetingRecord(
             model.Start,
             model.Duration,
             model.Type,
-            users
+            new List<string>()
         );
     }
 }

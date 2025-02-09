@@ -100,7 +100,29 @@ public class MeetingStorage(UserManager<Teammate> userManager, ICreateAccessors 
    
         return result;
     }
-    
+
+    public async Task<List<TeammateMeetings>> GetLinksByMeetingGuid(string meetingGuid)
+    {
+        var dbContext = factory.DbContext;
+
+        try
+        {
+            if(dbContext.TeammateMeetings.Any(tm => tm.MeetingGUID == meetingGuid) == false)
+            {
+                logger.LogWarning("Link already exists");
+                return new List<TeammateMeetings>();
+            }
+
+            var teammateMeetings = await dbContext.TeammateMeetings.Where(tm => tm.MeetingGUID == meetingGuid).ToListAsync();
+            return teammateMeetings;
+        }
+        catch(Exception ex)
+        {
+            logger.LogError("Could not add a link");
+            throw new AccessorException("Could not add a link");
+        }
+    }
+
     public async Task<TeammateMeetings> AddUserLink(TeammateMeetings link)
     {
         var dbContext = factory.DbContext;

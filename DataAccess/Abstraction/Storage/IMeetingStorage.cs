@@ -11,6 +11,7 @@ public interface IMeetingStorage
     Task<Meeting> AddMeeting(Meeting meeting);
     Task<Meeting> UpdateMeeting(Meeting meeting);
     Task<Meeting> DeleteMeeting(Meeting meeting);
+    Task<List<TeammateMeetings>> GetLinksByMeetingGuid(string meetingGuid);
     Task<TeammateMeetings> AddUserLink(TeammateMeetings link);
     Task<List<TeammateMeetings>> RemoveAllLinks(Meeting meeting);
 }

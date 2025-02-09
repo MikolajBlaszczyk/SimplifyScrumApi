@@ -113,6 +113,8 @@ public class MeetingSchedulerManager(IMeetingStorage meetingStorage, INotificati
         try
         {
             MeetingRecord result = await meetingStorage.GetMeetingById(meetingGuid);
+            var links =  await linker.GetLinksForMeeting(meetingGuid);
+            result.UserGuids.AddRange(links.Select(l => l.TeammateGUID).ToList());
             return result;
         }
         catch (Exception e)

@@ -34,9 +34,7 @@ public class MeetingNotificationSender(
             var requireToSendForMeeting = notifications
                 .Where(n =>
                 {
-                    var minutes = now.Subtract(meeting.Start).Minutes; 
-                    logger.LogDebug($"{now.Subtract(meeting.Start).Minutes}");
-                    return n.Sent == false && n.Advance >= now.Subtract(meeting.Start).Minutes;
+                    return n.Sent == false && n.Advance >= meeting.Start.Subtract(now).Minutes;
                 });
             
             requireToSend.AddRange(requireToSendForMeeting);
